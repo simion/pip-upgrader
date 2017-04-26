@@ -1,0 +1,14 @@
+.cache
+.coverage
+*.egg-info
+build
+dist
+*.pyc
+
+# testing files
+
+.idea/vcs.xml
+tests/__pycache__/
+
+htmlcov
+.idea

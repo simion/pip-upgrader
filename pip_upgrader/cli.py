@@ -8,21 +8,21 @@ Arguments:
     requirements_file       The requirement FILE, or WILDCARD PATH to multiple files.
     --prerelease            Include prerelease versions for upgrade, when querying pypi repositories.
     -p <package>            Pre-choose which packages tp upgrade. Skips any prompt.
-    -dry-run                Run all the command logic, except it doesn't install new packages neither replace the version in txt files.
+    -dry-run                Simulates the upgrade, but does not execute the actual upgrade.
 
 
 Examples:
   pip-upgrade             # auto discovers requirements file
-  pip-upgrade requirements.txt  
+  pip-upgrade requirements.txt
   pip-upgrade requirements/dev.txt requirements/production.txt
   pip-upgrade requirements.txt -p django -p celery
   pip-upgrade requirements.txt -p all
   pip-upgrade requirements.txt --dry-run  # run everything as a simulation (don't do the actual upgrade)
-    
+
 Help:
-  Interactively upgrade packages from requirements file, and also update the pinned version from requirements file(s). 
+  Interactively upgrade packages from requirements file, and also update the pinned version from requirements file(s).
   If no requirements are given, the command attempts to detect the requirements file(s) in the current directory.
-  
+
   https://github.com/simion/pip-upgrader
 """
 from __future__ import print_function, unicode_literals
@@ -71,5 +71,3 @@ def main():
 
     except KeyboardInterrupt:  # pragma: nocover
         print(Color('{autored}Upgrade cancelled.{/autored}'))
-
-

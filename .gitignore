@@ -12,3 +12,4 @@ tests/__pycache__/
 
 htmlcov
 .idea
+.tox

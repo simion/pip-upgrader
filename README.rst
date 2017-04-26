@@ -68,8 +68,22 @@ If you encounter any bugs, please open an issue and it will be magically resolve
 
 Have fun! :)
 
+Contributing
+------------
+Clone the repository, create a virtualenv, then run:
 ::
-Note for me:
+
+    pip install -e .[test]
+    py.test
+
+This command will :
+
+- run tests
+- print coverage report
+- print pep8 errors
+
+
+Notes for me:
 Release new version:
 ::
 

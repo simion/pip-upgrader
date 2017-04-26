@@ -53,12 +53,15 @@ class PackagesStatusDetector(object):
                     prerelease_versions = [vers for vers in all_versions if vers.is_prerelease or vers.is_postrelease]
                     if prerelease_versions:
                         latest_version = max(prerelease_versions)
-
                 try:
-                    latest_version_info = data['releases'][str(latest_version)][0]
-                except KeyError:  # non-RFC versions, get the latest from pypi response
-                    latest_version = version.parse(data['info']['version'])
-                    latest_version_info = data['releases'][str(latest_version)][0]
+                    try:
+                        latest_version_info = data['releases'][str(latest_version)][0]
+                    except KeyError:  # non-RFC versions, get the latest from pypi response
+                        latest_version = version.parse(data['info']['version'])
+                        latest_version_info = data['releases'][str(latest_version)][0]
+                except Exception:
+                    print('error while parsing version')
+                    continue
 
                 upload_time = latest_version_info['upload_time'].replace('T', ' ')
 

@@ -26,8 +26,9 @@ Installation
 
 Usage
 -----
-Activate your virtualenv.
-CD into your project.
+**Activate your virtualenv** (important, because it will also install the new versions of upgraded packages in current virtualenv)
+
+**CD into your project.**
 Then:
 ::
 

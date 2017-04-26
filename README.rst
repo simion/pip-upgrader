@@ -31,7 +31,7 @@ CD into your project.
 Then:
 ::
 
-    $ pip-upgrade [<requirements_file>] ... [--prerelease] [-p=<package>...]
+    $ pip-upgrade
 
 Arguments:
     requirements_file       The requirement FILE, or WILDCARD PATH to multiple files.
@@ -43,11 +43,16 @@ Examples:
 
 ::
 
-    pip-upgrade             # auto discovers requirements file
+    pip-upgrade             # auto discovers requirements file. Prompts for selecting upgrades
     pip-upgrade requirements.txt
     pip-upgrade requirements/dev.txt requirements/production.txt
+
+    # skip prompt and manually choose some/all packages for upgrade
     pip-upgrade requirements.txt -p django -p celery
     pip-upgrade requirements.txt -p all
+
+    # include pre-release versions
+    pip-upgrade --prerelease
 
 
 Have fun! :)

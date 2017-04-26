@@ -1,4 +1,4 @@
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 import subprocess
 from subprocess import CalledProcessError
@@ -29,14 +29,14 @@ class PackagesUpgrader(object):
     def _update_package(self, package):
         """ Update (install) the package in current environment, and if success, also replace version in file """
         try:
-            if not self.dry_run:
+            if not self.dry_run:  # pragma: nocover
                 subprocess.check_call(['pip', 'install', '{}=={}'.format(package['name'], package['latest_version'])])
             else:
                 print('[Dry Run]: skipping package installation:', package['name'])
             # update only if installation success
             self._update_requirements_package(package)
 
-        except CalledProcessError:
+        except CalledProcessError:  # pragma: nocover
             print(Color('{{autored}}Failed to install package "{}"{{/autored}}'.format(package['name'])))
 
     def _update_requirements_package(self, package):
@@ -54,7 +54,7 @@ class PackagesUpgrader(object):
                     for line in lines:
                         line = self._maybe_update_line_package(line, package)
                         fwh.write(line)
-            except Exception as e:
+            except Exception as e:  # pragma: nocover
                 # at exception, restore old file
                 with open(filename, 'w') as fwh:
                     for line in lines:
@@ -76,7 +76,7 @@ class PackagesUpgrader(object):
         if line != original_line:
             self.upgraded_packages.append(package)
 
-            if self.dry_run:
+            if self.dry_run:  # pragma: nocover
                 print('[Dry Run]: skipping requirements replacement:',
                       original_line.replace('\n', ''), ' / ',
                       line.replace('\n', ''))

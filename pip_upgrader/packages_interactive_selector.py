@@ -1,11 +1,17 @@
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 from collections import OrderedDict
 
 from colorclass import Color
 from terminaltables import AsciiTable
 
-from pip_upgrader.utils import user_input
+
+def user_input(prompt=None):  # pragma: nocover
+    try:
+        input_func = raw_input
+    except NameError:
+        input_func = input
+    return input_func(prompt)
 
 
 class PackageInteractiveSelector(object):
@@ -59,11 +65,11 @@ class PackageInteractiveSelector(object):
                          package['latest_version'],
                          package['upload_time']])
 
-        print()
+        print('')
         print(Color('{autogreen}Available upgrades:{/autogreen}'))
         table = AsciiTable(data)
         print(table.table)
-        print()
+        print('')
 
         print('Please choose which packages should be upgraded. Choices: "all" or "1 2 3"')
         choice = user_input(Color('{autogreen}Choice:{/autogreen} ')).strip()

@@ -1,5 +1,4 @@
-import mimetypes
-import os
+from __future__ import print_function, unicode_literals
 
 
 class PackagesDetector(object):
@@ -21,6 +20,7 @@ class PackagesDetector(object):
                     self._process_req_line(line)
 
     def _process_req_line(self, line):
+
         if not line or not line.strip():
             return
         line = line.strip()
@@ -32,6 +32,7 @@ class PackagesDetector(object):
                 line.startswith('-i') or line.startswith('--index-url') or \
                 line.startswith('--extra-index-url') or \
                 line.startswith('--no-index') or \
+                line.startswith('-r') or \
                 line.startswith('-Z') or line.startswith('--always-unzip'):
             # private repositories
             return

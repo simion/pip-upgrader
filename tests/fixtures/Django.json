@@ -1,0 +1,3053 @@
+{
+    "info": {
+        "maintainer": "", 
+        "docs_url": null, 
+        "requires_python": "", 
+        "maintainer_email": "", 
+        "cheesecake_code_kwalitee_id": null, 
+        "keywords": "", 
+        "package_url": "http://pypi.python.org/pypi/Django", 
+        "author": "Django Software Foundation", 
+        "author_email": "foundation@djangoproject.com", 
+        "download_url": "", 
+        "platform": "", 
+        "version": "1.11", 
+        "cheesecake_documentation_id": null, 
+        "_pypi_hidden": false, 
+        "description": "UNKNOWN\n\n\n", 
+        "release_url": "http://pypi.python.org/pypi/Django/1.11", 
+        "downloads": {
+            "last_month": 0, 
+            "last_week": 0, 
+            "last_day": 0
+        }, 
+        "_pypi_ordering": 140, 
+        "requires_dist": [
+            "bcrypt; extra == 'bcrypt'", 
+            "argon2-cffi (>=16.1.0); extra == 'argon2'", 
+            "pytz"
+        ], 
+        "classifiers": [
+            "Development Status :: 5 - Production/Stable", 
+            "Environment :: Web Environment", 
+            "Framework :: Django", 
+            "Intended Audience :: Developers", 
+            "License :: OSI Approved :: BSD License", 
+            "Operating System :: OS Independent", 
+            "Programming Language :: Python", 
+            "Programming Language :: Python :: 2", 
+            "Programming Language :: Python :: 2.7", 
+            "Programming Language :: Python :: 3", 
+            "Programming Language :: Python :: 3.4", 
+            "Programming Language :: Python :: 3.5", 
+            "Programming Language :: Python :: 3.6", 
+            "Topic :: Internet :: WWW/HTTP", 
+            "Topic :: Internet :: WWW/HTTP :: Dynamic Content", 
+            "Topic :: Internet :: WWW/HTTP :: WSGI", 
+            "Topic :: Software Development :: Libraries :: Application Frameworks", 
+            "Topic :: Software Development :: Libraries :: Python Modules"
+        ], 
+        "name": "Django", 
+        "bugtrack_url": "", 
+        "license": "BSD", 
+        "summary": "A high-level Python Web framework that encourages rapid development and clean, pragmatic design.", 
+        "home_page": "https://www.djangoproject.com/", 
+        "cheesecake_installability_id": null
+    }, 
+    "releases": {
+        "1.0.4": [], 
+        "1.0.1": [], 
+        "1.0.2": [], 
+        "1.0.3": [], 
+        "1.6.10": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-13T18:48:42", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/5c/50/f3eb71c2eee5abbfa4f9368ac0ccdf4d58dcc1d391d60cf9d8eb7070d52d/Django-1.6.10-py2.py3-none-any.whl", 
+                "md5_digest": "f83dcaec9e3b7d956a4d29e9401b0b97", 
+                "downloads": 179020, 
+                "filename": "Django-1.6.10-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "5c/50/f3eb71c2eee5abbfa4f9368ac0ccdf4d58dcc1d391d60cf9d8eb7070d52d/Django-1.6.10-py2.py3-none-any.whl", 
+                "size": 6688308
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-13T18:48:53", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/ff/83/fad3cc3ac64f8096ae5e56fa1de303ff947fb3fab69cd96d3df9ccf353fb/Django-1.6.10.tar.gz", 
+                "md5_digest": "d7123f14ac19ae001be02ed841937b91", 
+                "downloads": 40213, 
+                "filename": "Django-1.6.10.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "ff/83/fad3cc3ac64f8096ae5e56fa1de303ff947fb3fab69cd96d3df9ccf353fb/Django-1.6.10.tar.gz", 
+                "size": 6760152
+            }
+        ], 
+        "1.6.11": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-03-18T23:57:46", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/80/86/f52eec28e96fb211122424a3db696e7676ad3555c11027afd9fee9bb0d23/Django-1.6.11-py2.py3-none-any.whl", 
+                "md5_digest": "e43d8c4147a821205b554aebc1da62d5", 
+                "downloads": 533200, 
+                "filename": "Django-1.6.11-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "80/86/f52eec28e96fb211122424a3db696e7676ad3555c11027afd9fee9bb0d23/Django-1.6.11-py2.py3-none-any.whl", 
+                "size": 6688479
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-03-18T23:58:02", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/69/1a/a47b2efd22bf642d19d3dde71f82b29c5608bb96e140a38208bf813f9c3b/Django-1.6.11.tar.gz", 
+                "md5_digest": "3bf6086c3b923876d283dc3404e32fdd", 
+                "downloads": 122919, 
+                "filename": "Django-1.6.11.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "69/1a/a47b2efd22bf642d19d3dde71f82b29c5608bb96e140a38208bf813f9c3b/Django-1.6.11.tar.gz", 
+                "size": 6764000
+            }
+        ], 
+        "1.10": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-08-01T18:32:07", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/4b/4c/059f68d8f029f7054e4e6bb0b1ed2fde7f28d07a3727325727d5a95ae1b8/Django-1.10-py2.py3-none-any.whl", 
+                "md5_digest": "36e17cd1a0255258e1dec1bbb8808040", 
+                "downloads": 127008, 
+                "filename": "Django-1.10-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "4b/4c/059f68d8f029f7054e4e6bb0b1ed2fde7f28d07a3727325727d5a95ae1b8/Django-1.10-py2.py3-none-any.whl", 
+                "size": 6795167
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-08-01T18:32:16", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/18/5c/3cd8989b2226c55a1faf66f1a110e76cba6e6ca5d9dd15fb469fb636f378/Django-1.10.tar.gz", 
+                "md5_digest": "939e4d989b93a4e12e4ec5d98fcdb4f5", 
+                "downloads": 8119, 
+                "filename": "Django-1.10.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "18/5c/3cd8989b2226c55a1faf66f1a110e76cba6e6ca5d9dd15fb469fb636f378/Django-1.10.tar.gz", 
+                "size": 7691063
+            }
+        ], 
+        "1.11": [
+            {
+                "has_sig": true, 
+                "upload_time": "2017-04-04T15:59:30", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/47/a6/078ebcbd49b19e22fd560a2348cfc5cec9e5dcfe3c4fad8e64c9865135bb/Django-1.11-py2.py3-none-any.whl", 
+                "md5_digest": "4a191de100babe2bf88f205982d48e57", 
+                "downloads": 27970, 
+                "filename": "Django-1.11-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "47/a6/078ebcbd49b19e22fd560a2348cfc5cec9e5dcfe3c4fad8e64c9865135bb/Django-1.11-py2.py3-none-any.whl", 
+                "size": 6942445
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2017-04-04T16:00:04", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/79/43/ed9ca4d69f35b5e64f2ecad73f75a8529a9c6f0d562e5af9a1f65beda355/Django-1.11.tar.gz", 
+                "md5_digest": "5008d266f198c2fe761916139162a0c2", 
+                "downloads": 1412, 
+                "filename": "Django-1.11.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "79/43/ed9ca4d69f35b5e64f2ecad73f75a8529a9c6f0d562e5af9a1f65beda355/Django-1.11.tar.gz", 
+                "size": 7853479
+            }
+        ], 
+        "1.5.11": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-10-22T16:45:00", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/81/4c/becfb2589793a5052528ced88863427f1d8b09600bcefd6dd52c7eda29bf/Django-1.5.11.tar.gz", 
+                "md5_digest": "6e88cab476e5149812accc143d313a22", 
+                "downloads": 69314, 
+                "filename": "Django-1.5.11.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "81/4c/becfb2589793a5052528ced88863427f1d8b09600bcefd6dd52c7eda29bf/Django-1.5.11.tar.gz", 
+                "size": 8075434
+            }
+        ], 
+        "1.5.10": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-09-02T20:51:16", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/ff/2f/7412428c52976797c5229a613326cf41d678a0f2fcfafb427ada6c8a561a/Django-1.5.10.tar.gz", 
+                "md5_digest": "b055361f04c0b8e862f8e8ffbb44e464", 
+                "downloads": 58388, 
+                "filename": "Django-1.5.10.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "ff/2f/7412428c52976797c5229a613326cf41d678a0f2fcfafb427ada6c8a561a/Django-1.5.10.tar.gz", 
+                "size": 8074324
+            }
+        ], 
+        "1.5.12": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-03T02:09:00", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/e2/19/2b5fba33b2c6548fcd9ae4961f9d89bafeedf232fe3367c28a85280e9e13/Django-1.5.12-py2.py3-none-any.whl", 
+                "md5_digest": "c35cb78bbf20a8ef60d37207d75a0f34", 
+                "downloads": 158098, 
+                "filename": "Django-1.5.12-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "e2/19/2b5fba33b2c6548fcd9ae4961f9d89bafeedf232fe3367c28a85280e9e13/Django-1.5.12-py2.py3-none-any.whl", 
+                "size": 8317210
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-03T02:09:17", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/7b/a8/e4ffd9cc175c0b6b41cc33463449e6515eff28a27f7102818e24d9fd2517/Django-1.5.12.tar.gz", 
+                "md5_digest": "0e0b48cd0bb59cbc5499dcbb4fe1fb90", 
+                "downloads": 32642, 
+                "filename": "Django-1.5.12.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "7b/a8/e4ffd9cc175c0b6b41cc33463449e6515eff28a27f7102818e24d9fd2517/Django-1.5.12.tar.gz", 
+                "size": 8202839
+            }
+        ], 
+        "1.6.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-02-06T21:51:23", 
+                "comment_text": "", 
+                "python_version": "any", 
+                "url": "https://pypi.python.org/packages/66/f4/e695878103eb7371e1077374e09dec23ce95302f2e55d7b1ad908613cac9/Django-1.6.2-py2.py3-none-any.whl", 
+                "md5_digest": "3bd014923e85df771b34d12c0ab3c9e1", 
+                "downloads": 483646, 
+                "filename": "Django-1.6.2-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "66/f4/e695878103eb7371e1077374e09dec23ce95302f2e55d7b1ad908613cac9/Django-1.6.2-py2.py3-none-any.whl", 
+                "size": 6682217
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2014-02-06T21:50:52", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/21/78/0c2958697c30b35de1ac691f9002c486da052e3fc64b4cf60a9d28ef1d51/Django-1.6.2.tar.gz", 
+                "md5_digest": "45d974c623b3bfbf9976f3d808fe1ee9", 
+                "downloads": 372551, 
+                "filename": "Django-1.6.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "21/78/0c2958697c30b35de1ac691f9002c486da052e3fc64b4cf60a9d28ef1d51/Django-1.6.2.tar.gz", 
+                "size": 6615116
+            }
+        ], 
+        "1.6.3": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-04-21T23:12:03", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/4a/6f/bd944fae447c329a9c316966e2736cda68f5319bd0dba34e4cb92c695457/Django-1.6.3-py2.py3-none-any.whl", 
+                "md5_digest": "e5937a962ce1298ac67d1aa7484883a6", 
+                "downloads": 87572, 
+                "filename": "Django-1.6.3-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "4a/6f/bd944fae447c329a9c316966e2736cda68f5319bd0dba34e4cb92c695457/Django-1.6.3-py2.py3-none-any.whl", 
+                "size": 6683433
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-04-21T23:12:25", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/9e/a9/a49cfb89bbec60c7720435795c96d315703f1bd0a2fc5b88a9a322534436/Django-1.6.3.tar.gz", 
+                "md5_digest": "727fec03f15db8f80a7231696b79adf7", 
+                "downloads": 72235, 
+                "filename": "Django-1.6.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "9e/a9/a49cfb89bbec60c7720435795c96d315703f1bd0a2fc5b88a9a322534436/Django-1.6.3.tar.gz", 
+                "size": 6628812
+            }
+        ], 
+        "1.6.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-12-12T20:04:35", 
+                "comment_text": "", 
+                "python_version": "any", 
+                "url": "https://pypi.python.org/packages/53/c4/28cc8a55aa9bf9579bd496f88505f3a14ff0ed4b1c6954a8ba5ce649a685/Django-1.6.1-py2.py3-none-any.whl", 
+                "md5_digest": "c7b7a4437b36400f1c23953e9700fd29", 
+                "downloads": 194490, 
+                "filename": "Django-1.6.1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "53/c4/28cc8a55aa9bf9579bd496f88505f3a14ff0ed4b1c6954a8ba5ce649a685/Django-1.6.1-py2.py3-none-any.whl", 
+                "size": 6680676
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2013-12-12T20:04:13", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/4e/1a/06610645c7be99f342b10d9aa29bf833800778532cc1738406e1805322c1/Django-1.6.1.tar.gz", 
+                "md5_digest": "3ea7a00ea9e7a014e8a4067dd6466a1b", 
+                "downloads": 300009, 
+                "filename": "Django-1.6.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "4e/1a/06610645c7be99f342b10d9aa29bf833800778532cc1738406e1805322c1/Django-1.6.1.tar.gz", 
+                "size": 6608178
+            }
+        ], 
+        "1.6.6": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-08-20T20:17:23", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/9e/c8/19c7a7e76d9777366af0de6db934780b2d276a23054aa8109a661689f09c/Django-1.6.6-py2.py3-none-any.whl", 
+                "md5_digest": "74ffe011439efffcefbda6fac294c6f6", 
+                "downloads": 174863, 
+                "filename": "Django-1.6.6-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "9e/c8/19c7a7e76d9777366af0de6db934780b2d276a23054aa8109a661689f09c/Django-1.6.6-py2.py3-none-any.whl", 
+                "size": 6684772
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-08-20T20:17:01", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/0e/96/0e6b38a7d5dca4662fdeb23d021ce47df1fa388f8f34816ba3cbaed61ec6/Django-1.6.6.tar.gz", 
+                "md5_digest": "d14fd332f31799fff39acc0c79e8421c", 
+                "downloads": 46033, 
+                "filename": "Django-1.6.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "0e/96/0e6b38a7d5dca4662fdeb23d021ce47df1fa388f8f34816ba3cbaed61ec6/Django-1.6.6.tar.gz", 
+                "size": 6645456
+            }
+        ], 
+        "1.6.7": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-09-02T20:55:35", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/9e/51/e6059dba3f8fa2adbcb05ba3271e68182c81210055666abd6a01e15ff515/Django-1.6.7-py2.py3-none-any.whl", 
+                "md5_digest": "72a2df8d67a976208420eec2fe2129fe", 
+                "downloads": 214544, 
+                "filename": "Django-1.6.7-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "9e/51/e6059dba3f8fa2adbcb05ba3271e68182c81210055666abd6a01e15ff515/Django-1.6.7-py2.py3-none-any.whl", 
+                "size": 6684835
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-09-02T20:56:17", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/c2/6b/44ae1265b3f3b4f215ce23720f66bb75b0019b5ecd78d720ecfbe36fad0d/Django-1.6.7.tar.gz", 
+                "md5_digest": "f31e2f953feb258e3569e962790630b6", 
+                "downloads": 58639, 
+                "filename": "Django-1.6.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "c2/6b/44ae1265b3f3b4f215ce23720f66bb75b0019b5ecd78d720ecfbe36fad0d/Django-1.6.7.tar.gz", 
+                "size": 6647301
+            }
+        ], 
+        "1.6.4": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-04-28T20:40:32", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/01/d3/aa92215ab08064294337bcc51a141201e798a7dd80ca9fc1384397b717de/Django-1.6.4-py2.py3-none-any.whl", 
+                "md5_digest": "8093262e13535869720d7100aed72fd6", 
+                "downloads": 114195, 
+                "filename": "Django-1.6.4-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "01/d3/aa92215ab08064294337bcc51a141201e798a7dd80ca9fc1384397b717de/Django-1.6.4-py2.py3-none-any.whl", 
+                "size": 6683808
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-04-28T20:40:52", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/71/58/1482ebcd3ac40c6f5a8d0d2504c62323e3ebb94b6775d62011b73178d796/Django-1.6.4.tar.gz", 
+                "md5_digest": "0d23bf836d3a52d93aee9411eccaa609", 
+                "downloads": 130203, 
+                "filename": "Django-1.6.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "71/58/1482ebcd3ac40c6f5a8d0d2504c62323e3ebb94b6775d62011b73178d796/Django-1.6.4.tar.gz", 
+                "size": 6630474
+            }
+        ], 
+        "1.6.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-05-14T18:33:13", 
+                "comment_text": "", 
+                "python_version": "any", 
+                "url": "https://pypi.python.org/packages/43/6c/7fffbe73fe5703125aa1c9e3279ad3a5e542128ee55a4aa83669db1985cd/Django-1.6.5-py2.py3-none-any.whl", 
+                "md5_digest": "2bcdb4729f9f358b0925b532eef0a8ff", 
+                "downloads": 934712, 
+                "filename": "Django-1.6.5-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "43/6c/7fffbe73fe5703125aa1c9e3279ad3a5e542128ee55a4aa83669db1985cd/Django-1.6.5-py2.py3-none-any.whl", 
+                "size": 6683598
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2014-05-14T18:34:11", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/cc/2c/fc2495af4dcc3c81834f9c390cfccfe6b037fdfb5dfdce6c30413170c20b/Django-1.6.5.tar.gz", 
+                "md5_digest": "e4c5b2d35ecb3807317713afa70a0c77", 
+                "downloads": 456510, 
+                "filename": "Django-1.6.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "cc/2c/fc2495af4dcc3c81834f9c390cfccfe6b037fdfb5dfdce6c30413170c20b/Django-1.6.5.tar.gz", 
+                "size": 6633768
+            }
+        ], 
+        "1.6.8": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-10-22T16:50:19", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/1e/01/e985b325b49ab53b4bad6e22ae7959474b34a8053eb6846f28286a4611fd/Django-1.6.8-py2.py3-none-any.whl", 
+                "md5_digest": "1cb695150210433200929623f800edcb", 
+                "downloads": 235517, 
+                "filename": "Django-1.6.8-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "1e/01/e985b325b49ab53b4bad6e22ae7959474b34a8053eb6846f28286a4611fd/Django-1.6.8-py2.py3-none-any.whl", 
+                "size": 6685693
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-10-22T16:50:38", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/8e/38/9e47ac747026608f284813ee41d49f0b1770bb78ca75aefb2fb268abe16f/Django-1.6.8.tar.gz", 
+                "md5_digest": "b00f9f73535db7c9ce52a6f707d61ab6", 
+                "downloads": 43696, 
+                "filename": "Django-1.6.8.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "8e/38/9e47ac747026608f284813ee41d49f0b1770bb78ca75aefb2fb268abe16f/Django-1.6.8.tar.gz", 
+                "size": 6650671
+            }
+        ], 
+        "1.6.9": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-03T01:52:23", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/c7/cb/1b2eb81a62f81e862c90675915dd07375d459d789ef372198abec9fbdc7a/Django-1.6.9-py2.py3-none-any.whl", 
+                "md5_digest": "279bc0f844c644939dbe2a77c2249124", 
+                "downloads": 44044, 
+                "filename": "Django-1.6.9-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "c7/cb/1b2eb81a62f81e862c90675915dd07375d459d789ef372198abec9fbdc7a/Django-1.6.9-py2.py3-none-any.whl", 
+                "size": 6687845
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-03T01:52:35", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/de/c0/b9e7fbf78afb964a7ff7e9609ea7d4c65fb67c7c4d456638dfa45c3f8d0c/Django-1.6.9.tar.gz", 
+                "md5_digest": "03893cd1232f6cf75f0523e1b2c91ed2", 
+                "downloads": 15958, 
+                "filename": "Django-1.6.9.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "de/c0/b9e7fbf78afb964a7ff7e9609ea7d4c65fb67c7c4d456638dfa45c3f8d0c/Django-1.6.9.tar.gz", 
+                "size": 6753466
+            }
+        ], 
+        "1.8.4": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-08-18T17:06:21", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/7e/c3/2574a681af30d99b8fd60008c3e56f4ab0acad2af70fea6c135b8bff60a2/Django-1.8.4-py2.py3-none-any.whl", 
+                "md5_digest": "3a586ed7da0715ea65ec94a9b1ff2d87", 
+                "downloads": 549436, 
+                "filename": "Django-1.8.4-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "7e/c3/2574a681af30d99b8fd60008c3e56f4ab0acad2af70fea6c135b8bff60a2/Django-1.8.4-py2.py3-none-any.whl", 
+                "size": 6167091
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-08-18T17:06:55", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/da/31/cc1ab8109387d178bfa0d1f85a6a6175b07c72b63db92f42c27aab83df3c/Django-1.8.4.tar.gz", 
+                "md5_digest": "8eb569a5b9d984d9f3366fda67fb0bb8", 
+                "downloads": 62244, 
+                "filename": "Django-1.8.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "da/31/cc1ab8109387d178bfa0d1f85a6a6175b07c72b63db92f42c27aab83df3c/Django-1.8.4.tar.gz", 
+                "size": 7265101
+            }
+        ], 
+        "1.7.6": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-03-09T15:30:40", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/f7/1d/f2928f2be4da63a6304d56dcfde893fcd68cae49a70d35d2fda625f66525/Django-1.7.6-py2.py3-none-any.whl", 
+                "md5_digest": "9ede80f1a893835ffecce15b23534d82", 
+                "downloads": 107259, 
+                "filename": "Django-1.7.6-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "f7/1d/f2928f2be4da63a6304d56dcfde893fcd68cae49a70d35d2fda625f66525/Django-1.7.6-py2.py3-none-any.whl", 
+                "size": 7422729
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-03-09T15:30:50", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/f3/13/f7ac67daff05d52bc4db7163040cc88aaf9dcb9cb65349056276f08bf536/Django-1.7.6.tar.gz", 
+                "md5_digest": "e73ec0ba059a5f24563d785763cae37d", 
+                "downloads": 23730, 
+                "filename": "Django-1.7.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "f3/13/f7ac67daff05d52bc4db7163040cc88aaf9dcb9cb65349056276f08bf536/Django-1.7.6.tar.gz", 
+                "size": 7601179
+            }
+        ], 
+        "1.8.6": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-11-04T17:03:39", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/d2/8b/115baec29ab28754da734b89e4a6aa8e5f0588d1b8f0db03d8b9f87bb88c/Django-1.8.6-py2.py3-none-any.whl", 
+                "md5_digest": "8d3e35eb13674c1ff77dfcc4accb668b", 
+                "downloads": 281174, 
+                "filename": "Django-1.8.6-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "d2/8b/115baec29ab28754da734b89e4a6aa8e5f0588d1b8f0db03d8b9f87bb88c/Django-1.8.6-py2.py3-none-any.whl", 
+                "size": 6169165
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-11-04T17:03:52", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b1/24/e169968d525c4d5ce20c85cb3a6c094543cbc109aa270dcac0759c6a644f/Django-1.8.6.tar.gz", 
+                "md5_digest": "12ba7b57a1f5268f6e8ba555628c0657", 
+                "downloads": 20981, 
+                "filename": "Django-1.8.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b1/24/e169968d525c4d5ce20c85cb3a6c094543cbc109aa270dcac0759c6a644f/Django-1.8.6.tar.gz", 
+                "size": 7341303
+            }
+        ], 
+        "1.8.7": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-11-24T17:28:47", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/aa/c8/227d39d4014cdc999a480d341ee2119a74ecc5192d6ce91883e6661d51d4/Django-1.8.7-py2.py3-none-any.whl", 
+                "md5_digest": "b0ad232d645c0183de89fae29d12ce4e", 
+                "downloads": 307143, 
+                "filename": "Django-1.8.7-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "aa/c8/227d39d4014cdc999a480d341ee2119a74ecc5192d6ce91883e6661d51d4/Django-1.8.7-py2.py3-none-any.whl", 
+                "size": 6169517
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-11-24T17:29:07", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/e1/5d/6922fc7c382be5157b723f7bfe78035ccfd3e53fa21e9bffb44381153be5/Django-1.8.7.tar.gz", 
+                "md5_digest": "44c01355b5efa01938a89b8bd798b1ed", 
+                "downloads": 14949, 
+                "filename": "Django-1.8.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "e1/5d/6922fc7c382be5157b723f7bfe78035ccfd3e53fa21e9bffb44381153be5/Django-1.8.7.tar.gz", 
+                "size": 7276831
+            }
+        ], 
+        "1.10.6": [
+            {
+                "has_sig": true, 
+                "upload_time": "2017-03-01T13:37:27", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/b9/bb/723f78e6f6aea78590331eba4e42b8a09c33ce154204a942525a91101d0b/Django-1.10.6-py2.py3-none-any.whl", 
+                "md5_digest": "31a63e4c21a4e12d5ebbafc137523e40", 
+                "downloads": 21416, 
+                "filename": "Django-1.10.6-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "b9/bb/723f78e6f6aea78590331eba4e42b8a09c33ce154204a942525a91101d0b/Django-1.10.6-py2.py3-none-any.whl", 
+                "size": 6833948
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2017-03-01T13:37:40", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/1d/07/fb81c7ed26abbfadd84185be80b5b949219948c4bfd7c30c5c1436d5fd7d/Django-1.10.6.tar.gz", 
+                "md5_digest": "aaf0e61104bca75f2dea179d666537cf", 
+                "downloads": 925, 
+                "filename": "Django-1.10.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "1d/07/fb81c7ed26abbfadd84185be80b5b949219948c4bfd7c30c5c1436d5fd7d/Django-1.10.6.tar.gz", 
+                "size": 7734864
+            }
+        ], 
+        "1.10.7": [
+            {
+                "has_sig": true, 
+                "upload_time": "2017-04-04T14:27:40", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/e5/e7/bdcc0837a2e7ccb1a37be9e5e6e6da642cec5fe9fc1f9ac37dd397c91f74/Django-1.10.7-py2.py3-none-any.whl", 
+                "md5_digest": "ed23475695d32c176e12b6e2a1fbe1aa", 
+                "downloads": 8687, 
+                "filename": "Django-1.10.7-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "e5/e7/bdcc0837a2e7ccb1a37be9e5e6e6da642cec5fe9fc1f9ac37dd397c91f74/Django-1.10.7-py2.py3-none-any.whl", 
+                "size": 6834495
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2017-04-04T14:27:54", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/15/b4/d4bb7313e02386bd23a60e1eb5670321313fb67289c6f36ec43bce747aff/Django-1.10.7.tar.gz", 
+                "md5_digest": "693dfeabad62c561cb205900d32c2a98", 
+                "downloads": 244, 
+                "filename": "Django-1.10.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "15/b4/d4bb7313e02386bd23a60e1eb5670321313fb67289c6f36ec43bce747aff/Django-1.10.7.tar.gz", 
+                "size": 7737654
+            }
+        ], 
+        "1.10.4": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-12-01T23:46:26", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/71/37/581a00bbc4571526ce88ef517c0c02ca7575ac2ae8a3671161d2aa14b740/Django-1.10.4-py2.py3-none-any.whl", 
+                "md5_digest": "28f2a0607bb52dac9c1b168b374de1cd", 
+                "downloads": 101222, 
+                "filename": "Django-1.10.4-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "71/37/581a00bbc4571526ce88ef517c0c02ca7575ac2ae8a3671161d2aa14b740/Django-1.10.4-py2.py3-none-any.whl", 
+                "size": 6833471
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-12-01T23:46:50", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/3b/14/6c1e7508b1342afde8e80f50a55d6b305c0755c702f741db6094924f7499/Django-1.10.4.tar.gz", 
+                "md5_digest": "65aa2a1bd3b3f08b16a4cd368472d520", 
+                "downloads": 9537, 
+                "filename": "Django-1.10.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "3b/14/6c1e7508b1342afde8e80f50a55d6b305c0755c702f741db6094924f7499/Django-1.10.4.tar.gz", 
+                "size": 7735213
+            }
+        ], 
+        "1.10.5": [
+            {
+                "has_sig": true, 
+                "upload_time": "2017-01-04T19:22:17", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/45/60/faa28a1d17f879f9dbef28f249e4e9a8dd1d29ae78409516b4b8b6c3ebab/Django-1.10.5-py2.py3-none-any.whl", 
+                "md5_digest": "6892778eea81f14acd58d883f10f3d9f", 
+                "downloads": 33050, 
+                "filename": "Django-1.10.5-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "45/60/faa28a1d17f879f9dbef28f249e4e9a8dd1d29ae78409516b4b8b6c3ebab/Django-1.10.5-py2.py3-none-any.whl", 
+                "size": 6833796
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2017-01-04T19:23:00", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/c3/c2/6096bf5d0caa4e3d5b985ac72e3a0c795e37fa7407d6c85460b2a105b467/Django-1.10.5.tar.gz", 
+                "md5_digest": "3fce02f1e6461fec21f1f15ea7489924", 
+                "downloads": 1402, 
+                "filename": "Django-1.10.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "c3/c2/6096bf5d0caa4e3d5b985ac72e3a0c795e37fa7407d6c85460b2a105b467/Django-1.10.5.tar.gz", 
+                "size": 7734715
+            }
+        ], 
+        "1.10.2": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-10-01T20:05:18", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/8a/09/46f790104abca7eb93786139d3adde9366b1afd59a77b583a1f310dc8cbd/Django-1.10.2-py2.py3-none-any.whl", 
+                "md5_digest": "0b29f13cc5907dcf6f06649ce77be7c2", 
+                "downloads": 134758, 
+                "filename": "Django-1.10.2-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "8a/09/46f790104abca7eb93786139d3adde9366b1afd59a77b583a1f310dc8cbd/Django-1.10.2-py2.py3-none-any.whl", 
+                "size": 6832895
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-10-01T20:05:31", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/57/9e/59444485f092b6ed4f1931e7d2e13b67fdab967c041d02f58a0d1dab8c23/Django-1.10.2.tar.gz", 
+                "md5_digest": "5342e77374b2acd2eafa86d2bb68f8c9", 
+                "downloads": 6865, 
+                "filename": "Django-1.10.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "57/9e/59444485f092b6ed4f1931e7d2e13b67fdab967c041d02f58a0d1dab8c23/Django-1.10.2.tar.gz", 
+                "size": 7724987
+            }
+        ], 
+        "1.10.3": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-11-01T13:56:54", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/0e/ab/16abddb9ab7ee46a26e04a0c8ba1f02b9412a77927dec699c1af6d0070f8/Django-1.10.3-py2.py3-none-any.whl", 
+                "md5_digest": "dd66eaec09d7a3810c40b01c53535b37", 
+                "downloads": 67413, 
+                "filename": "Django-1.10.3-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "0e/ab/16abddb9ab7ee46a26e04a0c8ba1f02b9412a77927dec699c1af6d0070f8/Django-1.10.3-py2.py3-none-any.whl", 
+                "size": 6833335
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-11-01T13:57:16", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/4d/6b/cf3edad0526851d1fd6dd56c9cc94f2be090489c39d9666ca4ad980312e2/Django-1.10.3.tar.gz", 
+                "md5_digest": "70e4e0e6b2b38e782436e4eb7eb6ff39", 
+                "downloads": 2584, 
+                "filename": "Django-1.10.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "4d/6b/cf3edad0526851d1fd6dd56c9cc94f2be090489c39d9666ca4ad980312e2/Django-1.10.3.tar.gz", 
+                "size": 7733727
+            }
+        ], 
+        "1.10.1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-09-01T23:17:41", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/6c/cf/d6ab0edb891865ef86b3e3d7290c162f57c363cf880099bbe94229806f56/Django-1.10.1-py2.py3-none-any.whl", 
+                "md5_digest": "6b50546050424bf01fd9687de3096855", 
+                "downloads": 80475, 
+                "filename": "Django-1.10.1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "6c/cf/d6ab0edb891865ef86b3e3d7290c162f57c363cf880099bbe94229806f56/Django-1.10.1-py2.py3-none-any.whl", 
+                "size": 6796229
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-09-01T23:18:18", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/0a/9e/e76cca958089cd0317ab46cb91f0ed36274900e48829c949b2e33d2a4469/Django-1.10.1.tar.gz", 
+                "md5_digest": "037d07e126eecc15a5fbf5221dd4081b", 
+                "downloads": 21118, 
+                "filename": "Django-1.10.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "0a/9e/e76cca958089cd0317ab46cb91f0ed36274900e48829c949b2e33d2a4469/Django-1.10.1.tar.gz", 
+                "size": 7700057
+            }
+        ], 
+        "1.4.18": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-13T18:54:01", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/82/b3/22f00becd75d181db40af8fac2f19add8e4fce441892b39d1245e572c77d/Django-1.4.18.tar.gz", 
+                "md5_digest": "d82b2219052bb47ba0838c2ebd3832ae", 
+                "downloads": 29525, 
+                "filename": "Django-1.4.18.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "82/b3/22f00becd75d181db40af8fac2f19add8e4fce441892b39d1245e572c77d/Django-1.4.18.tar.gz", 
+                "size": 7876896
+            }
+        ], 
+        "1.4.19": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-27T17:11:15", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/af/f4/9ff951020928ce0e0acbf61543d9d9ab2de32050639be3b70a0f9e3d7091/Django-1.4.19.tar.gz", 
+                "md5_digest": "8ebda674e81c3886a67eecc72e3f62df", 
+                "downloads": 18296, 
+                "filename": "Django-1.4.19.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "af/f4/9ff951020928ce0e0acbf61543d9d9ab2de32050639be3b70a0f9e3d7091/Django-1.4.19.tar.gz", 
+                "size": 7877522
+            }
+        ], 
+        "1.8.2": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-05-20T18:02:14", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/4e/9d/2a1835ccbf8e1f0d6755d0e938ffd855f23886d055a7a18cc00a5224a99b/Django-1.8.2-py2.py3-none-any.whl", 
+                "md5_digest": "ef4e1c047ec900ae321126b22c7659f2", 
+                "downloads": 542733, 
+                "filename": "Django-1.8.2-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "4e/9d/2a1835ccbf8e1f0d6755d0e938ffd855f23886d055a7a18cc00a5224a99b/Django-1.8.2-py2.py3-none-any.whl", 
+                "size": 6164181
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-05-20T18:02:30", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b3/c0/1ee1c6a2e3ebf6c98fd401e2a039e515308595ddff7525357eeadafb4cb3/Django-1.8.2.tar.gz", 
+                "md5_digest": "ec4330cd275dd6ce64230feebcb449c4", 
+                "downloads": 85617, 
+                "filename": "Django-1.8.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b3/c0/1ee1c6a2e3ebf6c98fd401e2a039e515308595ddff7525357eeadafb4cb3/Django-1.8.2.tar.gz", 
+                "size": 7275112
+            }
+        ], 
+        "1.4.12": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-04-28T20:30:21", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/ae/28/93c30b241a468ebb895ecbc01f45ac1fa42bb04f30d33338696ceb2f22b1/Django-1.4.12.tar.gz", 
+                "md5_digest": "9dc17c3f5409f9a4e662b5550e1c6505", 
+                "downloads": 81737, 
+                "filename": "Django-1.4.12.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "ae/28/93c30b241a468ebb895ecbc01f45ac1fa42bb04f30d33338696ceb2f22b1/Django-1.4.12.tar.gz", 
+                "size": 7752752
+            }
+        ], 
+        "1.4.13": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-05-14T18:27:42", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/38/29/044333b3caf5ff1d2394b0e6c6d87df79973f5652ab7deddc46c7eb9d935/Django-1.4.13.tar.gz", 
+                "md5_digest": "9e28e33680f28b027ad67a026a785ea5", 
+                "downloads": 81868, 
+                "filename": "Django-1.4.13.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "38/29/044333b3caf5ff1d2394b0e6c6d87df79973f5652ab7deddc46c7eb9d935/Django-1.4.13.tar.gz", 
+                "size": 7753532
+            }
+        ], 
+        "1.4.10": [
+            {
+                "has_sig": true, 
+                "upload_time": "2013-11-06T14:21:25", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/ba/d1/523aed5b49f94be8c526fc1fdbffe2edac0bf0579e14d1fc34a5c7c3f0a4/Django-1.4.10.tar.gz", 
+                "md5_digest": "d324aecc37ce5430f548653b8b1509b6", 
+                "downloads": 162084, 
+                "filename": "Django-1.4.10.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "ba/d1/523aed5b49f94be8c526fc1fdbffe2edac0bf0579e14d1fc34a5c7c3f0a4/Django-1.4.10.tar.gz", 
+                "size": 7745002
+            }
+        ], 
+        "1.4.11": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-04-21T22:40:17", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/74/05/6af26eccffa61427ebf44975046369f8c95b21c419ad6ca98308db26e1af/Django-1.4.11.tar.gz", 
+                "md5_digest": "9cd5913b038ebc9582903b2fccbbb54b", 
+                "downloads": 22580, 
+                "filename": "Django-1.4.11.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "74/05/6af26eccffa61427ebf44975046369f8c95b21c419ad6ca98308db26e1af/Django-1.4.11.tar.gz", 
+                "size": 7752172
+            }
+        ], 
+        "1.4.16": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-10-22T16:37:17", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/99/5a/abac765a76d384fe31d5378bb697c8e8fd1742283790c47107692d1b0f0a/Django-1.4.16.tar.gz", 
+                "md5_digest": "132d088d9e2cbcf43a661a9f05d6e63a", 
+                "downloads": 47154, 
+                "filename": "Django-1.4.16.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "99/5a/abac765a76d384fe31d5378bb697c8e8fd1742283790c47107692d1b0f0a/Django-1.4.16.tar.gz", 
+                "size": 7755970
+            }
+        ], 
+        "1.4.17": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-03T02:20:41", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/68/58/a3bf326b57234bbfceb4a84bdddc65d0bedc805b229858503b23faeefc5c/Django-1.4.17.tar.gz", 
+                "md5_digest": "8dd1133b718ce23a0eed3df20d6619c2", 
+                "downloads": 6697, 
+                "filename": "Django-1.4.17.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "68/58/a3bf326b57234bbfceb4a84bdddc65d0bedc805b229858503b23faeefc5c/Django-1.4.17.tar.gz", 
+                "size": 7875448
+            }
+        ], 
+        "1.4.14": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-08-20T20:01:35", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/79/fa/6f02aa9b46f12701d21ed3cfdd40e7bc40724405ba29ad690cb5b96c85b6/Django-1.4.14.tar.gz", 
+                "md5_digest": "80dc1b9866487afc2ab3f774e29181bc", 
+                "downloads": 24463, 
+                "filename": "Django-1.4.14.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "79/fa/6f02aa9b46f12701d21ed3cfdd40e7bc40724405ba29ad690cb5b96c85b6/Django-1.4.14.tar.gz", 
+                "size": 7754876
+            }
+        ], 
+        "1.4.15": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-09-02T20:44:06", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/7a/cd/d862e13993e6bdf0915b1b39eee5df7949c5071caa2dff9d0d3e454e019c/Django-1.4.15.tar.gz", 
+                "md5_digest": "84837da82df11d0e04b7458af8777dc0", 
+                "downloads": 70495, 
+                "filename": "Django-1.4.15.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "7a/cd/d862e13993e6bdf0915b1b39eee5df7949c5071caa2dff9d0d3e454e019c/Django-1.4.15.tar.gz", 
+                "size": 7754429
+            }
+        ], 
+        "1.10rc1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-07-18T18:04:51", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/79/a2/988b57157526dcbdf78501c68ba6409b7863381a6cc6bc06424e07e134a2/Django-1.10rc1-py2.py3-none-any.whl", 
+                "md5_digest": "c951d6a11587d5e9f2b5e0a5cca96915", 
+                "downloads": 709, 
+                "filename": "Django-1.10rc1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "79/a2/988b57157526dcbdf78501c68ba6409b7863381a6cc6bc06424e07e134a2/Django-1.10rc1-py2.py3-none-any.whl", 
+                "size": 6785247
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-07-18T18:05:05", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/32/0b/a54e4d4922545b0deb6808d4af0bb78010c0ca4d3109608ce6675f4f0ea1/Django-1.10rc1.tar.gz", 
+                "md5_digest": "daf478a2459e54ba28e5ec600d669960", 
+                "downloads": 308, 
+                "filename": "Django-1.10rc1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "32/0b/a54e4d4922545b0deb6808d4af0bb78010c0ca4d3109608ce6675f4f0ea1/Django-1.10rc1.tar.gz", 
+                "size": 7687388
+            }
+        ], 
+        "1.11b1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2017-02-20T23:21:50", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/41/c1/68dd27946b03a3d756b0ff665baad25aee1f59918891d86ab76764209208/Django-1.11b1-py2.py3-none-any.whl", 
+                "md5_digest": "4f6aa7c92e80488096f8b2c6b25c879d", 
+                "downloads": 419, 
+                "filename": "Django-1.11b1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "41/c1/68dd27946b03a3d756b0ff665baad25aee1f59918891d86ab76764209208/Django-1.11b1-py2.py3-none-any.whl", 
+                "size": 6869998
+            }
+        ], 
+        "1.11rc1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2017-03-21T22:55:53", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/9d/f5/e437d325edcf762854f58174d53a06dcaffa211388ba8f0c4726f6b0b1d4/Django-1.11rc1-py2.py3-none-any.whl", 
+                "md5_digest": "b7c9d578e71d8e98450e615cd23bc2d7", 
+                "downloads": 99, 
+                "filename": "Django-1.11rc1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "9d/f5/e437d325edcf762854f58174d53a06dcaffa211388ba8f0c4726f6b0b1d4/Django-1.11rc1-py2.py3-none-any.whl", 
+                "size": 6870876
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2017-03-21T22:56:03", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/25/07/b915b82e345c5189ba999dcfdf96d8de7026166c5e16f0e7030ffbe5f6cd/Django-1.11rc1.tar.gz", 
+                "md5_digest": "080665995b322de22a12d0596c081856", 
+                "downloads": 27, 
+                "filename": "Django-1.11rc1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "25/07/b915b82e345c5189ba999dcfdf96d8de7026166c5e16f0e7030ffbe5f6cd/Django-1.11rc1.tar.gz", 
+                "size": 7796930
+            }
+        ], 
+        "1.4.6": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-08-13T16:52:54", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/14/23/28d8dc369d13febf55b987aca848f8692ab7e0a70284139c045c940a65c4/Django-1.4.6.tar.gz", 
+                "md5_digest": "5c222ba388f8729151f2fda6be20af90", 
+                "downloads": 31434, 
+                "filename": "Django-1.4.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "14/23/28d8dc369d13febf55b987aca848f8692ab7e0a70284139c045c940a65c4/Django-1.4.6.tar.gz", 
+                "size": 7744137
+            }
+        ], 
+        "1.4.7": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-09-11T01:18:42", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/14/84/d2bdc262c35fffa54f85399295018c51d02fa5f0929748a701a08a421c01/Django-1.4.7.tar.gz", 
+                "md5_digest": "28da2e8111ff951adbfce0651f945326", 
+                "downloads": 10439, 
+                "filename": "Django-1.4.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "14/84/d2bdc262c35fffa54f85399295018c51d02fa5f0929748a701a08a421c01/Django-1.4.7.tar.gz", 
+                "size": 7743506
+            }
+        ], 
+        "1.4.9": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-10-25T04:38:13", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/cd/e6/5a62c92604fa044fa025679448435200a20fd8a751411dee0b264c4659ca/Django-1.4.9.tar.gz", 
+                "md5_digest": "cc0c9752b46de362bd2114a65871330f", 
+                "downloads": 28302, 
+                "filename": "Django-1.4.9.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "cd/e6/5a62c92604fa044fa025679448435200a20fd8a751411dee0b264c4659ca/Django-1.4.9.tar.gz", 
+                "size": 7745043
+            }
+        ], 
+        "1.10b1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-06-22T01:15:05", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/e6/8c/142b08d2dc89aec2b74ad1d37f943ec50c73d4afce12ea6c0c568403ab22/Django-1.10b1-py2.py3-none-any.whl", 
+                "md5_digest": "907c0f7f7b6ac716e46312015dfa9e1a", 
+                "downloads": 2839, 
+                "filename": "Django-1.10b1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "e6/8c/142b08d2dc89aec2b74ad1d37f943ec50c73d4afce12ea6c0c568403ab22/Django-1.10b1-py2.py3-none-any.whl", 
+                "size": 6641407
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-06-22T01:15:17", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/02/be/d10613977c37674ca3b7f6db7105fac9a104b7765ede4a2f1445fabc2873/Django-1.10b1.tar.gz", 
+                "md5_digest": "c2f10b2d1453adc68e37132c3304317a", 
+                "downloads": 3120, 
+                "filename": "Django-1.10b1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "02/be/d10613977c37674ca3b7f6db7105fac9a104b7765ede4a2f1445fabc2873/Django-1.10b1.tar.gz", 
+                "size": 7600640
+            }
+        ], 
+        "1.9.11": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-11-01T14:02:12", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/90/b3/a00f97b60355df2983e71ccf06e08db2acd70c2a2b62c2c0c5bffda70cda/Django-1.9.11-py2.py3-none-any.whl", 
+                "md5_digest": "1e5bc4d09a1801636bcaf3ebbc49598c", 
+                "downloads": 14185, 
+                "filename": "Django-1.9.11-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "90/b3/a00f97b60355df2983e71ccf06e08db2acd70c2a2b62c2c0c5bffda70cda/Django-1.9.11-py2.py3-none-any.whl", 
+                "size": 6622478
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-11-01T14:02:27", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/75/a4/55081011adc16aa5c90b19f205e612458afa64e20992fd37ab8b159c11fb/Django-1.9.11.tar.gz", 
+                "md5_digest": "ea8c3c7ecd02e377a01064a94f3def91", 
+                "downloads": 576, 
+                "filename": "Django-1.9.11.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "75/a4/55081011adc16aa5c90b19f205e612458afa64e20992fd37ab8b159c11fb/Django-1.9.11.tar.gz", 
+                "size": 7498558
+            }
+        ], 
+        "1.9.10": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-09-26T18:32:46", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/29/63/11d40144c1514959052a3ba2102d2bb22f9dd336d6aaaa3c949b952cdf2d/Django-1.9.10-py2.py3-none-any.whl", 
+                "md5_digest": "f7134ee0e05b1d97ee070eb639f76fc9", 
+                "downloads": 30175, 
+                "filename": "Django-1.9.10-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "29/63/11d40144c1514959052a3ba2102d2bb22f9dd336d6aaaa3c949b952cdf2d/Django-1.9.10-py2.py3-none-any.whl", 
+                "size": 6622276
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-09-26T18:34:45", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/4a/cf/43ae852033f739fdef007807a3871c733f21060d342295c3f4ae47c5e0a1/Django-1.9.10.tar.gz", 
+                "md5_digest": "2dd882995873ecef366696d2793f993c", 
+                "downloads": 1008, 
+                "filename": "Django-1.9.10.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "4a/cf/43ae852033f739fdef007807a3871c733f21060d342295c3f4ae47c5e0a1/Django-1.9.10.tar.gz", 
+                "size": 7494610
+            }
+        ], 
+        "1.9.13": [
+            {
+                "has_sig": true, 
+                "upload_time": "2017-04-04T14:14:50", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/a6/ee/6dfd9e8e0d61ab22ed09c6c8f6ae5a4ad0d3bf07bca9124fb5a087f876df/Django-1.9.13-py2.py3-none-any.whl", 
+                "md5_digest": "72e89cb92638f4000b6213fc3a6bd3d0", 
+                "downloads": 4869, 
+                "filename": "Django-1.9.13-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "a6/ee/6dfd9e8e0d61ab22ed09c6c8f6ae5a4ad0d3bf07bca9124fb5a087f876df/Django-1.9.13-py2.py3-none-any.whl", 
+                "size": 6623016
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2017-04-04T14:15:10", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/6c/bf/4ac9eaa04581797a68649828b88a147f641d745e0c7b3696db5c6caedc41/Django-1.9.13.tar.gz", 
+                "md5_digest": "75e461515dcfe6e8aaea3fb569e8d8fe", 
+                "downloads": 313, 
+                "filename": "Django-1.9.13.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "6c/bf/4ac9eaa04581797a68649828b88a147f641d745e0c7b3696db5c6caedc41/Django-1.9.13.tar.gz", 
+                "size": 7498364
+            }
+        ], 
+        "1.9.12": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-12-01T23:16:22", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/30/00/1e440d60cb4764757324a31e4a0248988b7fa0673d31fb2710b51f6b515e/Django-1.9.12-py2.py3-none-any.whl", 
+                "md5_digest": "18e3c04b58c0609b34a0a7ddd0309521", 
+                "downloads": 20710, 
+                "filename": "Django-1.9.12-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "30/00/1e440d60cb4764757324a31e4a0248988b7fa0673d31fb2710b51f6b515e/Django-1.9.12-py2.py3-none-any.whl", 
+                "size": 6622479
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-12-01T23:16:35", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/9f/0c/a11439e91e3ca43b9ed1d406558f2d7280cb3f105cc1e6cc9f1bb76a98f5/Django-1.9.12.tar.gz", 
+                "md5_digest": "bb9d13c690a5baf2270822dc57c4633c", 
+                "downloads": 1134, 
+                "filename": "Django-1.9.12.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "9f/0c/a11439e91e3ca43b9ed1d406558f2d7280cb3f105cc1e6cc9f1bb76a98f5/Django-1.9.12.tar.gz", 
+                "size": 7497785
+            }
+        ], 
+        "1.9b1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-10-20T01:17:13", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/67/36/0d8dcae06869a84e07106332a5b0ebd6c7b759d4b66ffe75585581d48866/Django-1.9b1-py2.py3-none-any.whl", 
+                "md5_digest": "d3109c26215da8ec7ece0b37c06692c5", 
+                "downloads": 11056, 
+                "filename": "Django-1.9b1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "67/36/0d8dcae06869a84e07106332a5b0ebd6c7b759d4b66ffe75585581d48866/Django-1.9b1-py2.py3-none-any.whl", 
+                "size": 6410460
+            }
+        ], 
+        "1.1.1": [], 
+        "1.1.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-12-23T05:14:23", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/8f/1f/74aa91b56dea5847b62e11ce6737db82c6446561bddc20ca80fa5df025cc/Django-1.1.3.tar.gz", 
+                "md5_digest": "52848c23dbc120fe0b2a8e7189b20306", 
+                "downloads": 11033, 
+                "filename": "Django-1.1.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "8f/1f/74aa91b56dea5847b62e11ce6737db82c6446561bddc20ca80fa5df025cc/Django-1.1.3.tar.gz", 
+                "size": 5748608
+            }
+        ], 
+        "1.8a1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-16T22:25:13", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/92/e7/95566ef630009a2b21fb1f0815287aa291be8756eb822f6f29a80cdd6084/Django-1.8a1-py2.py3-none-any.whl", 
+                "md5_digest": "f7619792a8d8028c5be10f7d06a444ca", 
+                "downloads": 7026, 
+                "filename": "Django-1.8a1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "92/e7/95566ef630009a2b21fb1f0815287aa291be8756eb822f6f29a80cdd6084/Django-1.8a1-py2.py3-none-any.whl", 
+                "size": 6899082
+            }
+        ], 
+        "1.1.2": [], 
+        "1.8.18": [
+            {
+                "has_sig": true, 
+                "upload_time": "2017-04-04T14:07:38", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/4b/fc/13e6c9279a5245be456da4cc73146c7bc76d26484b1474bf4a29d7cd2e93/Django-1.8.18-py2.py3-none-any.whl", 
+                "md5_digest": "33ddd1967cf1d8be6959baaf5def09e2", 
+                "downloads": 14747, 
+                "filename": "Django-1.8.18-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "4b/fc/13e6c9279a5245be456da4cc73146c7bc76d26484b1474bf4a29d7cd2e93/Django-1.8.18-py2.py3-none-any.whl", 
+                "size": 6171967
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2017-04-04T14:07:49", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/58/df/55c6e7761a8c144f5bf9629ed3f066dc9fbe39df3f7a1ca4af093a0911ba/Django-1.8.18.tar.gz", 
+                "md5_digest": "ffc3767f5a06c346fd2d07a18c0ebc54", 
+                "downloads": 387, 
+                "filename": "Django-1.8.18.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "58/df/55c6e7761a8c144f5bf9629ed3f066dc9fbe39df3f7a1ca4af093a0911ba/Django-1.8.18.tar.gz", 
+                "size": 7297986
+            }
+        ], 
+        "1.8.16": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-11-01T14:09:28", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/5c/38/7324791951945b7fa0ba5c6dd57cff12ac544a260e110b2509cda6ced2f8/Django-1.8.16-py2.py3-none-any.whl", 
+                "md5_digest": "af3c3489295bfbc443eebcfd9454376f", 
+                "downloads": 23789, 
+                "filename": "Django-1.8.16-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "5c/38/7324791951945b7fa0ba5c6dd57cff12ac544a260e110b2509cda6ced2f8/Django-1.8.16-py2.py3-none-any.whl", 
+                "size": 6173515
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-11-01T14:09:38", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/1a/83/daf33e1e897236d1a27cde3cbb49da03b7eec57fcbd658a3b05696b156d4/Django-1.8.16.tar.gz", 
+                "md5_digest": "34cad45c7d372313d5fdb6c8fd1a96ee", 
+                "downloads": 2266, 
+                "filename": "Django-1.8.16.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "1a/83/daf33e1e897236d1a27cde3cbb49da03b7eec57fcbd658a3b05696b156d4/Django-1.8.16.tar.gz", 
+                "size": 7299872
+            }
+        ], 
+        "1.8.17": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-12-01T23:03:26", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/0a/df/5ac011953ca547a1fb602e3e5c96a4cb94f7333e8f27b13d51dca880a110/Django-1.8.17-py2.py3-none-any.whl", 
+                "md5_digest": "a9dc59b63114424009c429d48884413b", 
+                "downloads": 45165, 
+                "filename": "Django-1.8.17-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "0a/df/5ac011953ca547a1fb602e3e5c96a4cb94f7333e8f27b13d51dca880a110/Django-1.8.17-py2.py3-none-any.whl", 
+                "size": 6171460
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-12-01T23:03:42", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/44/41/bf93934082e9897a56a591a67bacbd9fb74e71244f3f42253432a9e627e6/Django-1.8.17.tar.gz", 
+                "md5_digest": "e76842cdfbcb31286bd44f51e087a04c", 
+                "downloads": 2338, 
+                "filename": "Django-1.8.17.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "44/41/bf93934082e9897a56a591a67bacbd9fb74e71244f3f42253432a9e627e6/Django-1.8.17.tar.gz", 
+                "size": 7298057
+            }
+        ], 
+        "1.8.14": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-07-18T18:38:12", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/12/13/66eeba22d40f86d6cecc5a12784ae84b53f2ba171c448b1646ede25a99cd/Django-1.8.14-py2.py3-none-any.whl", 
+                "md5_digest": "a7cc0445cd937d1f9e3c1a47c783af73", 
+                "downloads": 103546, 
+                "filename": "Django-1.8.14-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "12/13/66eeba22d40f86d6cecc5a12784ae84b53f2ba171c448b1646ede25a99cd/Django-1.8.14-py2.py3-none-any.whl", 
+                "size": 6171120
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-07-18T18:38:36", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/4f/a5/0fb863c3b83f8a15b50731d02d835cb15fef93193c7cbbaacbb2b6adf1e0/Django-1.8.14.tar.gz", 
+                "md5_digest": "e275863f0d629831d99c58be1a7ed268", 
+                "downloads": 7991, 
+                "filename": "Django-1.8.14.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "4f/a5/0fb863c3b83f8a15b50731d02d835cb15fef93193c7cbbaacbb2b6adf1e0/Django-1.8.14.tar.gz", 
+                "size": 7293650
+            }
+        ], 
+        "1.8.15": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-09-26T18:30:16", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/f3/bb/865626b78c2e87acd4dc1bd8f8cb0a49582ec65e40968f3d24f594bba600/Django-1.8.15-py2.py3-none-any.whl", 
+                "md5_digest": "88e80fdc30e8a8a8a2e538d4e49d28a3", 
+                "downloads": 62320, 
+                "filename": "Django-1.8.15-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "f3/bb/865626b78c2e87acd4dc1bd8f8cb0a49582ec65e40968f3d24f594bba600/Django-1.8.15-py2.py3-none-any.whl", 
+                "size": 6171252
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-09-26T18:30:30", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/90/3b/659733fa8eec56780e5f268efc33d4c57c5f062a2d659fbb95467ba9da46/Django-1.8.15.tar.gz", 
+                "md5_digest": "d24c3c5fc6d784296693659b05efa70f", 
+                "downloads": 3535, 
+                "filename": "Django-1.8.15.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "90/3b/659733fa8eec56780e5f268efc33d4c57c5f062a2d659fbb95467ba9da46/Django-1.8.15.tar.gz", 
+                "size": 7295362
+            }
+        ], 
+        "1.8.12": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-04-01T17:54:27", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/d5/0d/445186a82bbcc75166a507eff586df683c73641e7d6bb7424a44426dca71/Django-1.8.12-py2.py3-none-any.whl", 
+                "md5_digest": "c8f867d0aaf25e5031b6a6e1137dfea1", 
+                "downloads": 13390, 
+                "filename": "Django-1.8.12-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "d5/0d/445186a82bbcc75166a507eff586df683c73641e7d6bb7424a44426dca71/Django-1.8.12-py2.py3-none-any.whl", 
+                "size": 6171522
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-04-01T17:54:40", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/c6/a2/3e3870966c64a46e0d974d4a40eb60f921a7cbb195d38ff00328899dcc7a/Django-1.8.12.tar.gz", 
+                "md5_digest": "905c4b8eeb180c1710331f6fd65fa378", 
+                "downloads": 791, 
+                "filename": "Django-1.8.12.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "c6/a2/3e3870966c64a46e0d974d4a40eb60f921a7cbb195d38ff00328899dcc7a/Django-1.8.12.tar.gz", 
+                "size": 7294654
+            }
+        ], 
+        "1.8.13": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-05-02T22:49:58", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/22/08/904238c9c53654ff92024424ed545755873b127d73fe6393fa8ff0433815/Django-1.8.13-py2.py3-none-any.whl", 
+                "md5_digest": "da9f8cec98670fc2e22b54b6b95ddee9", 
+                "downloads": 63544, 
+                "filename": "Django-1.8.13-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "22/08/904238c9c53654ff92024424ed545755873b127d73fe6393fa8ff0433815/Django-1.8.13-py2.py3-none-any.whl", 
+                "size": 6171517
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-05-02T22:51:42", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/85/0e/0200c2c3792a4fb8bda6a8597d267abaeb00d862e3a110f99cb101398d4d/Django-1.8.13.tar.gz", 
+                "md5_digest": "a77e1ba9991f762de20bf03de57e39eb", 
+                "downloads": 4595, 
+                "filename": "Django-1.8.13.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "85/0e/0200c2c3792a4fb8bda6a8597d267abaeb00d862e3a110f99cb101398d4d/Django-1.8.13.tar.gz", 
+                "size": 7293834
+            }
+        ], 
+        "1.8.10": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-03-01T17:10:07", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/4d/67/af6637a50da0a9aee3c032b7333c670734ecc0df6f7c7562fd8b3fdcac22/Django-1.8.10-py2.py3-none-any.whl", 
+                "md5_digest": "589ccb8fe8d75c1c0472473f7c11be5b", 
+                "downloads": 20156, 
+                "filename": "Django-1.8.10-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "4d/67/af6637a50da0a9aee3c032b7333c670734ecc0df6f7c7562fd8b3fdcac22/Django-1.8.10-py2.py3-none-any.whl", 
+                "size": 6171409
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-03-01T17:10:34", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/52/52/a0454fb9a5d0b4c866e5ab917484b7e3e79f0ae9fbbc1639835a78186df1/Django-1.8.10.tar.gz", 
+                "md5_digest": "8be1858dfee4878768ce686165e29c89", 
+                "downloads": 633, 
+                "filename": "Django-1.8.10.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "52/52/a0454fb9a5d0b4c866e5ab917484b7e3e79f0ae9fbbc1639835a78186df1/Django-1.8.10.tar.gz", 
+                "size": 7291016
+            }
+        ], 
+        "1.8.11": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-03-05T18:36:08", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/b8/c2/e162862650c30999ab39e05c7b12794d3f80e6b5a99c786419eddbb28fa3/Django-1.8.11-py2.py3-none-any.whl", 
+                "md5_digest": "7d8f0eeb83c497a9d6a4820bfe8f0d36", 
+                "downloads": 10352, 
+                "filename": "Django-1.8.11-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "b8/c2/e162862650c30999ab39e05c7b12794d3f80e6b5a99c786419eddbb28fa3/Django-1.8.11-py2.py3-none-any.whl", 
+                "size": 6171434
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-03-05T18:36:25", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/92/41/46db17c36b6eaab3dbf600f094b2e3643f96c78d2cfcbeb4fe97d27ce03e/Django-1.8.11.tar.gz", 
+                "md5_digest": "1c85d0d582dc211adc6851dd2dc86228", 
+                "downloads": 1613, 
+                "filename": "Django-1.8.11.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "92/41/46db17c36b6eaab3dbf600f094b2e3643f96c78d2cfcbeb4fe97d27ce03e/Django-1.8.11.tar.gz", 
+                "size": 7292193
+            }
+        ], 
+        "1.4.22": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-08-18T17:22:09", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/46/7f/cead60a10b0208451c42e80db2cc90564cf810148ee46631699ec691cbea/Django-1.4.22.tar.gz", 
+                "md5_digest": "12dc09e5909ce4da93a9d4338db0a43d", 
+                "downloads": 54284, 
+                "filename": "Django-1.4.22.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "46/7f/cead60a10b0208451c42e80db2cc90564cf810148ee46631699ec691cbea/Django-1.4.22.tar.gz", 
+                "size": 7802249
+            }
+        ], 
+        "1.4.21": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-07-08T19:56:26", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/d9/6d/79a3f4e6b05056356922d1df44fc648b2c1857db0f793b8a835759c11a8d/Django-1.4.21.tar.gz", 
+                "md5_digest": "87f69cbc6e189895be48f02357d10990", 
+                "downloads": 31330, 
+                "filename": "Django-1.4.21.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "d9/6d/79a3f4e6b05056356922d1df44fc648b2c1857db0f793b8a835759c11a8d/Django-1.4.21.tar.gz", 
+                "size": 7878015
+            }
+        ], 
+        "1.4.20": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-03-19T00:03:58", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/17/a0/b4ba4aa5ec80c2c6b351e68d51d29b7b1cb71dc8bc663862e1ea6f5297ad/Django-1.4.20.tar.gz", 
+                "md5_digest": "4a3710921fb51422c9083e52e012ca33", 
+                "downloads": 70694, 
+                "filename": "Django-1.4.20.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "17/a0/b4ba4aa5ec80c2c6b351e68d51d29b7b1cb71dc8bc663862e1ea6f5297ad/Django-1.4.20.tar.gz", 
+                "size": 7877794
+            }
+        ], 
+        "1.9.9": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-08-01T18:10:04", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/46/e4/c21618dd809bb31c7a78cb93b66294c38275baed7c9c84a55692ef16274a/Django-1.9.9-py2.py3-none-any.whl", 
+                "md5_digest": "22a7b6ebd216b3bfe2f7c25525ecd444", 
+                "downloads": 68703, 
+                "filename": "Django-1.9.9-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "46/e4/c21618dd809bb31c7a78cb93b66294c38275baed7c9c84a55692ef16274a/Django-1.9.9-py2.py3-none-any.whl", 
+                "size": 6622115
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-08-01T18:10:24", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/21/c0/3c13bd233cb65932ec8f7d25ebc2942c40fa5c424f33314ac35839d50631/Django-1.9.9.tar.gz", 
+                "md5_digest": "af2e5f02b72400ddaef7f923a7fda6a9", 
+                "downloads": 2226, 
+                "filename": "Django-1.9.9.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "21/c0/3c13bd233cb65932ec8f7d25ebc2942c40fa5c424f33314ac35839d50631/Django-1.9.9.tar.gz", 
+                "size": 7493187
+            }
+        ], 
+        "1.9.8": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-07-18T18:19:55", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/f5/b8/f0fbab57bca8d88ac4d41f816a80d24f7dcfc66616984c255b1974df702f/Django-1.9.8-py2.py3-none-any.whl", 
+                "md5_digest": "768fe4c89d40f412dfcb151306c5bae5", 
+                "downloads": 26549, 
+                "filename": "Django-1.9.8-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "f5/b8/f0fbab57bca8d88ac4d41f816a80d24f7dcfc66616984c255b1974df702f/Django-1.9.8-py2.py3-none-any.whl", 
+                "size": 6622120
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-07-18T18:20:13", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/cc/36/cc342dd7a9921b0da8b0e2e7ec25b7bdec66701196ba20cca36f79906d34/Django-1.9.8.tar.gz", 
+                "md5_digest": "486d18b73d38313058ec8f81b765421c", 
+                "downloads": 825, 
+                "filename": "Django-1.9.8.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "cc/36/cc342dd7a9921b0da8b0e2e7ec25b7bdec66701196ba20cca36f79906d34/Django-1.9.8.tar.gz", 
+                "size": 7494012
+            }
+        ], 
+        "1.9rc2": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-11-24T17:35:35", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/b8/af/e0378ae58310dae25155f136c1addad211860f156aa82ed8bc5728cb8e1e/Django-1.9rc2-py2.py3-none-any.whl", 
+                "md5_digest": "9bf8fba95db2ad30018f50cb42304d54", 
+                "downloads": 3965, 
+                "filename": "Django-1.9rc2-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "b8/af/e0378ae58310dae25155f136c1addad211860f156aa82ed8bc5728cb8e1e/Django-1.9rc2-py2.py3-none-any.whl", 
+                "size": 6411011
+            }
+        ], 
+        "1.9rc1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-11-16T21:10:10", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/61/df/714f75a6e8172821ee5c541a6fcff7e0f5abfe1a357821c11a859e9f86e0/Django-1.9rc1.tar.gz", 
+                "md5_digest": "b971686521ea09b4bf82aec3e794fcbc", 
+                "downloads": 14195, 
+                "filename": "Django-1.9rc1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "61/df/714f75a6e8172821ee5c541a6fcff7e0f5abfe1a357821c11a859e9f86e0/Django-1.9rc1.tar.gz", 
+                "size": 7282447
+            }
+        ], 
+        "1.9.1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-01-02T13:50:19", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/03/17/5e30516ed4b18a4698d457349e17f42605a3786efbef87e45eaa592c033b/Django-1.9.1-py2.py3-none-any.whl", 
+                "md5_digest": "fe01a2b006be4a4f1b17b43b9ee3ba4e", 
+                "downloads": 264952, 
+                "filename": "Django-1.9.1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "03/17/5e30516ed4b18a4698d457349e17f42605a3786efbef87e45eaa592c033b/Django-1.9.1-py2.py3-none-any.whl", 
+                "size": 6579261
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-01-02T13:50:42", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/4d/25/af35d7a8b623edeac79cbc2fd24b8496eb2f063542e2905f0c564a052303/Django-1.9.1.tar.gz", 
+                "md5_digest": "02754aa2d5c9c171dfc3f9422b20e12c", 
+                "downloads": 23206, 
+                "filename": "Django-1.9.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "4d/25/af35d7a8b623edeac79cbc2fd24b8496eb2f063542e2905f0c564a052303/Django-1.9.1.tar.gz", 
+                "size": 7411671
+            }
+        ], 
+        "1.9.3": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-03-01T17:00:44", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/f9/22/2ecdc946394c2490212691bd44fc8b54aa6b1c49e8cb505d853dc0716646/Django-1.9.3-py2.py3-none-any.whl", 
+                "md5_digest": "dff96b62225f29aa0203ae2eff2d36e2", 
+                "downloads": 4922, 
+                "filename": "Django-1.9.3-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "f9/22/2ecdc946394c2490212691bd44fc8b54aa6b1c49e8cb505d853dc0716646/Django-1.9.3-py2.py3-none-any.whl", 
+                "size": 6581198
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-03-01T17:01:04", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/31/6d/853c0006643daedfd4d1bd15ad3afcf3311ee3c0c55bc19572ae1cec52d5/Django-1.9.3.tar.gz", 
+                "md5_digest": "4751d0ebf323083e74b38b02bbbe5b29", 
+                "downloads": 851, 
+                "filename": "Django-1.9.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "31/6d/853c0006643daedfd4d1bd15ad3afcf3311ee3c0c55bc19572ae1cec52d5/Django-1.9.3.tar.gz", 
+                "size": 7425368
+            }
+        ], 
+        "1.9.2": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-02-01T17:17:18", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/26/49/c51f94a3940b3dee47f5a4a423fe50df7b9120bccda424f092269c083898/Django-1.9.2-py2.py3-none-any.whl", 
+                "md5_digest": "72317fd693fe1c95b6192d25d8fcd323", 
+                "downloads": 52441, 
+                "filename": "Django-1.9.2-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "26/49/c51f94a3940b3dee47f5a4a423fe50df7b9120bccda424f092269c083898/Django-1.9.2-py2.py3-none-any.whl", 
+                "size": 6580359
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-02-01T17:17:34", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/7f/a6/4ab15169e9075635c0a64bb0a569d1e02c7bd9b5ba839f05fe5d1fbbe3fb/Django-1.9.2.tar.gz", 
+                "md5_digest": "ee90280973d435a1a6aa01b453b50cd1", 
+                "downloads": 2680, 
+                "filename": "Django-1.9.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "7f/a6/4ab15169e9075635c0a64bb0a569d1e02c7bd9b5ba839f05fe5d1fbbe3fb/Django-1.9.2.tar.gz", 
+                "size": 7419200
+            }
+        ], 
+        "1.9.5": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-04-01T17:47:06", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/6e/10/208551440e06dee3c6d2cdb36d73b586bfb0ae50a6f91127f1e1492dfb99/Django-1.9.5-py2.py3-none-any.whl", 
+                "md5_digest": "849713c2687bbd5739e3cbf738af1a71", 
+                "downloads": 27122, 
+                "filename": "Django-1.9.5-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "6e/10/208551440e06dee3c6d2cdb36d73b586bfb0ae50a6f91127f1e1492dfb99/Django-1.9.5-py2.py3-none-any.whl", 
+                "size": 6582330
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-04-01T17:47:24", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/3b/0c/8dc093164d96dcbeb70a4d83e69655b3bec22599828e530f921f53aba08b/Django-1.9.5.tar.gz", 
+                "md5_digest": "419835cef8d42a1a0a3fd6e1eaa24475", 
+                "downloads": 26130, 
+                "filename": "Django-1.9.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "3b/0c/8dc093164d96dcbeb70a4d83e69655b3bec22599828e530f921f53aba08b/Django-1.9.5.tar.gz", 
+                "size": 7430219
+            }
+        ], 
+        "1.9.4": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-03-05T14:31:47", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/36/13/87a668592e133d402ac6f9d07da7fea82e8b217e350a70c7ff53408cd93f/Django-1.9.4-py2.py3-none-any.whl", 
+                "md5_digest": "89481f08178f7d28a943fea1bd41de44", 
+                "downloads": 24757, 
+                "filename": "Django-1.9.4-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "36/13/87a668592e133d402ac6f9d07da7fea82e8b217e350a70c7ff53408cd93f/Django-1.9.4-py2.py3-none-any.whl", 
+                "size": 6581228
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-03-05T14:32:11", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b0/9b/fbe58870d98321b08043cae62b6062552c5dc7515a2b43958c7330090ef3/Django-1.9.4.tar.gz", 
+                "md5_digest": "e8d389532e248174a9859f2987be6a04", 
+                "downloads": 1455, 
+                "filename": "Django-1.9.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b0/9b/fbe58870d98321b08043cae62b6062552c5dc7515a2b43958c7330090ef3/Django-1.9.4.tar.gz", 
+                "size": 7426995
+            }
+        ], 
+        "1.9.7": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-06-04T23:43:47", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/e6/f9/154e1460c4a95c90ab28ead50314161ea2c4016f3561033b41f687f0a76d/Django-1.9.7-py2.py3-none-any.whl", 
+                "md5_digest": "5224b6f237a9e46a84fc0f9921f678ae", 
+                "downloads": 148737, 
+                "filename": "Django-1.9.7-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "e6/f9/154e1460c4a95c90ab28ead50314161ea2c4016f3561033b41f687f0a76d/Django-1.9.7-py2.py3-none-any.whl", 
+                "size": 6582730
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-06-04T23:44:08", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/50/76/aeb1bdde528b23e76df5964003e3e4e734c57c74e7358c3b2224987617dd/Django-1.9.7.tar.gz", 
+                "md5_digest": "7de9ba83bfe01f4b7d45645c1b259c83", 
+                "downloads": 5255, 
+                "filename": "Django-1.9.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "50/76/aeb1bdde528b23e76df5964003e3e4e734c57c74e7358c3b2224987617dd/Django-1.9.7.tar.gz", 
+                "size": 7442680
+            }
+        ], 
+        "1.9.6": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-05-02T22:33:30", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/cb/97/081df31f2a3850988b92ad4464e95f9e4b257aa5a34e120bca89c260de96/Django-1.9.6-py2.py3-none-any.whl", 
+                "md5_digest": "70687b2d4a2dfa51f70407a3ce2abcbb", 
+                "downloads": 41306, 
+                "filename": "Django-1.9.6-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "cb/97/081df31f2a3850988b92ad4464e95f9e4b257aa5a34e120bca89c260de96/Django-1.9.6-py2.py3-none-any.whl", 
+                "size": 6582592
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-05-02T22:33:50", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/3f/92/701cc1c7d209c830375b884a657ec0c9777f1bed1b5b241f4b70f95e2d55/Django-1.9.6.tar.gz", 
+                "md5_digest": "07d9b3883198caa847b917c94b665452", 
+                "downloads": 1393, 
+                "filename": "Django-1.9.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "3f/92/701cc1c7d209c830375b884a657ec0c9777f1bed1b5b241f4b70f95e2d55/Django-1.9.6.tar.gz", 
+                "size": 7441794
+            }
+        ], 
+        "1.5.9": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-08-20T20:10:42", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/e3/ea/be67f2d55fd583b7ff6e7cc0764da2b1d6437317354beedabd0ff15cad3a/Django-1.5.9.tar.gz", 
+                "md5_digest": "4c6f03748043a32059d905033e0dc770", 
+                "downloads": 41231, 
+                "filename": "Django-1.5.9.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "e3/ea/be67f2d55fd583b7ff6e7cc0764da2b1d6437317354beedabd0ff15cad3a/Django-1.5.9.tar.gz", 
+                "size": 8074400
+            }
+        ], 
+        "1.5.8": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-05-14T18:35:13", 
+                "comment_text": "", 
+                "python_version": "any", 
+                "url": "https://pypi.python.org/packages/8a/28/b99f0e8977b7227fffc43aeefe87d7561dec06cc6bdc586f4c97ec60c853/Django-1.5.8-py2.py3-none-any.whl", 
+                "md5_digest": "1e3418bd1d6f9725a3d1264c9352f2a1", 
+                "downloads": 103918, 
+                "filename": "Django-1.5.8-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "8a/28/b99f0e8977b7227fffc43aeefe87d7561dec06cc6bdc586f4c97ec60c853/Django-1.5.8-py2.py3-none-any.whl", 
+                "size": 8315409
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2014-05-14T18:36:01", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/a0/ea/8ea5e891fe5c6a7e9dd0da9449bbe680cc43d21a78f9a62132b8cfdf690f/Django-1.5.8.tar.gz", 
+                "md5_digest": "675fc736e2c29090f005e217ccf90b5b", 
+                "downloads": 85953, 
+                "filename": "Django-1.5.8.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "a0/ea/8ea5e891fe5c6a7e9dd0da9449bbe680cc43d21a78f9a62132b8cfdf690f/Django-1.5.8.tar.gz", 
+                "size": 8071329
+            }
+        ], 
+        "1.5.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-10-25T04:32:41", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/38/49/93511c5d3367b6b21fc2995a0e53399721afc15e4cd6eb57be879ae13ad4/Django-1.5.5.tar.gz", 
+                "md5_digest": "e33355ee4bb2cbb4ab3954d3dff5eddd", 
+                "downloads": 623200, 
+                "filename": "Django-1.5.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "38/49/93511c5d3367b6b21fc2995a0e53399721afc15e4cd6eb57be879ae13ad4/Django-1.5.5.tar.gz", 
+                "size": 8060441
+            }
+        ], 
+        "1.5.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-09-15T06:30:37", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b2/ef/d37cd67c9eccd7329ce421382f517bb6f9a431ded3c6fd60cba8c966712a/Django-1.5.4.tar.gz", 
+                "md5_digest": "b2685469bb4d1fbb091316e21f4108de", 
+                "downloads": 671582, 
+                "filename": "Django-1.5.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b2/ef/d37cd67c9eccd7329ce421382f517bb6f9a431ded3c6fd60cba8c966712a/Django-1.5.4.tar.gz", 
+                "size": 8050758
+            }
+        ], 
+        "1.5.7": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-04-28T20:35:50", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/56/13/32b4ad8b2bc3b9d820467dc30d28a53823314bcfcdfff55c0218dd4e5b08/Django-1.5.7.tar.gz", 
+                "md5_digest": "a2c127e85a34c2eb6c74db4f7e02d4e4", 
+                "downloads": 30277, 
+                "filename": "Django-1.5.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "56/13/32b4ad8b2bc3b9d820467dc30d28a53823314bcfcdfff55c0218dd4e5b08/Django-1.5.7.tar.gz", 
+                "size": 8069177
+            }
+        ], 
+        "1.5.6": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-04-21T22:53:10", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b2/e5/78f1e96e8d3ae38cd9b3a4690a448a4716be73f5f5408d9f0da84576e36e/Django-1.5.6.tar.gz", 
+                "md5_digest": "b46fe29c7d26310d19aec6d8666f08c6", 
+                "downloads": 57797, 
+                "filename": "Django-1.5.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b2/e5/78f1e96e8d3ae38cd9b3a4690a448a4716be73f5f5408d9f0da84576e36e/Django-1.5.6.tar.gz", 
+                "size": 8068359
+            }
+        ], 
+        "1.5.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-03-28T20:57:18", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/7f/c3/7a38a4985447e2812c99e66501abf09c6edd55ccfe070bbc82a58054dd1e/Django-1.5.1.tar.gz", 
+                "md5_digest": "7465f6383264ba167a9a031d6b058bff", 
+                "downloads": 898499, 
+                "filename": "Django-1.5.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "7f/c3/7a38a4985447e2812c99e66501abf09c6edd55ccfe070bbc82a58054dd1e/Django-1.5.1.tar.gz", 
+                "size": 8028963
+            }
+        ], 
+        "1.5.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-09-11T01:26:50", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/95/32/da1aaef056d4652aa6a43d60647b55488aaaa14aa36515fceb52836cd571/Django-1.5.3.tar.gz", 
+                "md5_digest": "1581e28b4aeb269c34a9b0417e103aaa", 
+                "downloads": 46278, 
+                "filename": "Django-1.5.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "95/32/da1aaef056d4652aa6a43d60647b55488aaaa14aa36515fceb52836cd571/Django-1.5.3.tar.gz", 
+                "size": 8049029
+            }
+        ], 
+        "1.5.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-08-13T16:54:03", 
+                "comment_text": "", 
+                "python_version": "any", 
+                "url": "https://pypi.python.org/packages/ad/39/62b220a0efda308abeccb66653b8b950c6d1c51c673bd7978fc13f53eaf5/Django-1.5.2-py2.py3-none-any.whl", 
+                "md5_digest": "07f0d2d42162945d0ad031fc9737847d", 
+                "downloads": 35793, 
+                "filename": "Django-1.5.2-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "ad/39/62b220a0efda308abeccb66653b8b950c6d1c51c673bd7978fc13f53eaf5/Django-1.5.2-py2.py3-none-any.whl", 
+                "size": 8311743
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2013-08-13T16:52:40", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/8c/3d/f57d35c5fe63e298fe33f9c5fea5b3920385f6fc5b562ae6e3b9eff7a0ef/Django-1.5.2.tar.gz", 
+                "md5_digest": "26e83e6394a15a86212777d5f61eae86", 
+                "downloads": 176712, 
+                "filename": "Django-1.5.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "8c/3d/f57d35c5fe63e298fe33f9c5fea5b3920385f6fc5b562ae6e3b9eff7a0ef/Django-1.5.2.tar.gz", 
+                "size": 8044778
+            }
+        ], 
+        "1.3.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-08-01T22:08:20", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/a7/c3/bc93caca99846c73bb76a555f84788bdb3f9b1bb622e2bffcf1aa61f36e1/Django-1.3.3.tar.gz", 
+                "md5_digest": "cbdd86f553b26459352e26ae643fd7c1", 
+                "downloads": 46441, 
+                "filename": "Django-1.3.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "a7/c3/bc93caca99846c73bb76a555f84788bdb3f9b1bb622e2bffcf1aa61f36e1/Django-1.3.3.tar.gz", 
+                "size": 6507280
+            }
+        ], 
+        "1.3.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-07-30T23:02:55", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/a3/5f/6af1cd40fe029e3502c621ee51a504c2636bde68419385a5f5ff8d24a62e/Django-1.3.2.tar.gz", 
+                "md5_digest": "b8409b8f061e6c7a7dcfbb24403cb863", 
+                "downloads": 13651, 
+                "filename": "Django-1.3.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "a3/5f/6af1cd40fe029e3502c621ee51a504c2636bde68419385a5f5ff8d24a62e/Django-1.3.2.tar.gz", 
+                "size": 6507042
+            }
+        ], 
+        "1.3.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-09-10T03:36:21", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/a0/cd/e0ebeb3752bf14f0b21cc3e16223dbfe88f26a7c582dc63346fa2ce6bc3b/Django-1.3.1.tar.gz", 
+                "md5_digest": "62d8642fd06b9a0bf8544178f8500767", 
+                "downloads": 821639, 
+                "filename": "Django-1.3.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "a0/cd/e0ebeb3752bf14f0b21cc3e16223dbfe88f26a7c582dc63346fa2ce6bc3b/Django-1.3.1.tar.gz", 
+                "size": 6514564
+            }
+        ], 
+        "1.3.7": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-02-20T20:03:48", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/0d/f1/fe4cf23cea3322dd8883a0510538fe916ab2023c648997976798142603ff/Django-1.3.7.tar.gz", 
+                "md5_digest": "f6720daa392d73d4df8847b41909fd43", 
+                "downloads": 107087, 
+                "filename": "Django-1.3.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "0d/f1/fe4cf23cea3322dd8883a0510538fe916ab2023c648997976798142603ff/Django-1.3.7.tar.gz", 
+                "size": 6514846
+            }
+        ], 
+        "1.3.6": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-02-19T20:32:04", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/c2/24/2164463152fafd6cbb60cb3b42110418deeeaeef504bf81c3fec46f781fe/Django-1.3.6.tar.gz", 
+                "md5_digest": "357dbedf41ba6db990fd4be7c86cd80d", 
+                "downloads": 7393, 
+                "filename": "Django-1.3.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "c2/24/2164463152fafd6cbb60cb3b42110418deeeaeef504bf81c3fec46f781fe/Django-1.3.6.tar.gz", 
+                "size": 6517083
+            }
+        ], 
+        "1.3.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-12-10T21:39:30", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/50/23/d05af45d01732968bef5af7d823835e8e4cbc01f687b345b276d124e3025/Django-1.3.5.tar.gz", 
+                "md5_digest": "ec0ae9edb2ed6f9ffa65007110232637", 
+                "downloads": 32144, 
+                "filename": "Django-1.3.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "50/23/d05af45d01732968bef5af7d823835e8e4cbc01f687b345b276d124e3025/Django-1.3.5.tar.gz", 
+                "size": 6508570
+            }
+        ], 
+        "1.3.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-03-05T22:33:47", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/ff/15/119ccb1a1f0392443f78140c31b981cb2d081afff82fcf368d86619d8cee/Django-1.3.4.tar.gz", 
+                "md5_digest": "9a610a40ee5fcc4ca283fb499e265936", 
+                "downloads": 16707, 
+                "filename": "Django-1.3.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "ff/15/119ccb1a1f0392443f78140c31b981cb2d081afff82fcf368d86619d8cee/Django-1.3.4.tar.gz", 
+                "size": 6507771
+            }
+        ], 
+        "1.10a1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-05-20T12:16:44", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/02/50/b210dc6206e9c61a25a05acb76fc2f09101d9031ff0fb4d137f746e2e419/Django-1.10a1-py2.py3-none-any.whl", 
+                "md5_digest": "2e29930f401031ecf33e36bfa4739245", 
+                "downloads": 1135, 
+                "filename": "Django-1.10a1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "02/50/b210dc6206e9c61a25a05acb76fc2f09101d9031ff0fb4d137f746e2e419/Django-1.10a1-py2.py3-none-any.whl", 
+                "size": 6600566
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-05-20T12:24:59", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/ae/98/3b27e0a3c53ec0d6727eb19da46eed5705fa9250ed28ec0d1df48778c401/Django-1.10a1.tar.gz", 
+                "md5_digest": "25f3210c15f3bf9bb7e4c33adfbcb952", 
+                "downloads": 1140, 
+                "filename": "Django-1.10a1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "ae/98/3b27e0a3c53ec0d6727eb19da46eed5705fa9250ed28ec0d1df48778c401/Django-1.10a1.tar.gz", 
+                "size": 7543001
+            }
+        ], 
+        "1.1": [], 
+        "1.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-03-23T18:00:23", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/9a/f8/2a7b9922817be07d53c664a7702fab70e99899466b5956131a70c08606b6/Django-1.4.tar.gz", 
+                "md5_digest": "ba8e86198a93c196015df0b363ab1109", 
+                "downloads": 655816, 
+                "filename": "Django-1.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "9a/f8/2a7b9922817be07d53c664a7702fab70e99899466b5956131a70c08606b6/Django-1.4.tar.gz", 
+                "size": 7632772
+            }
+        ], 
+        "1.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-02-26T19:30:37", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/0d/5b/d190b641cbf77e6eeebba93c75cf1a585d7275fa6c87450ecc1714eef93c/Django-1.5.tar.gz", 
+                "md5_digest": "fac09e1e0f11bb83bb187d652a9be967", 
+                "downloads": 389180, 
+                "filename": "Django-1.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "0d/5b/d190b641cbf77e6eeebba93c75cf1a585d7275fa6c87450ecc1714eef93c/Django-1.5.tar.gz", 
+                "size": 8007045
+            }
+        ], 
+        "1.6": [
+            {
+                "has_sig": true, 
+                "upload_time": "2013-11-06T15:01:02", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/f1/dd/271a9fa17b95a980ac66c44848fef72d29d904d3e141b219f6e91d1904ec/Django-1.6-py2.py3-none-any.whl", 
+                "md5_digest": "1078059a13d83a091e952917d22da9af", 
+                "downloads": 308132, 
+                "filename": "Django-1.6-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "f1/dd/271a9fa17b95a980ac66c44848fef72d29d904d3e141b219f6e91d1904ec/Django-1.6-py2.py3-none-any.whl", 
+                "size": 6667901
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2013-11-06T15:01:29", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/47/1c/c18fbec3ea87bfa23808fb6527e1a48e5bf59db1ff24ff7d8d6cb0a2bccb/Django-1.6.tar.gz", 
+                "md5_digest": "65db1bc313124c3754c89073942e38a8", 
+                "downloads": 458556, 
+                "filename": "Django-1.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "47/1c/c18fbec3ea87bfa23808fb6527e1a48e5bf59db1ff24ff7d8d6cb0a2bccb/Django-1.6.tar.gz", 
+                "size": 6597874
+            }
+        ], 
+        "1.7": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-09-02T21:09:27", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/d5/5e/a1328223c382024b2b184dacc713086463ce1a60fe1471d500b3b66f840a/Django-1.7-py2.py3-none-any.whl", 
+                "md5_digest": "15efe093b40d058acf24682c31e7b24c", 
+                "downloads": 660412, 
+                "filename": "Django-1.7-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "d5/5e/a1328223c382024b2b184dacc713086463ce1a60fe1471d500b3b66f840a/Django-1.7-py2.py3-none-any.whl", 
+                "size": 7384572
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-09-02T21:10:05", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/df/07/e87b36c24a742deebbffafb31504bbaffe4a20db799b43404f655413052a/Django-1.7.tar.gz", 
+                "md5_digest": "03edab6828119aa9b32b2252d25eb38d", 
+                "downloads": 277997, 
+                "filename": "Django-1.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "df/07/e87b36c24a742deebbffafb31504bbaffe4a20db799b43404f655413052a/Django-1.7.tar.gz", 
+                "size": 7486550
+            }
+        ], 
+        "1.1.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-09T04:13:07", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/00/01/c29275c88671d5e4089388c54ecbd72ed64f8d472067f765e52f767d472a/Django-1.1.4.tar.gz", 
+                "md5_digest": "e818668acc4de944f85e494ac80f1e7d", 
+                "downloads": 54866, 
+                "filename": "Django-1.1.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "00/01/c29275c88671d5e4089388c54ecbd72ed64f8d472067f765e52f767d472a/Django-1.1.4.tar.gz", 
+                "size": 5750441
+            }
+        ], 
+        "1.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-05-17T20:04:28", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/8e/d7/c31ff2b5564090955c9c67aa41c7d920f31a3fac019205747835b89dc5bd/Django-1.2.tar.gz", 
+                "md5_digest": "98fa833fdabcdd78d00245aead66c174", 
+                "downloads": 35381, 
+                "filename": "Django-1.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "8e/d7/c31ff2b5564090955c9c67aa41c7d920f31a3fac019205747835b89dc5bd/Django-1.2.tar.gz", 
+                "size": 6246202
+            }
+        ], 
+        "1.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-03-23T06:09:12", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/f5/d5/6722d3091946734194ffcfe8ef074f63e8acdd1ff51dfcfc87c2c194fd3f/Django-1.3.tar.gz", 
+                "md5_digest": "1b8f76e91c27564708649671f329551f", 
+                "downloads": 459960, 
+                "filename": "Django-1.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "f5/d5/6722d3091946734194ffcfe8ef074f63e8acdd1ff51dfcfc87c2c194fd3f/Django-1.3.tar.gz", 
+                "size": 6504003
+            }
+        ], 
+        "1.8": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-04-01T20:12:37", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/4e/1c/17a429cfb79c1814d1ec31939fc5cf4a8ac68fe934279e095fb6160123a9/Django-1.8-py2.py3-none-any.whl", 
+                "md5_digest": "6f3df764d5826f922eab2d8131c81e60", 
+                "downloads": 571829, 
+                "filename": "Django-1.8-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "4e/1c/17a429cfb79c1814d1ec31939fc5cf4a8ac68fe934279e095fb6160123a9/Django-1.8-py2.py3-none-any.whl", 
+                "size": 6154536
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-04-01T20:12:48", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/7e/8d/505c0673f65d5aec80012d27ba7924054b665ff88e2babab93e1e7c77663/Django-1.8.tar.gz", 
+                "md5_digest": "9a811faf67ca0f3e0d43e670a1cc503d", 
+                "downloads": 64406, 
+                "filename": "Django-1.8.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "7e/8d/505c0673f65d5aec80012d27ba7924054b665ff88e2babab93e1e7c77663/Django-1.8.tar.gz", 
+                "size": 7258871
+            }
+        ], 
+        "1.9": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-12-01T23:55:38", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/ea/9b/b5a6360b3dfcd88d4bad70f59da26cbde4bdec395a31bb26dc840e806a50/Django-1.9-py2.py3-none-any.whl", 
+                "md5_digest": "f98b94b9911b397ea3794a05079cbc78", 
+                "downloads": 289615, 
+                "filename": "Django-1.9-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "ea/9b/b5a6360b3dfcd88d4bad70f59da26cbde4bdec395a31bb26dc840e806a50/Django-1.9-py2.py3-none-any.whl", 
+                "size": 6563557
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-12-01T23:55:55", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/c2/14/e282ae720c21b48316b66126d7295ace0790438b27482b7a3dd9a6e3c3e1/Django-1.9.tar.gz", 
+                "md5_digest": "110389cf89196334182295165852e082", 
+                "downloads": 23809, 
+                "filename": "Django-1.9.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "c2/14/e282ae720c21b48316b66126d7295ace0790438b27482b7a3dd9a6e3c3e1/Django-1.9.tar.gz", 
+                "size": 7392116
+            }
+        ], 
+        "1.9a1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-09-24T00:20:01", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/cf/bc/b2f7aad1b5fdde56efb6a9d19598ad01124a2690d6054a6b9900496a6e11/Django-1.9a1-py2.py3-none-any.whl", 
+                "md5_digest": "631e2bc72c996cba2c18594fc4fe2c48", 
+                "downloads": 6736, 
+                "filename": "Django-1.9a1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "cf/bc/b2f7aad1b5fdde56efb6a9d19598ad01124a2690d6054a6b9900496a6e11/Django-1.9a1-py2.py3-none-any.whl", 
+                "size": 6410150
+            }
+        ], 
+        "1.8c1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-03-18T23:39:34", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/68/06/d854d6b1b3ad307571860cc6b1a65ed01325cc7702efdce514695dd6b8af/Django-1.8c1-py2.py3-none-any.whl", 
+                "md5_digest": "6288c878e8d643033026f50f456cb05c", 
+                "downloads": 11594, 
+                "filename": "Django-1.8c1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "68/06/d854d6b1b3ad307571860cc6b1a65ed01325cc7702efdce514695dd6b8af/Django-1.8c1-py2.py3-none-any.whl", 
+                "size": 6410414
+            }
+        ], 
+        "1.8.8": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-01-02T14:28:21", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/30/d6/acf4ab0a1e0d4409533853c6b2b008d44b38b8bbae367cc3b1838b49299f/Django-1.8.8-py2.py3-none-any.whl", 
+                "md5_digest": "97334c82efbac0f93f8b6dd4ee4b516f", 
+                "downloads": 168174, 
+                "filename": "Django-1.8.8-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "30/d6/acf4ab0a1e0d4409533853c6b2b008d44b38b8bbae367cc3b1838b49299f/Django-1.8.8-py2.py3-none-any.whl", 
+                "size": 6170205
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-01-02T14:28:34", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/1c/1c/02308e66ee4ce3ad5a2b8f1e7b538b8a8637e0b48e0ad905bfc4105ee585/Django-1.8.8.tar.gz", 
+                "md5_digest": "08ecf83b7e9d064ed7e3981ddc3a8a15", 
+                "downloads": 9716, 
+                "filename": "Django-1.8.8.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "1c/1c/02308e66ee4ce3ad5a2b8f1e7b538b8a8637e0b48e0ad905bfc4105ee585/Django-1.8.8.tar.gz", 
+                "size": 7286780
+            }
+        ], 
+        "1.8.9": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-02-01T17:24:16", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/a7/a2/f4e7926062f5c61d98e87b9d0365ca1a0fab6be599dbea90ce2fab27f395/Django-1.8.9-py2.py3-none-any.whl", 
+                "md5_digest": "24fa1e0a2aa82d9e2ebe23c8729fe306", 
+                "downloads": 19290, 
+                "filename": "Django-1.8.9-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "a7/a2/f4e7926062f5c61d98e87b9d0365ca1a0fab6be599dbea90ce2fab27f395/Django-1.8.9-py2.py3-none-any.whl", 
+                "size": 6170645
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-02-01T17:24:29", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/a4/8c/82cfd400e620cedc36ac5677d4c1fdebea688a4b3f5193e45b8ff15169ce/Django-1.8.9.tar.gz", 
+                "md5_digest": "49f6863b1c83825fb2f473c141c28e15", 
+                "downloads": 1361, 
+                "filename": "Django-1.8.9.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "a4/8c/82cfd400e620cedc36ac5677d4c1fdebea688a4b3f5193e45b8ff15169ce/Django-1.8.9.tar.gz", 
+                "size": 7288701
+            }
+        ], 
+        "1.7.9": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-07-08T21:33:04", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/cd/69/f41554b2d76bddd1de18b6c2f7729c18fa823f24f2140f995599e2b9f43f/Django-1.7.9-py2.py3-none-any.whl", 
+                "md5_digest": "2df76c90453477a9d0bb6a1608f0dfa5", 
+                "downloads": 144579, 
+                "filename": "Django-1.7.9-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "cd/69/f41554b2d76bddd1de18b6c2f7729c18fa823f24f2140f995599e2b9f43f/Django-1.7.9-py2.py3-none-any.whl", 
+                "size": 7423771
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-07-08T19:50:47", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/e6/f3/544641b38e4ac212562b0c9722e8ee5e3ec07e6e2ba644a41d5044f2a9ad/Django-1.7.9.tar.gz", 
+                "md5_digest": "6ea69f3ebb73755bd2a4c9e3743f17c8", 
+                "downloads": 11123, 
+                "filename": "Django-1.7.9.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "e6/f3/544641b38e4ac212562b0c9722e8ee5e3ec07e6e2ba644a41d5044f2a9ad/Django-1.7.9.tar.gz", 
+                "size": 7605194
+            }
+        ], 
+        "1.7.8": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-05-01T20:42:44", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/87/12/01d937731539a729cb82ecec6763f0f893782287a66ca5768c44b507a2e7/Django-1.7.8-py2.py3-none-any.whl", 
+                "md5_digest": "709db47978acf982f87f73035e9f87a9", 
+                "downloads": 257911, 
+                "filename": "Django-1.7.8-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "87/12/01d937731539a729cb82ecec6763f0f893782287a66ca5768c44b507a2e7/Django-1.7.8-py2.py3-none-any.whl", 
+                "size": 7423353
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-05-01T20:42:55", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b2/a8/96ffe1a3755e4d7763f014dda866077697ee949a63ac7980c4432b77aa8a/Django-1.7.8.tar.gz", 
+                "md5_digest": "ceed714b0d69983da2b585ff4f82c4a8", 
+                "downloads": 22668, 
+                "filename": "Django-1.7.8.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b2/a8/96ffe1a3755e4d7763f014dda866077697ee949a63ac7980c4432b77aa8a/Django-1.7.8.tar.gz", 
+                "size": 7604685
+            }
+        ], 
+        "1.7.7": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-03-18T23:49:08", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/b5/6b/810aad2c715fa19ffcf30b592cc90b931152268e59c3c526563be0b462e0/Django-1.7.7-py2.py3-none-any.whl", 
+                "md5_digest": "52919e0b00a228535a3c4b5a72ac5df5", 
+                "downloads": 324756, 
+                "filename": "Django-1.7.7-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "b5/6b/810aad2c715fa19ffcf30b592cc90b931152268e59c3c526563be0b462e0/Django-1.7.7-py2.py3-none-any.whl", 
+                "size": 7422997
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-03-18T23:49:18", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/61/52/2e39a916cb6697fa89cc9143134ec9ef470f4014a16d432044334b7204ff/Django-1.7.7.tar.gz", 
+                "md5_digest": "a62d6598966947d150525ad2ab20fb0c", 
+                "downloads": 54586, 
+                "filename": "Django-1.7.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "61/52/2e39a916cb6697fa89cc9143134ec9ef470f4014a16d432044334b7204ff/Django-1.7.7.tar.gz", 
+                "size": 7603286
+            }
+        ], 
+        "1.8.5": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-10-04T00:06:01", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/69/cc/9aa13faa16849cdf0b27e5ad9b1a9f82d1c1136c88382f24fe07b4290e35/Django-1.8.5-py2.py3-none-any.whl", 
+                "md5_digest": "3c182cf9de00382ecf27fdc65fcfbe70", 
+                "downloads": 440792, 
+                "filename": "Django-1.8.5-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "69/cc/9aa13faa16849cdf0b27e5ad9b1a9f82d1c1136c88382f24fe07b4290e35/Django-1.8.5-py2.py3-none-any.whl", 
+                "size": 6167038
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-10-04T00:06:18", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/d9/9a/e6ca54fe351085b907551adda560a5494811a6aa1521ddddf72fe657d8e4/Django-1.8.5.tar.gz", 
+                "md5_digest": "02426a28fb356e52006e053503d66490", 
+                "downloads": 41210, 
+                "filename": "Django-1.8.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "d9/9a/e6ca54fe351085b907551adda560a5494811a6aa1521ddddf72fe657d8e4/Django-1.8.5.tar.gz", 
+                "size": 7270297
+            }
+        ], 
+        "1.7.5": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-02-25T13:58:22", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/4d/dc/7b29fa98915a25a443eb5091aff1a0ef007d27c9848365a1fd0a108b5f39/Django-1.7.5-py2.py3-none-any.whl", 
+                "md5_digest": "d6b529414f3093c848a69996979a1bea", 
+                "downloads": 139933, 
+                "filename": "Django-1.7.5-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "4d/dc/7b29fa98915a25a443eb5091aff1a0ef007d27c9848365a1fd0a108b5f39/Django-1.7.5-py2.py3-none-any.whl", 
+                "size": 7422703
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-02-25T13:58:38", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/d1/ab/8d0fe798860f897e388dbb5a2df468db47c52645cbbd378963eff508cf91/Django-1.7.5.tar.gz", 
+                "md5_digest": "e76c70a5dd7d56a511974b28ab38df20", 
+                "downloads": 33258, 
+                "filename": "Django-1.7.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "d1/ab/8d0fe798860f897e388dbb5a2df468db47c52645cbbd378963eff508cf91/Django-1.7.5.tar.gz", 
+                "size": 7599017
+            }
+        ], 
+        "1.7.4": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-27T17:22:19", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/c9/1e/66f185ca0d4d0ca11b94caeac96a33a13954963a8b563b67d11f50bfeee7/Django-1.7.4-py2.py3-none-any.whl", 
+                "md5_digest": "f465b25daeaa559ffc329f1e5daaa520", 
+                "downloads": 176695, 
+                "filename": "Django-1.7.4-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "c9/1e/66f185ca0d4d0ca11b94caeac96a33a13954963a8b563b67d11f50bfeee7/Django-1.7.4-py2.py3-none-any.whl", 
+                "size": 7422181
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-27T17:22:47", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/f3/af/91bf47f38841c1b64875cb6ff40c6466e71ed8c0864ef837e1db5c4fbac8/Django-1.7.4.tar.gz", 
+                "md5_digest": "f8db10520f0268747d402a47a1a4b191", 
+                "downloads": 44517, 
+                "filename": "Django-1.7.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "f3/af/91bf47f38841c1b64875cb6ff40c6466e71ed8c0864ef837e1db5c4fbac8/Django-1.7.4.tar.gz", 
+                "size": 7592584
+            }
+        ], 
+        "1.7.3": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-13T18:39:44", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/4d/b9/b972b87a27330e6647abb9766c1d32e5726430cfcc60b2b9c2f2d0e28bcb/Django-1.7.3-py2.py3-none-any.whl", 
+                "md5_digest": "bd24beec81e161d30ad925aef9d23e57", 
+                "downloads": 176883, 
+                "filename": "Django-1.7.3-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "4d/b9/b972b87a27330e6647abb9766c1d32e5726430cfcc60b2b9c2f2d0e28bcb/Django-1.7.3-py2.py3-none-any.whl", 
+                "size": 7421196
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-13T18:39:56", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/49/57/e57dc454702a565815160fec24cff7a833331c6b603afb6e30f2102ca29c/Django-1.7.3.tar.gz", 
+                "md5_digest": "ea9a3fe7eca2280b233938a98c4a35a0", 
+                "downloads": 30186, 
+                "filename": "Django-1.7.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "49/57/e57dc454702a565815160fec24cff7a833331c6b603afb6e30f2102ca29c/Django-1.7.3.tar.gz", 
+                "size": 7589559
+            }
+        ], 
+        "1.7.2": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-03T01:37:27", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/bb/e3/97cfd29ab86059c1df12a5a2593d214d52b9c22f6f40e2f0dc891b1899fe/Django-1.7.2-py2.py3-none-any.whl", 
+                "md5_digest": "b57f9a2dec214b60e338aa80fb902936", 
+                "downloads": 125508, 
+                "filename": "Django-1.7.2-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "bb/e3/97cfd29ab86059c1df12a5a2593d214d52b9c22f6f40e2f0dc891b1899fe/Django-1.7.2-py2.py3-none-any.whl", 
+                "size": 7420120
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-01-03T01:37:40", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/32/28/3e17392530e8bc38db501a9d85d2013e260657a785fc0b568f2c1bcf2a9e/Django-1.7.2.tar.gz", 
+                "md5_digest": "855a53a9a5581c62b6031c9b3bd80ec5", 
+                "downloads": 44564, 
+                "filename": "Django-1.7.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "32/28/3e17392530e8bc38db501a9d85d2013e260657a785fc0b568f2c1bcf2a9e/Django-1.7.2.tar.gz", 
+                "size": 7577911
+            }
+        ], 
+        "1.7.1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-10-22T16:56:56", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/d2/29/1935a5825b8820d1e398ab83f0730d483ec731fae34745ddac8318cf6ac8/Django-1.7.1-py2.py3-none-any.whl", 
+                "md5_digest": "83bd3e5cfba6d6d2bee5a37efb34771c", 
+                "downloads": 660340, 
+                "filename": "Django-1.7.1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "d2/29/1935a5825b8820d1e398ab83f0730d483ec731fae34745ddac8318cf6ac8/Django-1.7.1-py2.py3-none-any.whl", 
+                "size": 7414830
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-10-22T16:57:16", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/8c/a3/9876f73205ed8e1a2e345245e7e66fc02a056f29503590eca392fcb3e7c0/Django-1.7.1.tar.gz", 
+                "md5_digest": "81dae89f21647b9aa5c46c6b7dbfa349", 
+                "downloads": 203544, 
+                "filename": "Django-1.7.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "8c/a3/9876f73205ed8e1a2e345245e7e66fc02a056f29503590eca392fcb3e7c0/Django-1.7.1.tar.gz", 
+                "size": 7527499
+            }
+        ], 
+        "1.8.3": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-07-08T19:43:24", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/a3/e1/0f3c17b1caa559ba69513ff72e250377c268d5bd3e8ad2b22809c7e2e907/Django-1.8.3-py2.py3-none-any.whl", 
+                "md5_digest": "a5d397c65a880228c58a443070cc18a8", 
+                "downloads": 469193, 
+                "filename": "Django-1.8.3-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "a3/e1/0f3c17b1caa559ba69513ff72e250377c268d5bd3e8ad2b22809c7e2e907/Django-1.8.3-py2.py3-none-any.whl", 
+                "size": 6165665
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-07-08T19:43:35", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/9e/ed/40a000533fd6e5147f326203163650bff9cd4e4432c5664a9799b95bddd1/Django-1.8.3.tar.gz", 
+                "md5_digest": "31760322115c3ae51fbd8ac85c9ac428", 
+                "downloads": 80203, 
+                "filename": "Django-1.8.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "9e/ed/40a000533fd6e5147f326203163650bff9cd4e4432c5664a9799b95bddd1/Django-1.8.3.tar.gz", 
+                "size": 7284327
+            }
+        ], 
+        "1.4.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-07-30T22:48:27", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/e6/3f/f3e67d9c2572765ffe4268fc7f9997ce3b02e78fd144733f337d72dabb12/Django-1.4.1.tar.gz", 
+                "md5_digest": "e345268dacff12876ae4e45de0a61b7d", 
+                "downloads": 435251, 
+                "filename": "Django-1.4.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "e6/3f/f3e67d9c2572765ffe4268fc7f9997ce3b02e78fd144733f337d72dabb12/Django-1.4.1.tar.gz", 
+                "size": 7656756
+            }
+        ], 
+        "1.4.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-10-17T22:18:35", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/ed/56/11e0c6ce22d7e7048dbabc37202a536a35fbe45bcae661afd16fdefb8903/Django-1.4.2.tar.gz", 
+                "md5_digest": "6ffecdc01ad360e1abdca1015ae0893a", 
+                "downloads": 423923, 
+                "filename": "Django-1.4.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "ed/56/11e0c6ce22d7e7048dbabc37202a536a35fbe45bcae661afd16fdefb8903/Django-1.4.2.tar.gz", 
+                "size": 7722026
+            }
+        ], 
+        "1.4.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-12-10T21:46:28", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/18/c0/fba52cb5af8aa21d2c438ad4067a7c088f74931577c447b49642fc4a65a2/Django-1.4.3.tar.gz", 
+                "md5_digest": "0b134c44b6dc8eb36822677ef506c9ab", 
+                "downloads": 396267, 
+                "filename": "Django-1.4.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "18/c0/fba52cb5af8aa21d2c438ad4067a7c088f74931577c447b49642fc4a65a2/Django-1.4.3.tar.gz", 
+                "size": 7729808
+            }
+        ], 
+        "1.4.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-02-19T20:27:55", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b0/ab/25aba75284beae715089a808b27f0fcf23f818f5216c6f186e55f0ec9774/Django-1.4.4.tar.gz", 
+                "md5_digest": "833f531479948201f0f0a3b5b5972565", 
+                "downloads": 30081, 
+                "filename": "Django-1.4.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b0/ab/25aba75284beae715089a808b27f0fcf23f818f5216c6f186e55f0ec9774/Django-1.4.4.tar.gz", 
+                "size": 7740176
+            }
+        ], 
+        "1.4.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-02-20T19:54:40", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/5e/44/879326efd8368a96ecde95500ac02e1421697b3c856d1365ecd03464b9d7/Django-1.4.5.tar.gz", 
+                "md5_digest": "851d00905eb70e4aa6384b3b8b111fb7", 
+                "downloads": 418049, 
+                "filename": "Django-1.4.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "5e/44/879326efd8368a96ecde95500ac02e1421697b3c856d1365ecd03464b9d7/Django-1.4.5.tar.gz", 
+                "size": 7735582
+            }
+        ], 
+        "1.7.11": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-11-24T17:19:47", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/cd/1a/9797706779fc77317887bcf4b12632c24aed8404b694ed1b8d1f7053c92b/Django-1.7.11-py2.py3-none-any.whl", 
+                "md5_digest": "9a1e3e2767c5800a9d4e700c4b3aa514", 
+                "downloads": 119540, 
+                "filename": "Django-1.7.11-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "cd/1a/9797706779fc77317887bcf4b12632c24aed8404b694ed1b8d1f7053c92b/Django-1.7.11-py2.py3-none-any.whl", 
+                "size": 7424228
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-11-24T17:20:22", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/53/2a/cca393c0d65813f9f8e4d41e4a4d7d64fe8a6bd6dd7276583e2b6653af61/Django-1.7.11.tar.gz", 
+                "md5_digest": "030b2f9c99a6e4e0418eadf7dba9e235", 
+                "downloads": 5808, 
+                "filename": "Django-1.7.11.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "53/2a/cca393c0d65813f9f8e4d41e4a4d7d64fe8a6bd6dd7276583e2b6653af61/Django-1.7.11.tar.gz", 
+                "size": 7586798
+            }
+        ], 
+        "1.7.10": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-08-18T17:15:28", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/23/73/c0440d75121e69292115dd9d5e9f547113a86b73309652700b02fcb13d08/Django-1.7.10-py2.py3-none-any.whl", 
+                "md5_digest": "ba5adcf08d8b60bf82284a09a4d384a3", 
+                "downloads": 193686, 
+                "filename": "Django-1.7.10-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "23/73/c0440d75121e69292115dd9d5e9f547113a86b73309652700b02fcb13d08/Django-1.7.10-py2.py3-none-any.whl", 
+                "size": 7424722
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-08-18T17:15:47", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b1/8c/57e58359f201c8b3b46706bf06a5cef32d0a8176cf287f45ad7b2eb10891/Django-1.7.10.tar.gz", 
+                "md5_digest": "90315a9bec9b073a91beeb3f60994600", 
+                "downloads": 13977, 
+                "filename": "Django-1.7.10.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b1/8c/57e58359f201c8b3b46706bf06a5cef32d0a8176cf287f45ad7b2eb10891/Django-1.7.10.tar.gz", 
+                "size": 7584312
+            }
+        ], 
+        "1.4.8": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-09-15T06:22:11", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/59/7c/c02441c384e2287b8398e85a8cb25a9b2602e4b05d699e8e64c7b982a64c/Django-1.4.8.tar.gz", 
+                "md5_digest": "7075e08ef06155e07002189b837cde85", 
+                "downloads": 103951, 
+                "filename": "Django-1.4.8.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "59/7c/c02441c384e2287b8398e85a8cb25a9b2602e4b05d699e8e64c7b982a64c/Django-1.4.8.tar.gz", 
+                "size": 7743397
+            }
+        ], 
+        "1.8.1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-05-01T20:36:34", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/0a/a9/4cc0b81cb74da397e0c6374322442f43e54da0af4da1e870b660c99ba58a/Django-1.8.1-py2.py3-none-any.whl", 
+                "md5_digest": "0a16060bf7e3e9ad1354b3b5d9a6e6c4", 
+                "downloads": 231941, 
+                "filename": "Django-1.8.1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "0a/a9/4cc0b81cb74da397e0c6374322442f43e54da0af4da1e870b660c99ba58a/Django-1.8.1-py2.py3-none-any.whl", 
+                "size": 6163056
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-05-01T20:36:45", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/42/fe/e0e7d13a0cb47f0af9f36e2523438d85b8d30ed640b72ace2629bd75b181/Django-1.8.1.tar.gz", 
+                "md5_digest": "0f0a677a2cd56b9ab7ccb1c562d70f53", 
+                "downloads": 29887, 
+                "filename": "Django-1.8.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "42/fe/e0e7d13a0cb47f0af9f36e2523438d85b8d30ed640b72ace2629bd75b181/Django-1.8.1.tar.gz", 
+                "size": 7270084
+            }
+        ], 
+        "1.2.6": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-09-10T03:42:09", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/19/a1/569de723efc22ea15498c34112cd00025c3277c131298bb8a1e9d3e6071a/Django-1.2.6.tar.gz", 
+                "md5_digest": "bff9fc7d871c0b5e6ce1a7babd16847b", 
+                "downloads": 5822, 
+                "filename": "Django-1.2.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "19/a1/569de723efc22ea15498c34112cd00025c3277c131298bb8a1e9d3e6071a/Django-1.2.6.tar.gz", 
+                "size": 6399890
+            }
+        ], 
+        "1.2.7": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-09-11T03:05:18", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/11/6a/64ded77a5134cde391ddd6f034977c21e3024012f4599e8f643664eef394/Django-1.2.7.tar.gz", 
+                "md5_digest": "902fe294a2f7b16e5e1dee42d458c2ba", 
+                "downloads": 54359, 
+                "filename": "Django-1.2.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "11/6a/64ded77a5134cde391ddd6f034977c21e3024012f4599e8f643664eef394/Django-1.2.7.tar.gz", 
+                "size": 6400234
+            }
+        ], 
+        "1.2.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-12-23T05:15:19", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/02/79/4135356ed5f7266080fa6ca34015bc58eab25a0b0773eeaeb32a97422ef4/Django-1.2.4.tar.gz", 
+                "md5_digest": "b0e67d3d6447f7eb1ce6392b9465a183", 
+                "downloads": 75019, 
+                "filename": "Django-1.2.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "02/79/4135356ed5f7266080fa6ca34015bc58eab25a0b0773eeaeb32a97422ef4/Django-1.2.4.tar.gz", 
+                "size": 6357270
+            }
+        ], 
+        "1.2.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-09T04:08:37", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/03/25/f57cca579f5cc621501e69d73e7baa155f32203e13adf6f67fc322b37f06/Django-1.2.5.tar.gz", 
+                "md5_digest": "e031ea3d00996035e49e4bfa86e07c40", 
+                "downloads": 91869, 
+                "filename": "Django-1.2.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "03/25/f57cca579f5cc621501e69d73e7baa155f32203e13adf6f67fc322b37f06/Django-1.2.5.tar.gz", 
+                "size": 6379313
+            }
+        ], 
+        "1.2.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-09-09T02:41:25", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/c9/11/cfdc58670b7f01ae94cd2b256c07892109fc5fffd0c5a613393891426cbe/Django-1.2.2.tar.gz", 
+                "md5_digest": "9cdbf79a31988ace9ef2ab4ede890136", 
+                "downloads": 7505, 
+                "filename": "Django-1.2.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "c9/11/cfdc58670b7f01ae94cd2b256c07892109fc5fffd0c5a613393891426cbe/Django-1.2.2.tar.gz", 
+                "size": 6304356
+            }
+        ], 
+        "1.2.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-09-11T08:50:39", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/3b/3b/f98695d298c983c37aa5153014acca0d3714bbc08ce6f55cffa4b00b6fb4/Django-1.2.3.tar.gz", 
+                "md5_digest": "10bfb5831bcb4d3b1e6298d0e41d6603", 
+                "downloads": 93516, 
+                "filename": "Django-1.2.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "3b/3b/f98695d298c983c37aa5153014acca0d3714bbc08ce6f55cffa4b00b6fb4/Django-1.2.3.tar.gz", 
+                "size": 6306760
+            }
+        ], 
+        "1.2.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-05-24T21:19:28", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/ab/f7/974021fdfd71a419526704e404447aaf3b0f303a6cdfde87478a09dd3a49/Django-1.2.1.tar.gz", 
+                "md5_digest": "2351efb20f6b7b5d9ce80fa4cb1bd9ca", 
+                "downloads": 78632, 
+                "filename": "Django-1.2.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "ab/f7/974021fdfd71a419526704e404447aaf3b0f303a6cdfde87478a09dd3a49/Django-1.2.1.tar.gz", 
+                "size": 6248006
+            }
+        ], 
+        "1.8b1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-02-25T13:42:42", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/76/d4/a489819b66706406c07819844bae3f7d9613104c1581af2a4ef567e67c48/Django-1.8b1-py2.py3-none-any.whl", 
+                "md5_digest": "5239ff2f5a6901e1222b03d45d9c8936", 
+                "downloads": 4016, 
+                "filename": "Django-1.8b1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "76/d4/a489819b66706406c07819844bae3f7d9613104c1581af2a4ef567e67c48/Django-1.8b1-py2.py3-none-any.whl", 
+                "size": 6521989
+            }
+        ], 
+        "1.8b2": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-03-09T15:55:16", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/ab/d6/97affc9b5435234b906009ad11f6ca6e9c10d6c17752a25e82a92f44acca/Django-1.8b2-py2.py3-none-any.whl", 
+                "md5_digest": "f585d674396cde011b9cf5878ba0852f", 
+                "downloads": 3515, 
+                "filename": "Django-1.8b2-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "ab/d6/97affc9b5435234b906009ad11f6ca6e9c10d6c17752a25e82a92f44acca/Django-1.8b2-py2.py3-none-any.whl", 
+                "size": 6522351
+            }
+        ], 
+        "1.11a1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2017-01-18T01:01:35", 
+                "comment_text": "", 
+                "python_version": "py2.py3", 
+                "url": "https://pypi.python.org/packages/32/7e/884dfbac0d640b428bd800aa4204ed69a39ec155eacf8d6586c8e77f91c6/Django-1.11a1-py2.py3-none-any.whl", 
+                "md5_digest": "29b521397678e62525aedc8da4c03b09", 
+                "downloads": 56, 
+                "filename": "Django-1.11a1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "32/7e/884dfbac0d640b428bd800aa4204ed69a39ec155eacf8d6586c8e77f91c6/Django-1.11a1-py2.py3-none-any.whl", 
+                "size": 6870097
+            }
+        ]
+    }, 
+    "urls": [
+        {
+            "has_sig": true, 
+            "upload_time": "2017-04-04T15:59:30", 
+            "comment_text": "", 
+            "python_version": "py2.py3", 
+            "url": "https://pypi.python.org/packages/47/a6/078ebcbd49b19e22fd560a2348cfc5cec9e5dcfe3c4fad8e64c9865135bb/Django-1.11-py2.py3-none-any.whl", 
+            "md5_digest": "4a191de100babe2bf88f205982d48e57", 
+            "downloads": 27970, 
+            "filename": "Django-1.11-py2.py3-none-any.whl", 
+            "packagetype": "bdist_wheel", 
+            "path": "47/a6/078ebcbd49b19e22fd560a2348cfc5cec9e5dcfe3c4fad8e64c9865135bb/Django-1.11-py2.py3-none-any.whl", 
+            "size": 6942445
+        }, 
+        {
+            "has_sig": true, 
+            "upload_time": "2017-04-04T16:00:04", 
+            "comment_text": "", 
+            "python_version": "source", 
+            "url": "https://pypi.python.org/packages/79/43/ed9ca4d69f35b5e64f2ecad73f75a8529a9c6f0d562e5af9a1f65beda355/Django-1.11.tar.gz", 
+            "md5_digest": "5008d266f198c2fe761916139162a0c2", 
+            "downloads": 1412, 
+            "filename": "Django-1.11.tar.gz", 
+            "packagetype": "sdist", 
+            "path": "79/43/ed9ca4d69f35b5e64f2ecad73f75a8529a9c6f0d562e5af9a1f65beda355/Django-1.11.tar.gz", 
+            "size": 7853479
+        }
+    ]
+}

@@ -1,0 +1,2480 @@
+{
+    "info": {
+        "maintainer": null, 
+        "docs_url": "http://pythonhosted.org/celery/", 
+        "requires_python": null, 
+        "maintainer_email": null, 
+        "cheesecake_code_kwalitee_id": null, 
+        "keywords": "task job queue distributed messaging actor", 
+        "package_url": "http://pypi.python.org/pypi/celery", 
+        "author": "Ask Solem", 
+        "author_email": "ask@celeryproject.org", 
+        "download_url": "UNKNOWN", 
+        "platform": "any", 
+        "version": "4.0.2", 
+        "cheesecake_documentation_id": null, 
+        "_pypi_hidden": false, 
+        "description": ".. image:: http://docs.celeryproject.org/en/latest/_images/celery-banner-small.png\n\n|build-status| |license| |wheel| |pyversion| |pyimp|\n\n:Version: 4.0.2 (latentcall)\n:Web: http://celeryproject.org/\n:Download: http://pypi.python.org/pypi/celery/\n:Source: https://github.com/celery/celery/\n:Keywords: task, queue, job, async, rabbitmq, amqp, redis,\n  python, distributed, actors\n\n--\n\nWhat's a Task Queue?\n====================\n\nTask queues are used as a mechanism to distribute work across threads or\nmachines.\n\nA task queue's input is a unit of work, called a task, dedicated worker\nprocesses then constantly monitor the queue for new work to perform.\n\nCelery communicates via messages, usually using a broker\nto mediate between clients and workers. To initiate a task a client puts a\nmessage on the queue, the broker then delivers the message to a worker.\n\nA Celery system can consist of multiple workers and brokers, giving way\nto high availability and horizontal scaling.\n\nCelery is written in Python, but the protocol can be implemented in any\nlanguage. In addition to Python there's node-celery_ for Node.js,\nand a `PHP client`_.\n\nLanguage interoperability can also be achieved by using webhooks\nin such a way that the client enqueues an URL to be requested by a worker.\n\n.. _node-celery: https://github.com/mher/node-celery\n.. _`PHP client`: https://github.com/gjedeer/celery-php\n\nWhat do I need?\n===============\n\nCelery version 4.0 runs on,\n\n- Python (2.7, 3.4, 3.5)\n- PyPy (5.4, 5.5)\n\n\nThis is the last version to support Python 2.7,\nand from the next version (Celery 5.x) Python 3.5 or newer is required.\n\nIf you're running an older version of Python, you need to be running\nan older version of Celery:\n\n- Python 2.6: Celery series 3.1 or earlier.\n- Python 2.5: Celery series 3.0 or earlier.\n- Python 2.4 was Celery series 2.2 or earlier.\n\nCelery is a project with minimal funding,\nso we don't support Microsoft Windows.\nPlease don't open any issues related to that platform.\n\n*Celery* is usually used with a message broker to send and receive messages.\nThe RabbitMQ, Redis transports are feature complete,\nbut there's also experimental support for a myriad of other solutions, including\nusing SQLite for local development.\n\n*Celery* can run on a single machine, on multiple machines, or even\nacross datacenters.\n\nGet Started\n===========\n\nIf this is the first time you're trying to use Celery, or you're\nnew to Celery 4.0 coming from previous versions then you should read our\ngetting started tutorials:\n\n- `First steps with Celery`_\n\n    Tutorial teaching you the bare minimum needed to get started with Celery.\n\n- `Next steps`_\n\n    A more complete overview, showing more features.\n\n.. _`First steps with Celery`:\n    http://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html\n\n.. _`Next steps`:\n    http://docs.celeryproject.org/en/latest/getting-started/next-steps.html\n\nCelery is...\n=============\n\n- **Simple**\n\n    Celery is easy to use and maintain, and does *not need configuration files*.\n\n    It has an active, friendly community you can talk to for support,\n    like at our `mailing-list`_, or the IRC channel.\n\n    Here's one of the simplest applications you can make::\n\n        from celery import Celery\n\n        app = Celery('hello', broker='amqp://guest@localhost//')\n\n        @app.task\n        def hello():\n            return 'hello world'\n\n- **Highly Available**\n\n    Workers and clients will automatically retry in the event\n    of connection loss or failure, and some brokers support\n    HA in way of *Primary/Primary* or *Primary/Replica* replication.\n\n- **Fast**\n\n    A single Celery process can process millions of tasks a minute,\n    with sub-millisecond round-trip latency (using RabbitMQ,\n    py-librabbitmq, and optimized settings).\n\n- **Flexible**\n\n    Almost every part of *Celery* can be extended or used on its own,\n    Custom pool implementations, serializers, compression schemes, logging,\n    schedulers, consumers, producers, broker transports, and much more.\n\nIt supports...\n================\n\n    - **Message Transports**\n\n        - RabbitMQ_, Redis_, Amazon SQS\n\n    - **Concurrency**\n\n        - Prefork, Eventlet_, gevent_, single threaded (``solo``)\n\n    - **Result Stores**\n\n        - AMQP, Redis\n        - memcached\n        - SQLAlchemy, Django ORM\n        - Apache Cassandra, IronCache, Elasticsearch\n\n    - **Serialization**\n\n        - *pickle*, *json*, *yaml*, *msgpack*.\n        - *zlib*, *bzip2* compression.\n        - Cryptographic message signing.\n\n.. _`Eventlet`: http://eventlet.net/\n.. _`gevent`: http://gevent.org/\n\n.. _RabbitMQ: http://rabbitmq.com\n.. _Redis: http://redis.io\n.. _SQLAlchemy: http://sqlalchemy.org\n\nFramework Integration\n=====================\n\nCelery is easy to integrate with web frameworks, some of which even have\nintegration packages:\n\n    +--------------------+------------------------+\n    | `Django`_          | not needed             |\n    +--------------------+------------------------+\n    | `Pyramid`_         | `pyramid_celery`_      |\n    +--------------------+------------------------+\n    | `Pylons`_          | `celery-pylons`_       |\n    +--------------------+------------------------+\n    | `Flask`_           | not needed             |\n    +--------------------+------------------------+\n    | `web2py`_          | `web2py-celery`_       |\n    +--------------------+------------------------+\n    | `Tornado`_         | `tornado-celery`_      |\n    +--------------------+------------------------+\n\nThe integration packages aren't strictly necessary, but they can make\ndevelopment easier, and sometimes they add important hooks like closing\ndatabase connections at ``fork``.\n\n.. _`Django`: http://djangoproject.com/\n.. _`Pylons`: http://pylonsproject.org/\n.. _`Flask`: http://flask.pocoo.org/\n.. _`web2py`: http://web2py.com/\n.. _`Bottle`: http://bottlepy.org/\n.. _`Pyramid`: http://docs.pylonsproject.org/en/latest/docs/pyramid.html\n.. _`pyramid_celery`: http://pypi.python.org/pypi/pyramid_celery/\n.. _`celery-pylons`: http://pypi.python.org/pypi/celery-pylons\n.. _`web2py-celery`: http://code.google.com/p/web2py-celery/\n.. _`Tornado`: http://www.tornadoweb.org/\n.. _`tornado-celery`: https://github.com/mher/tornado-celery/\n\n.. _celery-documentation:\n\nDocumentation\n=============\n\nThe `latest documentation`_ is hosted at Read The Docs, containing user guides,\ntutorials, and an API reference.\n\n.. _`latest documentation`: http://docs.celeryproject.org/en/latest/\n\n.. _celery-installation:\n\nInstallation\n============\n\nYou can install Celery either via the Python Package Index (PyPI)\nor from source.\n\nTo install using ``pip``:\n\n::\n\n\n    $ pip install -U Celery\n\n.. _bundles:\n\nBundles\n-------\n\nCelery also defines a group of bundles that can be used\nto install Celery and the dependencies for a given feature.\n\nYou can specify these in your requirements or on the ``pip``\ncommand-line by using brackets. Multiple bundles can be specified by\nseparating them by commas.\n\n::\n\n\n    $ pip install \"celery[librabbitmq]\"\n\n    $ pip install \"celery[librabbitmq,redis,auth,msgpack]\"\n\nThe following bundles are available:\n\nSerializers\n~~~~~~~~~~~\n\n:``celery[auth]``:\n    for using the ``auth`` security serializer.\n\n:``celery[msgpack]``:\n    for using the msgpack serializer.\n\n:``celery[yaml]``:\n    for using the yaml serializer.\n\nConcurrency\n~~~~~~~~~~~\n\n:``celery[eventlet]``:\n    for using the ``eventlet`` pool.\n\n:``celery[gevent]``:\n    for using the ``gevent`` pool.\n\nTransports and Backends\n~~~~~~~~~~~~~~~~~~~~~~~\n\n:``celery[librabbitmq]``:\n    for using the librabbitmq C library.\n\n:``celery[redis]``:\n    for using Redis as a message transport or as a result backend.\n\n:``celery[sqs]``:\n    for using Amazon SQS as a message transport (*experimental*).\n\n:``celery[tblib``]\n    for using the ``task_remote_tracebacks`` feature.\n\n:``celery[memcache]``:\n    for using Memcached as a result backend (using ``pylibmc``)\n\n:``celery[pymemcache]``:\n    for using Memcached as a result backend (pure-Python implementation).\n\n:``celery[cassandra]``:\n    for using Apache Cassandra as a result backend with DataStax driver.\n\n:``celery[couchbase]``:\n    for using Couchbase as a result backend.\n\n:``celery[elasticsearch]``:\n    for using Elasticsearch as a result backend.\n\n:``celery[riak]``:\n    for using Riak as a result backend.\n\n:``celery[zookeeper]``:\n    for using Zookeeper as a message transport.\n\n:``celery[sqlalchemy]``:\n    for using SQLAlchemy as a result backend (*supported*).\n\n:``celery[pyro]``:\n    for using the Pyro4 message transport (*experimental*).\n\n:``celery[slmq]``:\n    for using the SoftLayer Message Queue transport (*experimental*).\n\n:``celery[consul]``:\n    for using the Consul.io Key/Value store as a message transport or result backend (*experimental*).\n\n:``celery[django]``\n    specifies the lowest version possible for Django support.\n\n    You should probably not use this in your requirements, it's here\n    for informational purposes only.\n\n\n.. _celery-installing-from-source:\n\nDownloading and installing from source\n--------------------------------------\n\nDownload the latest version of Celery from PyPI:\n\nhttp://pypi.python.org/pypi/celery/\n\nYou can install it by doing the following,:\n\n::\n\n\n    $ tar xvfz celery-0.0.0.tar.gz\n    $ cd celery-0.0.0\n    $ python setup.py build\n    # python setup.py install\n\nThe last command must be executed as a privileged user if\nyou aren't currently using a virtualenv.\n\n.. _celery-installing-from-git:\n\nUsing the development version\n-----------------------------\n\nWith pip\n~~~~~~~~\n\nThe Celery development version also requires the development\nversions of ``kombu``, ``amqp``, ``billiard``, and ``vine``.\n\nYou can install the latest snapshot of these using the following\npip commands:\n\n::\n\n\n    $ pip install https://github.com/celery/celery/zipball/master#egg=celery\n    $ pip install https://github.com/celery/billiard/zipball/master#egg=billiard\n    $ pip install https://github.com/celery/py-amqp/zipball/master#egg=amqp\n    $ pip install https://github.com/celery/kombu/zipball/master#egg=kombu\n    $ pip install https://github.com/celery/vine/zipball/master#egg=vine\n\nWith git\n~~~~~~~~\n\nPlease the Contributing section.\n\n.. _getting-help:\n\nGetting Help\n============\n\n.. _mailing-list:\n\nMailing list\n------------\n\nFor discussions about the usage, development, and future of Celery,\nplease join the `celery-users`_ mailing list.\n\n.. _`celery-users`: http://groups.google.com/group/celery-users/\n\n.. _irc-channel:\n\nIRC\n---\n\nCome chat with us on IRC. The **#celery** channel is located at the `Freenode`_\nnetwork.\n\n.. _`Freenode`: http://freenode.net\n\n.. _bug-tracker:\n\nBug tracker\n===========\n\nIf you have any suggestions, bug reports, or annoyances please report them\nto our issue tracker at https://github.com/celery/celery/issues/\n\n.. _wiki:\n\nWiki\n====\n\nhttp://wiki.github.com/celery/celery/\n\n.. _contributing-short:\n\nContributing\n============\n\nDevelopment of `celery` happens at GitHub: https://github.com/celery/celery\n\nYou're highly encouraged to participate in the development\nof `celery`. If you don't like GitHub (for some reason) you're welcome\nto send regular patches.\n\nBe sure to also read the `Contributing to Celery`_ section in the\ndocumentation.\n\n.. _`Contributing to Celery`:\n    http://docs.celeryproject.org/en/master/contributing.html\n\n.. _license:\n\nLicense\n=======\n\nThis software is licensed under the `New BSD License`. See the ``LICENSE``\nfile in the top distribution directory for the full license text.\n\n.. # vim: syntax=rst expandtab tabstop=4 shiftwidth=4 shiftround\n\n.. |build-status| image:: https://secure.travis-ci.org/celery/celery.png?branch=master\n    :alt: Build status\n    :target: https://travis-ci.org/celery/celery\n\n.. |coverage| image:: https://codecov.io/github/celery/celery/coverage.svg?branch=master\n    :target: https://codecov.io/github/celery/celery?branch=master\n\n.. |license| image:: https://img.shields.io/pypi/l/celery.svg\n    :alt: BSD License\n    :target: https://opensource.org/licenses/BSD-3-Clause\n\n.. |wheel| image:: https://img.shields.io/pypi/wheel/celery.svg\n    :alt: Celery can be installed via wheel\n    :target: http://pypi.python.org/pypi/celery/\n\n.. |pyversion| image:: https://img.shields.io/pypi/pyversions/celery.svg\n    :alt: Supported Python versions.\n    :target: http://pypi.python.org/pypi/celery/\n\n.. |pyimp| image:: https://img.shields.io/pypi/implementation/celery.svg\n    :alt: Support Python implementations.\n    :target: http://pypi.python.org/pypi/celery/", 
+        "release_url": "http://pypi.python.org/pypi/celery/4.0.2", 
+        "downloads": {
+            "last_month": 0, 
+            "last_week": 0, 
+            "last_day": 0
+        }, 
+        "_pypi_ordering": 128, 
+        "classifiers": [
+            "Development Status :: 5 - Production/Stable", 
+            "License :: OSI Approved :: BSD License", 
+            "Operating System :: OS Independent", 
+            "Programming Language :: Python", 
+            "Programming Language :: Python :: 2", 
+            "Programming Language :: Python :: 2.7", 
+            "Programming Language :: Python :: 3", 
+            "Programming Language :: Python :: 3.4", 
+            "Programming Language :: Python :: 3.5", 
+            "Programming Language :: Python :: Implementation :: CPython", 
+            "Programming Language :: Python :: Implementation :: PyPy", 
+            "Topic :: Software Development :: Object Brokering", 
+            "Topic :: System :: Distributed Computing"
+        ], 
+        "name": "celery", 
+        "bugtrack_url": null, 
+        "license": "BSD", 
+        "summary": "Distributed Task Queue.", 
+        "home_page": "http://celeryproject.org", 
+        "cheesecake_installability_id": null
+    }, 
+    "releases": {
+        "3.1.3": [
+            {
+                "has_sig": true, 
+                "upload_time": "2013-11-14T12:43:13", 
+                "comment_text": "", 
+                "python_version": "2.6", 
+                "url": "https://pypi.python.org/packages/51/d7/f06267f720bb3e24409ff0461253d71eeb186accea685053fda2a81c994f/celery-3.1.3-py26-none-any.whl", 
+                "md5_digest": "e563897cde5ef792404bd09ff992b7aa", 
+                "downloads": 2713, 
+                "filename": "celery-3.1.3-py26-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "51/d7/f06267f720bb3e24409ff0461253d71eeb186accea685053fda2a81c994f/celery-3.1.3-py26-none-any.whl", 
+                "size": 495576
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2013-11-14T12:41:49", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/3d/dc/f624ebe7075e9c868b27229c396c45e8159569e1ebf76f1da3179dc452c4/celery-3.1.3-py27-none-any.whl", 
+                "md5_digest": "161320e9eb166793afd44d54b19ca073", 
+                "downloads": 4903, 
+                "filename": "celery-3.1.3-py27-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "3d/dc/f624ebe7075e9c868b27229c396c45e8159569e1ebf76f1da3179dc452c4/celery-3.1.3-py27-none-any.whl", 
+                "size": 492621
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2013-11-14T12:44:12", 
+                "comment_text": "", 
+                "python_version": "3.3", 
+                "url": "https://pypi.python.org/packages/f9/e3/385b465e50d38f1d50a9001c3825ed99da0e548e9a4873483b23e47f8216/celery-3.1.3-py33-none-any.whl", 
+                "md5_digest": "291f2b3037c05085e02bf703a15b809b", 
+                "downloads": 2289, 
+                "filename": "celery-3.1.3-py33-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "f9/e3/385b465e50d38f1d50a9001c3825ed99da0e548e9a4873483b23e47f8216/celery-3.1.3-py33-none-any.whl", 
+                "size": 495578
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2013-11-13T00:53:34", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/e4/78/8ab04c00f49b4a8ddc788710e45dde020dad9c5f86fcb67c77725f0dbc28/celery-3.1.3.tar.gz", 
+                "md5_digest": "a8f95994762ed63e7f04e1ea572cdd47", 
+                "downloads": 12304, 
+                "filename": "celery-3.1.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "e4/78/8ab04c00f49b4a8ddc788710e45dde020dad9c5f86fcb67c77725f0dbc28/celery-3.1.3.tar.gz", 
+                "size": 1269548
+            }
+        ], 
+        "3.1.2": [
+            {
+                "has_sig": true, 
+                "upload_time": "2013-11-12T20:14:47", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b3/5d/286b4b3fa243689302126f4314fde8cddfc16699d77c7a308e1cc57528f2/celery-3.1.2.tar.gz", 
+                "md5_digest": "3150cfee9a02edc2d0d4ad63f23dcb5b", 
+                "downloads": 3352, 
+                "filename": "celery-3.1.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b3/5d/286b4b3fa243689302126f4314fde8cddfc16699d77c7a308e1cc57528f2/celery-3.1.2.tar.gz", 
+                "size": 1269319
+            }
+        ], 
+        "3.1.1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2013-11-11T19:21:46", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/c9/7d/df5ceb367c8c8d8372a28aa384166f8f998f62f8c4b1028794df38cc7163/celery-3.1.1.tar.gz", 
+                "md5_digest": "22396dd44cb3147a6d79c25f8960abab", 
+                "downloads": 9342, 
+                "filename": "celery-3.1.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "c9/7d/df5ceb367c8c8d8372a28aa384166f8f998f62f8c4b1028794df38cc7163/celery-3.1.1.tar.gz", 
+                "size": 1269075
+            }
+        ], 
+        "3.1.0": [
+            {
+                "has_sig": true, 
+                "upload_time": "2013-11-09T23:04:06", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/4c/41/73889bb38bce56ace75772fe253eeb2b5f27317acbf946573b83d55aa602/celery-3.1.0.tar.gz", 
+                "md5_digest": "1283d31277361748855a43f6869b8c47", 
+                "downloads": 20356, 
+                "filename": "celery-3.1.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "4c/41/73889bb38bce56ace75772fe253eeb2b5f27317acbf946573b83d55aa602/celery-3.1.0.tar.gz", 
+                "size": 1267586
+            }
+        ], 
+        "3.1.7": [
+            {
+                "has_sig": true, 
+                "upload_time": "2013-12-17T18:08:01", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/0c/62/6c20da627bdc4a48dbc27dc9d986ac13268999b043a5e4b3e8aacd200db2/celery-3.1.7.tar.gz", 
+                "md5_digest": "63a452d4338372d0a22de1961130907e", 
+                "downloads": 114463, 
+                "filename": "celery-3.1.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "0c/62/6c20da627bdc4a48dbc27dc9d986ac13268999b043a5e4b3e8aacd200db2/celery-3.1.7.tar.gz", 
+                "size": 1271174
+            }
+        ], 
+        "3.1.6": [
+            {
+                "has_sig": true, 
+                "upload_time": "2013-12-02T18:06:20", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/00/ee/2a47b9e710e7e6d19a0197be214b6c044c40e055f2cbdd4c86ce0158d660/celery-3.1.6.tar.gz", 
+                "md5_digest": "00eebe44a44fe060c7cd184d15ae0bd9", 
+                "downloads": 76975, 
+                "filename": "celery-3.1.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "00/ee/2a47b9e710e7e6d19a0197be214b6c044c40e055f2cbdd4c86ce0158d660/celery-3.1.6.tar.gz", 
+                "size": 1264225
+            }
+        ], 
+        "3.1.5": [
+            {
+                "has_sig": true, 
+                "upload_time": "2013-11-21T18:31:51", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/f1/9e/15df5bc43eb89203a08073f60ce25ff8268a9236247e04a908627ac7d614/celery-3.1.5.tar.gz", 
+                "md5_digest": "a8ff438460e562d21dd762cbba7bb6e2", 
+                "downloads": 59903, 
+                "filename": "celery-3.1.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "f1/9e/15df5bc43eb89203a08073f60ce25ff8268a9236247e04a908627ac7d614/celery-3.1.5.tar.gz", 
+                "size": 1262355
+            }
+        ], 
+        "3.1.4": [
+            {
+                "has_sig": true, 
+                "upload_time": "2013-11-16T00:15:54", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/50/dd/8fe90a0d421388e5097e6bccaa82d69f0b1f6fa6ea4f8a7cd6cff1e642c4/celery-3.1.4.tar.gz", 
+                "md5_digest": "60aa694cb6542ebb43a417f4005c4dfc", 
+                "downloads": 22749, 
+                "filename": "celery-3.1.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "50/dd/8fe90a0d421388e5097e6bccaa82d69f0b1f6fa6ea4f8a7cd6cff1e642c4/celery-3.1.4.tar.gz", 
+                "size": 1270322
+            }
+        ], 
+        "3.1.9": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-02-10T18:45:44", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/7a/9c/c1f6ce0d80b8f7ee2eeb36bf9437a9b3f1c4edc4d3c37b9806ecd0c04426/celery-3.1.9-py27-none-any.whl", 
+                "md5_digest": "6a39de14825619b10fa1af4c989af44b", 
+                "downloads": 127805, 
+                "filename": "celery-3.1.9-py27-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "7a/9c/c1f6ce0d80b8f7ee2eeb36bf9437a9b3f1c4edc4d3c37b9806ecd0c04426/celery-3.1.9-py27-none-any.whl", 
+                "size": 508152
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-02-10T18:45:41", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/cd/64/8499d48b0a147ca62ab95019506424f4af620de11c04b003912ff98ca0f2/celery-3.1.9.tar.gz", 
+                "md5_digest": "5742a95c0bb07cc5159216aae3b025fb", 
+                "downloads": 112198, 
+                "filename": "celery-3.1.9.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "cd/64/8499d48b0a147ca62ab95019506424f4af620de11c04b003912ff98ca0f2/celery-3.1.9.tar.gz", 
+                "size": 1280858
+            }
+        ], 
+        "3.1.8": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-01-17T22:48:45", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/5a/f9/7c7b3b1952151986544747e9c5de5f629c3d4bb3fd233c29dfaa0b7fbb33/celery-3.1.8.tar.gz", 
+                "md5_digest": "a5631b69adde9e7c7af22f8ee2fd57e0", 
+                "downloads": 111779, 
+                "filename": "celery-3.1.8.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "5a/f9/7c7b3b1952151986544747e9c5de5f629c3d4bb3fd233c29dfaa0b7fbb33/celery-3.1.8.tar.gz", 
+                "size": 1276228
+            }
+        ], 
+        "1.0.6": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-06-30T10:03:18", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/97/d8/5b798239afd16b5712ea360698ca6bbffd28214947d36eb125b49e341e17/celery-1.0.6.tar.gz", 
+                "md5_digest": "88ae6a25b0f63b79a9a654b8694a93c6", 
+                "downloads": 14413, 
+                "filename": "celery-1.0.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "97/d8/5b798239afd16b5712ea360698ca6bbffd28214947d36eb125b49e341e17/celery-1.0.6.tar.gz", 
+                "size": 1502650
+            }
+        ], 
+        "1.0.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-02-10T16:01:07", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/07/2a/4f5bc54e1cd7fba16b84f0b6b9e187956a607a9dffe8003a15852b1a465c/celery-1.0.0.tar.gz", 
+                "md5_digest": "0e711cb074eff8ef205ef1274b30e8ad", 
+                "downloads": 7607, 
+                "filename": "celery-1.0.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "07/2a/4f5bc54e1cd7fba16b84f0b6b9e187956a607a9dffe8003a15852b1a465c/celery-1.0.0.tar.gz", 
+                "size": 1462227
+            }
+        ], 
+        "1.0.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-03-20T19:05:08", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/c7/f5/205c192eb466811ad06b2ae314265324d3e37b77403e28152a62f8e54f5d/celery-1.0.1.tar.gz", 
+                "md5_digest": "164ab6192d7513f5a098b735a6b42afc", 
+                "downloads": 6004, 
+                "filename": "celery-1.0.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "c7/f5/205c192eb466811ad06b2ae314265324d3e37b77403e28152a62f8e54f5d/celery-1.0.1.tar.gz", 
+                "size": 1482530
+            }
+        ], 
+        "4.0.1": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-12-09T01:36:00", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/81/d5/5fb88ee70cf91d83659cfe88e997d2b5a665455b04b656840b4179c61900/celery-4.0.1-py2.py3-none-any.whl", 
+                "md5_digest": "9cb21647de9da1136a7aa38376ba6dd1", 
+                "downloads": 2686, 
+                "filename": "celery-4.0.1-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "81/d5/5fb88ee70cf91d83659cfe88e997d2b5a665455b04b656840b4179c61900/celery-4.0.1-py2.py3-none-any.whl", 
+                "size": 396380
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-12-09T01:35:56", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/dd/fe/a44bd232539369977898b791f5f6f37be87f56872f9feb24b5c4e10a5213/celery-4.0.1.tar.gz", 
+                "md5_digest": "addf3afad2808cab1a4175f5dce9e221", 
+                "downloads": 111, 
+                "filename": "celery-4.0.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "dd/fe/a44bd232539369977898b791f5f6f37be87f56872f9feb24b5c4e10a5213/celery-4.0.1.tar.gz", 
+                "size": 1336892
+            }
+        ], 
+        "4.0.0": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-11-04T20:56:14", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/4b/19/745db97793f786644df142f059beea7c784fa3e856758bb5c18891004d49/celery-4.0.0-py2.py3-none-any.whl", 
+                "md5_digest": "21ba26ac8d5cd7af8fc8eb89ffca1edc", 
+                "downloads": 27243, 
+                "filename": "celery-4.0.0-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "4b/19/745db97793f786644df142f059beea7c784fa3e856758bb5c18891004d49/celery-4.0.0-py2.py3-none-any.whl", 
+                "size": 395281
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-11-04T20:56:10", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/47/a6/1b5f1cc0a720ef17abd4ab4ee47e769d6bd4bad38b5b7fec3248ff33b4fc/celery-4.0.0.tar.gz", 
+                "md5_digest": "a4407621012e759ebd62368309b12145", 
+                "downloads": 1008, 
+                "filename": "celery-4.0.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "47/a6/1b5f1cc0a720ef17abd4ab4ee47e769d6bd4bad38b5b7fec3248ff33b4fc/celery-4.0.0.tar.gz", 
+                "size": 1319440
+            }
+        ], 
+        "4.0.2": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-12-16T00:14:59", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/11/46/3524d4730d3217960b5e32cb8b202420af8714e2b123b9f95882e1fb2067/celery-4.0.2-py2.py3-none-any.whl", 
+                "md5_digest": "3ff97b53107b491baeb42f662be14a06", 
+                "downloads": 59099, 
+                "filename": "celery-4.0.2-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "11/46/3524d4730d3217960b5e32cb8b202420af8714e2b123b9f95882e1fb2067/celery-4.0.2-py2.py3-none-any.whl", 
+                "size": 396437
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-12-16T00:14:42", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b2/b7/888565f3e955473247aef86174db5121d16de6661b69bd8f3d10aff574f6/celery-4.0.2.tar.gz", 
+                "md5_digest": "364dbf014ad57a6aa60d823670642e5d", 
+                "downloads": 2692, 
+                "filename": "celery-4.0.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b2/b7/888565f3e955473247aef86174db5121d16de6661b69bd8f3d10aff574f6/celery-4.0.2.tar.gz", 
+                "size": 1337804
+            }
+        ], 
+        "1.0.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-03-31T13:29:12", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/15/b3/d2975f3ce803a40997a73dd73a07c9a0a0012c02581a8f562f1b950cb1ca/celery-1.0.2.tar.gz", 
+                "md5_digest": "927b8999d928784b062c13994f88e130", 
+                "downloads": 7267, 
+                "filename": "celery-1.0.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "15/b3/d2975f3ce803a40997a73dd73a07c9a0a0012c02581a8f562f1b950cb1ca/celery-1.0.2.tar.gz", 
+                "size": 1485539
+            }
+        ], 
+        "0.3.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-06-08T18:05:54", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/3c/00/d4786a6a1bde4138292cb46e4f76e6964610cdf2032eb5e7cdc59ad0bfb4/celery-0.3.0.tar.gz", 
+                "md5_digest": "16a76c204f3cf5f3c37281fa1007d084", 
+                "downloads": 5327, 
+                "filename": "celery-0.3.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "3c/00/d4786a6a1bde4138292cb46e4f76e6964610cdf2032eb5e7cdc59ad0bfb4/celery-0.3.0.tar.gz", 
+                "size": 427156
+            }
+        ], 
+        "1.0.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-05-15T15:28:22", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/af/8f/4b4527b523bf18eb7ac6d8a490ff51df60c0e52baf8e37796e3da73e0609/celery-1.0.3.tar.gz", 
+                "md5_digest": "b01092e6112137f7d2b403f5cd16133e", 
+                "downloads": 6374, 
+                "filename": "celery-1.0.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "af/8f/4b4527b523bf18eb7ac6d8a490ff51df60c0e52baf8e37796e3da73e0609/celery-1.0.3.tar.gz", 
+                "size": 1496971
+            }
+        ], 
+        "0.3.7": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-06-16T23:48:03", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/07/32/977a11aab74ffe369a73be38bcfb6a209e3fdbff59efb7bc4993b396f5ab/celery-0.3.7.tar.gz", 
+                "md5_digest": "4142a4b09e37f7ecd0cb199c137fe882", 
+                "downloads": 5346, 
+                "filename": "celery-0.3.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "07/32/977a11aab74ffe369a73be38bcfb6a209e3fdbff59efb7bc4993b396f5ab/celery-0.3.7.tar.gz", 
+                "size": 455872
+            }
+        ], 
+        "3.0.10": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-09-20T16:35:50", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/bc/58/9eb5433c3c565abf50ab48c77cdb8d4fb97a3ad963c7125980036f5d655c/celery-3.0.10.tar.gz", 
+                "md5_digest": "41247bf42627f5ca26bd9de597f4922a", 
+                "downloads": 12808, 
+                "filename": "celery-3.0.10.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "bc/58/9eb5433c3c565abf50ab48c77cdb8d4fb97a3ad963c7125980036f5d655c/celery-3.0.10.tar.gz", 
+                "size": 1217114
+            }
+        ], 
+        "3.0.11": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-09-26T17:04:01", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/99/66/d45be99ad0b8fff1327d41fbd8be8a760085de3b2abc5a0df8818adcc56c/celery-3.0.11.tar.gz", 
+                "md5_digest": "1d54cbb3a784424ddc9bfdd4d7be617b", 
+                "downloads": 96124, 
+                "filename": "celery-3.0.11.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "99/66/d45be99ad0b8fff1327d41fbd8be8a760085de3b2abc5a0df8818adcc56c/celery-3.0.11.tar.gz", 
+                "size": 1218453
+            }
+        ], 
+        "3.0.12": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-11-06T14:36:47", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/25/e1/c0002aa3d1a267c31aac647c3cd3c7df8b07959238f17812971f4d630b6e/celery-3.0.12.tar.gz", 
+                "md5_digest": "a428b84562f61955d752bdff5e612f80", 
+                "downloads": 167284, 
+                "filename": "celery-3.0.12.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "25/e1/c0002aa3d1a267c31aac647c3cd3c7df8b07959238f17812971f4d630b6e/celery-3.0.12.tar.gz", 
+                "size": 1218262
+            }
+        ], 
+        "3.0.13": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-01-07T16:00:37", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/e1/d4/41233c02bef4440ae598485fc08bbaacf709b65001dc3fb3d142bbd45483/celery-3.0.13.tar.gz", 
+                "md5_digest": "5ca2ed5f71203240c4e7894f4aa7a77d", 
+                "downloads": 245505, 
+                "filename": "celery-3.0.13.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "e1/d4/41233c02bef4440ae598485fc08bbaacf709b65001dc3fb3d142bbd45483/celery-3.0.13.tar.gz", 
+                "size": 1223019
+            }
+        ], 
+        "3.0.14": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-02-08T17:51:03", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/ec/48/794f01cd79907a36de4d9bf512b80dd91ab33fb4f70134de5df56414aa94/celery-3.0.14.tar.gz", 
+                "md5_digest": "7fb39e064233becce9b13b7f9dfaca08", 
+                "downloads": 9045, 
+                "filename": "celery-3.0.14.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "ec/48/794f01cd79907a36de4d9bf512b80dd91ab33fb4f70134de5df56414aa94/celery-3.0.14.tar.gz", 
+                "size": 1229097
+            }
+        ], 
+        "3.0.15": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-02-11T16:32:31", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/47/d0/1db53a66fbbcd77e8594c7a45576a5d4325b01e3640ecfbdfedc79883ecf/celery-3.0.15.tar.gz", 
+                "md5_digest": "5ac83d2cdcacf230897d9bffcf0ddbd9", 
+                "downloads": 75623, 
+                "filename": "celery-3.0.15.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "47/d0/1db53a66fbbcd77e8594c7a45576a5d4325b01e3640ecfbdfedc79883ecf/celery-3.0.15.tar.gz", 
+                "size": 1229180
+            }
+        ], 
+        "3.0.16": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-03-08T15:40:41", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/e7/49/bc7f9312d2269f8717ec7706e9b9283bbf68baaef8c5a0e8b1a0add9e31b/celery-3.0.16.tar.gz", 
+                "md5_digest": "ebc0636683df28b7d2dc8b06a948eecb", 
+                "downloads": 82680, 
+                "filename": "celery-3.0.16.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "e7/49/bc7f9312d2269f8717ec7706e9b9283bbf68baaef8c5a0e8b1a0add9e31b/celery-3.0.16.tar.gz", 
+                "size": 1233799
+            }
+        ], 
+        "3.0.17": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-03-22T16:06:25", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/d8/83/9e7f8df01cbcf3727ba80dcb8ef85f4dad7b10ab504447ca349bc732f0d5/celery-3.0.17.tar.gz", 
+                "md5_digest": "50491556f2b521d249da6f30112dfcb9", 
+                "downloads": 71158, 
+                "filename": "celery-3.0.17.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "d8/83/9e7f8df01cbcf3727ba80dcb8ef85f4dad7b10ab504447ca349bc732f0d5/celery-3.0.17.tar.gz", 
+                "size": 1235117
+            }
+        ], 
+        "3.0.18": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-04-12T16:20:10", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/03/a9/b803a9593a2ca103e273e51e53e5527a6647a39cd0d71cec7ede42d24695/celery-3.0.18.tar.gz", 
+                "md5_digest": "ca1a7027e229c9cc99a16d9852cebc3e", 
+                "downloads": 15592, 
+                "filename": "celery-3.0.18.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "03/a9/b803a9593a2ca103e273e51e53e5527a6647a39cd0d71cec7ede42d24695/celery-3.0.18.tar.gz", 
+                "size": 1240084
+            }
+        ], 
+        "3.0.19": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-04-17T15:19:30", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/aa/f7/c9f193f422364f97e51278771b6922213bce1962eacdd242e3a28283a4e5/celery-3.0.19.tar.gz", 
+                "md5_digest": "267c4fe4fdff3f7b722ca24327f49d64", 
+                "downloads": 276655, 
+                "filename": "celery-3.0.19.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "aa/f7/c9f193f422364f97e51278771b6922213bce1962eacdd242e3a28283a4e5/celery-3.0.19.tar.gz", 
+                "size": 1242004
+            }
+        ], 
+        "4.0.0rc3": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-07-08T22:31:58", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/33/00/c8979f8302cf1ff31bbab31ac328073f0c23f49cf3d55cb2c5d67ed76954/celery-4.0.0rc3-py2.py3-none-any.whl", 
+                "md5_digest": "674569d86ff5a61d68f953924e7095b3", 
+                "downloads": 2831, 
+                "filename": "celery-4.0.0rc3-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "33/00/c8979f8302cf1ff31bbab31ac328073f0c23f49cf3d55cb2c5d67ed76954/celery-4.0.0rc3-py2.py3-none-any.whl", 
+                "size": 553447
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-07-08T22:31:52", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/0c/4e/be8d89c18693ee8c5edb6a59c84ac77891b15a75a9cd0d5d70dfaa106d81/celery-4.0.0rc3.tar.gz", 
+                "md5_digest": "7e81b659a3beffeadace397694f1dfe8", 
+                "downloads": 2226, 
+                "filename": "celery-4.0.0rc3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "0c/4e/be8d89c18693ee8c5edb6a59c84ac77891b15a75a9cd0d5d70dfaa106d81/celery-4.0.0rc3.tar.gz", 
+                "size": 1347201
+            }
+        ], 
+        "4.0.0rc7": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-11-03T00:55:45", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/1e/64/083e7d1a29a01044b5f2b8a8854bfaa1d80c8e4ed96a7774375098a74445/celery-4.0.0rc7-py2.py3-none-any.whl", 
+                "md5_digest": "e00e5756704a487466753acb4172db20", 
+                "downloads": 305, 
+                "filename": "celery-4.0.0rc7-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "1e/64/083e7d1a29a01044b5f2b8a8854bfaa1d80c8e4ed96a7774375098a74445/celery-4.0.0rc7-py2.py3-none-any.whl", 
+                "size": 419550
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-11-03T00:55:39", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/45/62/5db583643853696be9ef10a87bbec327f3f3e305929677a8b447b20f958e/celery-4.0.0rc7.tar.gz", 
+                "md5_digest": "094446dc56da00114ee7892888fe4020", 
+                "downloads": 76, 
+                "filename": "celery-4.0.0rc7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "45/62/5db583643853696be9ef10a87bbec327f3f3e305929677a8b447b20f958e/celery-4.0.0rc7.tar.gz", 
+                "size": 1431962
+            }
+        ], 
+        "4.0.0rc6": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-10-22T02:42:31", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/75/1d/1ca75e00cb5f9d6a86385a3575305d94e6980bc606aa94673035a708dcbc/celery-4.0.0rc6-py2.py3-none-any.whl", 
+                "md5_digest": "6911ddb9057ed4d992d41fe97ed03ed5", 
+                "downloads": 1356, 
+                "filename": "celery-4.0.0rc6-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "75/1d/1ca75e00cb5f9d6a86385a3575305d94e6980bc606aa94673035a708dcbc/celery-4.0.0rc6-py2.py3-none-any.whl", 
+                "size": 413338
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-10-22T02:42:26", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/e4/88/d52ef385e787906d40d13569eac379878d3fa2c9c37fa125c9328fd8b26f/celery-4.0.0rc6.tar.gz", 
+                "md5_digest": "1658210588996c839146308a3e7c4ade", 
+                "downloads": 1269, 
+                "filename": "celery-4.0.0rc6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "e4/88/d52ef385e787906d40d13569eac379878d3fa2c9c37fa125c9328fd8b26f/celery-4.0.0rc6.tar.gz", 
+                "size": 1419750
+            }
+        ], 
+        "4.0.0rc5": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-10-15T01:07:12", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/3c/19/7176f49b519ebf1d43ad048c4484e927964d70997d667296bfbbf7c87cf2/celery-4.0.0rc5-py2.py3-none-any.whl", 
+                "md5_digest": "1819d7e6b7f34911bdf8589e96d91bd4", 
+                "downloads": 524, 
+                "filename": "celery-4.0.0rc5-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "3c/19/7176f49b519ebf1d43ad048c4484e927964d70997d667296bfbbf7c87cf2/celery-4.0.0rc5-py2.py3-none-any.whl", 
+                "size": 402434
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-10-15T01:07:08", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/6d/5a/5075c6a3eca3120d41916014d281f71c4109427c53ff34f5728ae9f07148/celery-4.0.0rc5.tar.gz", 
+                "md5_digest": "e9dc8284b060c79323dd059e3137f283", 
+                "downloads": 429, 
+                "filename": "celery-4.0.0rc5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "6d/5a/5075c6a3eca3120d41916014d281f71c4109427c53ff34f5728ae9f07148/celery-4.0.0rc5.tar.gz", 
+                "size": 1406534
+            }
+        ], 
+        "4.0.0rc4": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-09-08T22:30:45", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/c2/22/a526c291b39542c8110df5f53973169897b83e96051a0a888b4fc6e8af94/celery-4.0.0rc4-py2.py3-none-any.whl", 
+                "md5_digest": "f135366bcfa9bd81d5f321cea77860a9", 
+                "downloads": 1353, 
+                "filename": "celery-4.0.0rc4-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "c2/22/a526c291b39542c8110df5f53973169897b83e96051a0a888b4fc6e8af94/celery-4.0.0rc4-py2.py3-none-any.whl", 
+                "size": 392195
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-09-08T22:30:40", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/d2/5a/769c88e59712154a257efa187abbcd8344d627f9b18d06562569820c19e0/celery-4.0.0rc4.tar.gz", 
+                "md5_digest": "b88a34a9710e0ad576d6a23e40e28e7a", 
+                "downloads": 1318, 
+                "filename": "celery-4.0.0rc4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "d2/5a/769c88e59712154a257efa187abbcd8344d627f9b18d06562569820c19e0/celery-4.0.0rc4.tar.gz", 
+                "size": 1393289
+            }
+        ], 
+        "3.0.6": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-08-17T22:20:07", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/f8/b7/4db2e65f366ec254edb4e5c21f38710598eb35c1174a065ca19f927783ff/celery-3.0.6.tar.gz", 
+                "md5_digest": "71429442f8250be5a809faf140556340", 
+                "downloads": 13810, 
+                "filename": "celery-3.0.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "f8/b7/4db2e65f366ec254edb4e5c21f38710598eb35c1174a065ca19f927783ff/celery-3.0.6.tar.gz", 
+                "size": 1208874
+            }
+        ], 
+        "3.0.7": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-08-24T16:55:21", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/e1/d2/01f5437437f570359ea33183073b9364f8f70d5b767fa21358b8056909f4/celery-3.0.7.tar.gz", 
+                "md5_digest": "a3b2240ad928c13bd8e075f0f5ec0d4b", 
+                "downloads": 12716, 
+                "filename": "celery-3.0.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "e1/d2/01f5437437f570359ea33183073b9364f8f70d5b767fa21358b8056909f4/celery-3.0.7.tar.gz", 
+                "size": 1210218
+            }
+        ], 
+        "3.0.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-07-26T21:06:38", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/3c/4a/ae7988ee5afc3864261fdaef132348dfefe5c3168b2505711f774b253292/celery-3.0.4.tar.gz", 
+                "md5_digest": "f4844c044716b1d3adbae6cb545ff24d", 
+                "downloads": 9258, 
+                "filename": "celery-3.0.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "3c/4a/ae7988ee5afc3864261fdaef132348dfefe5c3168b2505711f774b253292/celery-3.0.4.tar.gz", 
+                "size": 1058430
+            }
+        ], 
+        "3.0.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-08-01T17:33:00", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/6f/26/4df4631d72323152ca04f441a792fe6b875b168dae00ce29eb28e95f7227/celery-3.0.5.tar.gz", 
+                "md5_digest": "bf2ea38d572c7bd976810b6b4b6c1e3d", 
+                "downloads": 31311, 
+                "filename": "celery-3.0.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "6f/26/4df4631d72323152ca04f441a792fe6b875b168dae00ce29eb28e95f7227/celery-3.0.5.tar.gz", 
+                "size": 1058986
+            }
+        ], 
+        "3.0.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-07-20T17:36:59", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/22/f0/e3e09fbd5ffe0b08c6918fdbda004e95c28ce2914310588148e39ef3813c/celery-3.0.2.tar.gz", 
+                "md5_digest": "da94277538270855921809f2dee67614", 
+                "downloads": 4249, 
+                "filename": "celery-3.0.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "22/f0/e3e09fbd5ffe0b08c6918fdbda004e95c28ce2914310588148e39ef3813c/celery-3.0.2.tar.gz", 
+                "size": 961658
+            }
+        ], 
+        "3.0.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-07-20T22:21:04", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/94/b4/acc895c29f371083388d8b3037ac10a9d462b8e1368e2e43fc2b61c9dc3f/celery-3.0.3.tar.gz", 
+                "md5_digest": "65058a8c11c50480d6468154b2718d52", 
+                "downloads": 165776, 
+                "filename": "celery-3.0.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "94/b4/acc895c29f371083388d8b3037ac10a9d462b8e1368e2e43fc2b61c9dc3f/celery-3.0.3.tar.gz", 
+                "size": 961793
+            }
+        ], 
+        "3.0.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-07-07T13:59:33", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/88/3e/d2a0d310fd4a0ab7dca0fbde1b5d531f6409536559bba0cdbb98997bc58d/celery-3.0.0.tar.gz", 
+                "md5_digest": "4db351ac5943424c020386322816b0c2", 
+                "downloads": 11162, 
+                "filename": "celery-3.0.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "88/3e/d2a0d310fd4a0ab7dca0fbde1b5d531f6409536559bba0cdbb98997bc58d/celery-3.0.0.tar.gz", 
+                "size": 955774
+            }
+        ], 
+        "3.0.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-07-10T19:10:26", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b4/e2/1790137c63291d180a127cd24f0e13ca200c391ad2f654fb5279b8e1faa9/celery-3.0.1.tar.gz", 
+                "md5_digest": "64cd59537ddda0b32ef3e54935650771", 
+                "downloads": 23762, 
+                "filename": "celery-3.0.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b4/e2/1790137c63291d180a127cd24f0e13ca200c391ad2f654fb5279b8e1faa9/celery-3.0.1.tar.gz", 
+                "size": 957999
+            }
+        ], 
+        "3.0.8": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-08-29T16:05:38", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/a9/d1/e4dd4d9755bd338538ad6608be74c95c096bfff6c1efe91b134dc4424dc7/celery-3.0.8.tar.gz", 
+                "md5_digest": "248c47aa21440b9c716512ead00272f0", 
+                "downloads": 10042, 
+                "filename": "celery-3.0.8.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "a9/d1/e4dd4d9755bd338538ad6608be74c95c096bfff6c1efe91b134dc4424dc7/celery-3.0.8.tar.gz", 
+                "size": 1211460
+            }
+        ], 
+        "3.0.9": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-08-31T16:58:17", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/5d/18/11116de4b0d30a2e596df870fea4e0bd0b2e5c90d0e895c1d5c17edad6b1/celery-3.0.9.tar.gz", 
+                "md5_digest": "894d5dcc281be4a6d0dce16c9cc02e57", 
+                "downloads": 40013, 
+                "filename": "celery-3.0.9.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "5d/18/11116de4b0d30a2e596df870fea4e0bd0b2e5c90d0e895c1d5c17edad6b1/celery-3.0.9.tar.gz", 
+                "size": 1213486
+            }
+        ], 
+        "0.1.10": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-05-11T12:53:20", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/e4/c5/91b850759f576123085a3a60ee8356ce477ee467dbbf9ff6eec458e2237a/celery-0.1.10.tar.gz", 
+                "md5_digest": "f014724574211a4388fc0f2f2030cbf3", 
+                "downloads": 5213, 
+                "filename": "celery-0.1.10.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "e4/c5/91b850759f576123085a3a60ee8356ce477ee467dbbf9ff6eec458e2237a/celery-0.1.10.tar.gz", 
+                "size": 58005
+            }
+        ], 
+        "1.0.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-05-31T11:01:25", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/11/67/482f346d8ac04154a4575d8daf1e1f25d10d62a33f61902e272cc5809d8b/celery-1.0.4.tar.gz", 
+                "md5_digest": "7ba41bbf305e7677a26162704ebb9327", 
+                "downloads": 5272, 
+                "filename": "celery-1.0.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "11/67/482f346d8ac04154a4575d8daf1e1f25d10d62a33f61902e272cc5809d8b/celery-1.0.4.tar.gz", 
+                "size": 1502398
+            }
+        ], 
+        "2.0.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-08-27T12:53:02", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/ae/4e/b3797d6b1ec7f60ac460492fe118115ff636970e0bb6d6ab53f3aa1384f8/celery-2.0.3.tar.gz", 
+                "md5_digest": "824e934e56e5e4ac2d5b8bbe6eba8c50", 
+                "downloads": 16611, 
+                "filename": "celery-2.0.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "ae/4e/b3797d6b1ec7f60ac460492fe118115ff636970e0bb6d6ab53f3aa1384f8/celery-2.0.3.tar.gz", 
+                "size": 1082823
+            }
+        ], 
+        "2.0.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-07-23T23:23:23", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/3e/da/591df660751e72c8456d149f1593acb1ed40eb01c9d9f2799d2a5f8e34f3/celery-2.0.2.tar.gz", 
+                "md5_digest": "b0e3aa6a4df49bacd45305bc9ab8f9ae", 
+                "downloads": 11435, 
+                "filename": "celery-2.0.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "3e/da/591df660751e72c8456d149f1593acb1ed40eb01c9d9f2799d2a5f8e34f3/celery-2.0.2.tar.gz", 
+                "size": 1078142
+            }
+        ], 
+        "2.0.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-07-09T15:41:41", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/72/53/247ab78e12f2b8c2fc7a4740779167dff9791c86230ca657a5fa7bbffd0a/celery-2.0.1.tar.gz", 
+                "md5_digest": "b5b523890ea22281ee2dff6a0767abb8", 
+                "downloads": 7795, 
+                "filename": "celery-2.0.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "72/53/247ab78e12f2b8c2fc7a4740779167dff9791c86230ca657a5fa7bbffd0a/celery-2.0.1.tar.gz", 
+                "size": 1071118
+            }
+        ], 
+        "2.0.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-07-02T14:50:39", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/9c/c9/f69b9915c62f4105383834180e1c4a7ff36da1cf90608a939ee578173879/celery-2.0.0.tar.gz", 
+                "md5_digest": "b9b14d1092a10f6436435b27cd7a15f9", 
+                "downloads": 6286, 
+                "filename": "celery-2.0.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "9c/c9/f69b9915c62f4105383834180e1c4a7ff36da1cf90608a939ee578173879/celery-2.0.0.tar.gz", 
+                "size": 1561868
+            }
+        ], 
+        "2.2.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-03-28T18:32:27", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/74/01/53909028798a5a5b3563cc621ac0c6f4a88b1a6ee970702763863c7b0daf/celery-2.2.5.tar.gz", 
+                "md5_digest": "d523c914a7c2761c70a4cc9058fdd6e8", 
+                "downloads": 13582, 
+                "filename": "celery-2.2.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "74/01/53909028798a5a5b3563cc621ac0c6f4a88b1a6ee970702763863c7b0daf/celery-2.2.5.tar.gz", 
+                "size": 1500347
+            }
+        ], 
+        "2.2.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-19T23:45:31", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/df/04/886803c5d26f9d50d1440f2557314b70f08b7a521d9ab06fac48e26ad719/celery-2.2.4.tar.gz", 
+                "md5_digest": "4bbdcf92735ac7366228bf578f9b1147", 
+                "downloads": 21602, 
+                "filename": "celery-2.2.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "df/04/886803c5d26f9d50d1440f2557314b70f08b7a521d9ab06fac48e26ad719/celery-2.2.4.tar.gz", 
+                "size": 1492204
+            }
+        ], 
+        "2.2.7": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-06-13T16:18:41", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/9c/eb/d63bf7c1d5548c7cb18a6fb415934a90ff845d32872a659738900da188cb/celery-2.2.7.tar.gz", 
+                "md5_digest": "5826cf891eaa6175cc7aab67818094fe", 
+                "downloads": 64219, 
+                "filename": "celery-2.2.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "9c/eb/d63bf7c1d5548c7cb18a6fb415934a90ff845d32872a659738900da188cb/celery-2.2.7.tar.gz", 
+                "size": 1502018
+            }
+        ], 
+        "2.2.6": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-04-15T15:25:15", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/53/86/466b51b3fb2b5e319b7ba855927f327028e05d87b8229087cdfb0dd6a6bb/celery-2.2.6.tar.gz", 
+                "md5_digest": "0c8f5ec2535e2aaf692fd0227a5bb407", 
+                "downloads": 41170, 
+                "filename": "celery-2.2.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "53/86/466b51b3fb2b5e319b7ba855927f327028e05d87b8229087cdfb0dd6a6bb/celery-2.2.6.tar.gz", 
+                "size": 1501710
+            }
+        ], 
+        "2.2.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-02T16:15:25", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/50/7c/021e3e877f2c7bed8c1a5c8b76f3bdf6f29f74bb37f6a6d5bdd32c162880/celery-2.2.1.tar.bz2", 
+                "md5_digest": "6055ffcd9ee9123257ad4d9bc0146c0a", 
+                "downloads": 5499, 
+                "filename": "celery-2.2.1.tar.bz2", 
+                "packagetype": "sdist", 
+                "path": "50/7c/021e3e877f2c7bed8c1a5c8b76f3bdf6f29f74bb37f6a6d5bdd32c162880/celery-2.2.1.tar.bz2", 
+                "size": 1430407
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-02T16:15:22", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/f2/20/5393530f65effecbca5e344d97f3fd200c2ea87de1d5b9e15f4edced2a70/celery-2.2.1.tar.gz", 
+                "md5_digest": "67a6a49ff4598b612decc0672b7758d5", 
+                "downloads": 5149, 
+                "filename": "celery-2.2.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "f2/20/5393530f65effecbca5e344d97f3fd200c2ea87de1d5b9e15f4edced2a70/celery-2.2.1.tar.gz", 
+                "size": 1486647
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-02T16:15:19", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/e2/d6/8eba060c3c29c6225c3bb944de78d80c930c97a302d4851879919d132e1f/celery-2.2.1.zip", 
+                "md5_digest": "44c9e908cba22593a83414d8e1514977", 
+                "downloads": 5320, 
+                "filename": "celery-2.2.1.zip", 
+                "packagetype": "sdist", 
+                "path": "e2/d6/8eba060c3c29c6225c3bb944de78d80c930c97a302d4851879919d132e1f/celery-2.2.1.zip", 
+                "size": 1694096
+            }
+        ], 
+        "2.2.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-01T11:05:07", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/26/67/4507c8b17966429d84be4e33b70c9ce197748cf72157c97e2da8fbf7581c/celery-2.2.0.tar.bz2", 
+                "md5_digest": "16e043ef274ccf2d658b6b0ee843f67b", 
+                "downloads": 5260, 
+                "filename": "celery-2.2.0.tar.bz2", 
+                "packagetype": "sdist", 
+                "path": "26/67/4507c8b17966429d84be4e33b70c9ce197748cf72157c97e2da8fbf7581c/celery-2.2.0.tar.bz2", 
+                "size": 1405656
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-01T11:02:41", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/8d/81/0985bf4888493ebabb03cf14d1ace62e825771d1cdc93f3ba7df95e0ddd6/celery-2.2.0.tar.gz", 
+                "md5_digest": "5affe85cab7fcb61c28218963c8d7eb3", 
+                "downloads": 6625, 
+                "filename": "celery-2.2.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "8d/81/0985bf4888493ebabb03cf14d1ace62e825771d1cdc93f3ba7df95e0ddd6/celery-2.2.0.tar.gz", 
+                "size": 1486172
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-01T11:05:10", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/1d/4d/afa05d9d26b167a367b13e553d3c4c0ee3a84d1cd82e34f210fd39ed3705/celery-2.2.0.zip", 
+                "md5_digest": "8ecb541e1d34143495f8899677cc8c7d", 
+                "downloads": 5616, 
+                "filename": "celery-2.2.0.zip", 
+                "packagetype": "sdist", 
+                "path": "1d/4d/afa05d9d26b167a367b13e553d3c4c0ee3a84d1cd82e34f210fd39ed3705/celery-2.2.0.zip", 
+                "size": 1693636
+            }
+        ], 
+        "2.2.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-12T16:20:37", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/2e/b8/58e2864a35ab0203e599f3725a63d39e3a564d56f816d4f4c82cbcee6833/celery-2.2.3.tar.bz2", 
+                "md5_digest": "3074e37245e2985c3bbc3aa6960fb750", 
+                "downloads": 5411, 
+                "filename": "celery-2.2.3.tar.bz2", 
+                "packagetype": "sdist", 
+                "path": "2e/b8/58e2864a35ab0203e599f3725a63d39e3a564d56f816d4f4c82cbcee6833/celery-2.2.3.tar.bz2", 
+                "size": 1430852
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-12T16:20:34", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/44/82/f1f91578918064eb402d0f52f6cc8b5086cb0a1e5bff886f800ea0b4abbd/celery-2.2.3.tar.gz", 
+                "md5_digest": "3878277c08157fd84d8632b99f9e7c03", 
+                "downloads": 5603, 
+                "filename": "celery-2.2.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "44/82/f1f91578918064eb402d0f52f6cc8b5086cb0a1e5bff886f800ea0b4abbd/celery-2.2.3.tar.gz", 
+                "size": 1488878
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-12T16:20:40", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/af/92/2a1988d889cf60e3008a51782b52900f5377e0b71ad7820d539555673168/celery-2.2.3.zip", 
+                "md5_digest": "e5a990a84eceaeaf8add61a41b138eea", 
+                "downloads": 6665, 
+                "filename": "celery-2.2.3.zip", 
+                "packagetype": "sdist", 
+                "path": "af/92/2a1988d889cf60e3008a51782b52900f5377e0b71ad7820d539555673168/celery-2.2.3.zip", 
+                "size": 1695686
+            }
+        ], 
+        "2.2.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-03T23:25:18", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b0/ea/cd451a99eacda0404deea3ddeda1c3ddb05d92208cf973661f1873d95821/celery-2.2.2.tar.bz2", 
+                "md5_digest": "428716ef52f1e1f1fee4656c2705e708", 
+                "downloads": 9071, 
+                "filename": "celery-2.2.2.tar.bz2", 
+                "packagetype": "sdist", 
+                "path": "b0/ea/cd451a99eacda0404deea3ddeda1c3ddb05d92208cf973661f1873d95821/celery-2.2.2.tar.bz2", 
+                "size": 1430918
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-03T23:25:15", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/93/dd/56b2743eb789bbd360f93af019d6bb4bb5f95f00ebbd49615218c1e3d758/celery-2.2.2.tar.gz", 
+                "md5_digest": "a3960153b8a7126a121bf2977e328fea", 
+                "downloads": 6119, 
+                "filename": "celery-2.2.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "93/dd/56b2743eb789bbd360f93af019d6bb4bb5f95f00ebbd49615218c1e3d758/celery-2.2.2.tar.gz", 
+                "size": 1487313
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-03T23:25:22", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/94/a1/668e99f614b1e442063086f2b0ac822e65471d0bc20f5c6b239003ffc819/celery-2.2.2.zip", 
+                "md5_digest": "6c95343deb235a196973ef78408344fb", 
+                "downloads": 14498, 
+                "filename": "celery-2.2.2.zip", 
+                "packagetype": "sdist", 
+                "path": "94/a1/668e99f614b1e442063086f2b0ac822e65471d0bc20f5c6b239003ffc819/celery-2.2.2.zip", 
+                "size": 1695007
+            }
+        ], 
+        "2.2.9": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-12-13T12:11:38", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/23/a4/e49af8e757ece2987e47f04a56feeb135d7c65cbb45b13b6d147dbc57fe5/celery-2.2.9.tar.gz", 
+                "md5_digest": "21cd9d3c25fa3e855af480b96c345dc0", 
+                "downloads": 5815, 
+                "filename": "celery-2.2.9.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "23/a4/e49af8e757ece2987e47f04a56feeb135d7c65cbb45b13b6d147dbc57fe5/celery-2.2.9.tar.gz", 
+                "size": 1503856
+            }
+        ], 
+        "2.2.8": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-11-25T17:54:23", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/91/e9/a33c624d1d4e4ad1a13bd97ca26b44366522771af66fd9c9b584af1eb673/celery-2.2.8.tar.gz", 
+                "md5_digest": "5aa94bea787b1fbb10c066c6b51dbafc", 
+                "downloads": 5286, 
+                "filename": "celery-2.2.8.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "91/e9/a33c624d1d4e4ad1a13bd97ca26b44366522771af66fd9c9b584af1eb673/celery-2.2.8.tar.gz", 
+                "size": 1502049
+            }
+        ], 
+        "0.6.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-08-07T11:32:02", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/ab/f0/b716dcd55d8e70b26b26836a2c12e03a0eee2804c261daf1b8801f88a7ff/celery-0.6.0.tar.gz", 
+                "md5_digest": "0545f89033e1639bbb1be0974465577c", 
+                "downloads": 5637, 
+                "filename": "celery-0.6.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "ab/f0/b716dcd55d8e70b26b26836a2c12e03a0eee2804c261daf1b8801f88a7ff/celery-0.6.0.tar.gz", 
+                "size": 460242
+            }
+        ], 
+        "3.1.22": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-03-08T00:03:46", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/5f/c7/7c904284a7d6f8caecf7b14354ed88f40ec76a451193aa626900c09ededa/celery-3.1.22-py2.py3-none-any.whl", 
+                "md5_digest": "11d441f8307bd67817e714f9aaf6d633", 
+                "downloads": 3430, 
+                "filename": "celery-3.1.22-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "5f/c7/7c904284a7d6f8caecf7b14354ed88f40ec76a451193aa626900c09ededa/celery-3.1.22-py2.py3-none-any.whl", 
+                "size": 520385
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-03-08T00:03:25", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/0f/9e/2af998899beb9cb27f201799b5b6d2ff13c0bebb61f151abf72f07a1158e/celery-3.1.22.tar.gz", 
+                "md5_digest": "af6f4e529e80dbaa8f800192fba8f83f", 
+                "downloads": 280, 
+                "filename": "celery-3.1.22.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "0f/9e/2af998899beb9cb27f201799b5b6d2ff13c0bebb61f151abf72f07a1158e/celery-3.1.22.tar.gz", 
+                "size": 1310504
+            }
+        ], 
+        "3.1.23": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-03-10T02:12:07", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/de/df/59f5df67082ef46b86bc754b82f8cf187b835eea8a56ea8907813e75ad6d/celery-3.1.23-py2.py3-none-any.whl", 
+                "md5_digest": "b2b5e20bd9042246f7b2c295d98315da", 
+                "downloads": 340523, 
+                "filename": "celery-3.1.23-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "de/df/59f5df67082ef46b86bc754b82f8cf187b835eea8a56ea8907813e75ad6d/celery-3.1.23-py2.py3-none-any.whl", 
+                "size": 520409
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-03-10T02:11:51", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/ea/a6/6da0bac3ea8abbc2763fd2664af2955702f97f140f2d7277069445532b7c/celery-3.1.23.tar.gz", 
+                "md5_digest": "c6f10f956a49424d553ab1391ab39ab2", 
+                "downloads": 14840, 
+                "filename": "celery-3.1.23.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "ea/a6/6da0bac3ea8abbc2763fd2664af2955702f97f140f2d7277069445532b7c/celery-3.1.23.tar.gz", 
+                "size": 1310624
+            }
+        ], 
+        "3.1.20": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-01-23T02:48:30", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/b9/ad/5233202888d305f7a5392a9c0729affe0b877168746ad4f666737750a10c/celery-3.1.20-py2.py3-none-any.whl", 
+                "md5_digest": "899b8fb9c042a56344e4a64c5fa8d05c", 
+                "downloads": 79829, 
+                "filename": "celery-3.1.20-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "b9/ad/5233202888d305f7a5392a9c0729affe0b877168746ad4f666737750a10c/celery-3.1.20-py2.py3-none-any.whl", 
+                "size": 518570
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-01-23T02:48:18", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b2/67/ddda25b215d47d2e07617d0aa5ee95ab69feb5fee3319ba11a62fe14c17e/celery-3.1.20.tar.gz", 
+                "md5_digest": "025128230881de934461f1f2702ef721", 
+                "downloads": 6669, 
+                "filename": "celery-3.1.20.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b2/67/ddda25b215d47d2e07617d0aa5ee95ab69feb5fee3319ba11a62fe14c17e/celery-3.1.20.tar.gz", 
+                "size": 1308238
+            }
+        ], 
+        "3.1.21": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-03-04T19:20:03", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/07/07/f1269cb12a4644a428f35b8adfb764b9345dd7d5d3cec7f88222b20ab995/celery-3.1.21-py2.py3-none-any.whl", 
+                "md5_digest": "f20eef56635e8b0f34a1fa21a40ced04", 
+                "downloads": 15237, 
+                "filename": "celery-3.1.21-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "07/07/f1269cb12a4644a428f35b8adfb764b9345dd7d5d3cec7f88222b20ab995/celery-3.1.21-py2.py3-none-any.whl", 
+                "size": 520206
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-03-04T19:19:50", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/9c/d0/5b784a5846d8b44f90a40bc46f99203b708ab11d4f8e79f590defbff0116/celery-3.1.21.tar.gz", 
+                "md5_digest": "27f313c7e4d0fb1bee0cd5f1decee180", 
+                "downloads": 277, 
+                "filename": "celery-3.1.21.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "9c/d0/5b784a5846d8b44f90a40bc46f99203b708ab11d4f8e79f590defbff0116/celery-3.1.21.tar.gz", 
+                "size": 1310301
+            }
+        ], 
+        "3.1.24": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-10-01T00:18:42", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/c8/82/f46379046f2150d92085c0814affb4bedbd1c7f9703e569c8575fd7f1a4f/celery-3.1.24-py2.py3-none-any.whl", 
+                "md5_digest": "6d52079a2b15077b973823f1adb01e17", 
+                "downloads": 96415, 
+                "filename": "celery-3.1.24-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "c8/82/f46379046f2150d92085c0814affb4bedbd1c7f9703e569c8575fd7f1a4f/celery-3.1.24-py2.py3-none-any.whl", 
+                "size": 526285
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-10-01T00:17:20", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/dd/c0/f30014ce9426871010007e1994d3eaab8beb2929d4ca497456b7a97671fc/celery-3.1.24.tar.gz", 
+                "md5_digest": "50a713dd38cf9b3574cb93745a467c59", 
+                "downloads": 2422, 
+                "filename": "celery-3.1.24.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "dd/c0/f30014ce9426871010007e1994d3eaab8beb2929d4ca497456b7a97671fc/celery-3.1.24.tar.gz", 
+                "size": 1330180
+            }
+        ], 
+        "3.1.25": [
+            {
+                "has_sig": true, 
+                "upload_time": "2016-11-05T01:51:13", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/13/28/b45b7d4c13695f321522566747e0a4a9c8883515f664e0487974e5f79d16/celery-3.1.25-py2.py3-none-any.whl", 
+                "md5_digest": "43b51c87cb22cf6cb94e68102481e139", 
+                "downloads": 42597, 
+                "filename": "celery-3.1.25-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "13/28/b45b7d4c13695f321522566747e0a4a9c8883515f664e0487974e5f79d16/celery-3.1.25-py2.py3-none-any.whl", 
+                "size": 526186
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2016-11-05T01:52:13", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/62/8d/5d9e8cddd987b409b9a332a5eb73c2d01ea42ab83865e8e8a011326c16dc/celery-3.1.25.tar.gz", 
+                "md5_digest": "81ebed2cccbc03c2d8adcba4fefac3bb", 
+                "downloads": 2155, 
+                "filename": "celery-3.1.25.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "62/8d/5d9e8cddd987b409b9a332a5eb73c2d01ea42ab83865e8e8a011326c16dc/celery-3.1.25.tar.gz", 
+                "size": 1330179
+            }
+        ], 
+        "0.1.12": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-05-18T16:48:01", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/01/ef/e63cda3896838b4231b73dac84213c7c559b30fbeb60dcc84d58f13b0f65/celery-0.1.12.tar.gz", 
+                "md5_digest": "ce560d3dac3b92bd01bb2bf39e69e0c5", 
+                "downloads": 5246, 
+                "filename": "celery-0.1.12.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "01/ef/e63cda3896838b4231b73dac84213c7c559b30fbeb60dcc84d58f13b0f65/celery-0.1.12.tar.gz", 
+                "size": 45502
+            }
+        ], 
+        "2.2.10": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-02-07T17:41:26", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b1/64/860fd50e45844c83442e7953effcddeff66b2851d90b2d784f7201c111b8/celery-2.2.10.tar.gz", 
+                "md5_digest": "898bc87e54f278055b561316ba73e222", 
+                "downloads": 33757, 
+                "filename": "celery-2.2.10.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b1/64/860fd50e45844c83442e7953effcddeff66b2851d90b2d784f7201c111b8/celery-2.2.10.tar.gz", 
+                "size": 1502041
+            }
+        ], 
+        "0.1.13": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-05-19T12:52:16", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/2c/40/b042ab9a23fe862f0243af651552a76d656c8f8c6593fb683e94758b07ae/celery-0.1.13.tar.gz", 
+                "md5_digest": "7be6b0a2350055a5a39ad9d004dc0b19", 
+                "downloads": 5208, 
+                "filename": "celery-0.1.13.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "2c/40/b042ab9a23fe862f0243af651552a76d656c8f8c6593fb683e94758b07ae/celery-0.1.13.tar.gz", 
+                "size": 245409
+            }
+        ], 
+        "0.8.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-02-05T13:57:40", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/c5/5a/69213c88917f99d526fed81438ffeaafeb3aeb539de3c670b331e698dbcc/celery-0.8.4.tar.gz", 
+                "md5_digest": "953a0cacf3b5d8de94348d3ed958122e", 
+                "downloads": 5395, 
+                "filename": "celery-0.8.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "c5/5a/69213c88917f99d526fed81438ffeaafeb3aeb539de3c670b331e698dbcc/celery-0.8.4.tar.gz", 
+                "size": 733355
+            }
+        ], 
+        "0.8.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-11-17T15:29:43", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/93/e0/e82b8a220cb6715958ab0f7f425ffa8ca26a46f4a89ace326973a59156c3/celery-0.8.1.tar.gz", 
+                "md5_digest": "65738c5afe9c92ee38654deaee583289", 
+                "downloads": 5285, 
+                "filename": "celery-0.8.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "93/e0/e82b8a220cb6715958ab0f7f425ffa8ca26a46f4a89ace326973a59156c3/celery-0.8.1.tar.gz", 
+                "size": 739072
+            }
+        ], 
+        "0.8.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-09-22T15:07:52", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/0e/7c/027ffc99fe53a21dd90f536e0e8353d997a1e1b10061cb0c8a4371846dad/celery-0.8.0.tar.gz", 
+                "md5_digest": "a98604e9ce736026f4dee88000146d99", 
+                "downloads": 6002, 
+                "filename": "celery-0.8.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "0e/7c/027ffc99fe53a21dd90f536e0e8353d997a1e1b10061cb0c8a4371846dad/celery-0.8.0.tar.gz", 
+                "size": 489924
+            }
+        ], 
+        "0.8.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-12-22T09:45:41", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/36/08/5e99b4510e35de3ccf8897e42f06578dafba77a35f7b324158d0a880fa54/celery-0.8.3.tar.gz", 
+                "md5_digest": "0d7f6f9a2bbe15d6f93e037ecf67d54a", 
+                "downloads": 5943, 
+                "filename": "celery-0.8.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "36/08/5e99b4510e35de3ccf8897e42f06578dafba77a35f7b324158d0a880fa54/celery-0.8.3.tar.gz", 
+                "size": 733046
+            }
+        ], 
+        "0.8.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-11-20T15:45:22", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/2f/ca/a2a748e4827e7709717bc6fca7be018a4cb61e877d5ed41050c0476d5d72/celery-0.8.2.tar.gz", 
+                "md5_digest": "1d434f9a3a69f8200196b00f69fa5bb0", 
+                "downloads": 5708, 
+                "filename": "celery-0.8.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "2f/ca/a2a748e4827e7709717bc6fca7be018a4cb61e877d5ed41050c0476d5d72/celery-0.8.2.tar.gz", 
+                "size": 735863
+            }
+        ], 
+        "0.4.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-07-02T14:09:41", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/7c/30/d0b0912934c447ffcee595cc80fc5eb60ef412474dc22635756e10671fcd/celery-0.4.1.tar.gz", 
+                "md5_digest": "e2dbd6d28f7636e088ef77b6df54b82c", 
+                "downloads": 5535, 
+                "filename": "celery-0.4.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "7c/30/d0b0912934c447ffcee595cc80fc5eb60ef412474dc22635756e10671fcd/celery-0.4.1.tar.gz", 
+                "size": 448418
+            }
+        ], 
+        "0.1.11": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-05-12T14:11:57", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/fa/08/66b08efbe6e31e3bd7a235dab39aeafef2229dc4ccd1aaf48aaa4aa1952c/celery-0.1.11.tar.gz", 
+                "md5_digest": "67b7bd27c0412e4360eaed115aa46d1f", 
+                "downloads": 5219, 
+                "filename": "celery-0.1.11.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "fa/08/66b08efbe6e31e3bd7a235dab39aeafef2229dc4ccd1aaf48aaa4aa1952c/celery-0.1.11.tar.gz", 
+                "size": 53134
+            }
+        ], 
+        "0.4.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-07-01T19:42:42", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/c9/43/4a38e3082fa78cfbbcef6f4e50661689f97bf15da1923fdaad915888347b/celery-0.4.0.tar.gz", 
+                "md5_digest": "e55043f5abd461b66dd05fe605d39884", 
+                "downloads": 5233, 
+                "filename": "celery-0.4.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "c9/43/4a38e3082fa78cfbbcef6f4e50661689f97bf15da1923fdaad915888347b/celery-0.4.0.tar.gz", 
+                "size": 448254
+            }
+        ], 
+        "2.4.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-11-22T18:21:12", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/ad/bc/0d6abd73655bf4844e018628b5868a124358af4e8a2896a965e58c188506/celery-2.4.3.tar.gz", 
+                "md5_digest": "4fa3ca632ce2e9fad9fcd99fa23d221e", 
+                "downloads": 7068, 
+                "filename": "celery-2.4.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "ad/bc/0d6abd73655bf4844e018628b5868a124358af4e8a2896a965e58c188506/celery-2.4.3.tar.gz", 
+                "size": 888539
+            }
+        ], 
+        "2.4.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-11-14T12:32:59", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/8a/72/110885bf8fbbb6d0e75998ca6604d870811bda3c7af49dde9d25f86ddba9/celery-2.4.2.tar.gz", 
+                "md5_digest": "79539ddc91d9f94c08de2a45107eebbc", 
+                "downloads": 13996, 
+                "filename": "celery-2.4.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "8a/72/110885bf8fbbb6d0e75998ca6604d870811bda3c7af49dde9d25f86ddba9/celery-2.4.2.tar.gz", 
+                "size": 888524
+            }
+        ], 
+        "2.4.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-11-07T22:47:12", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/70/d1/d3ce2909255ce04994359b9961d4158d8ec3e726d121549e1dab5b8be76a/celery-2.4.1.tar.gz", 
+                "md5_digest": "482b2ed34e9055f4138d92e6dc272475", 
+                "downloads": 8263, 
+                "filename": "celery-2.4.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "70/d1/d3ce2909255ce04994359b9961d4158d8ec3e726d121549e1dab5b8be76a/celery-2.4.1.tar.gz", 
+                "size": 887466
+            }
+        ], 
+        "2.4.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-11-04T16:27:40", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/e1/af/4869eb4780d3013e069b3083afba2dec1d760ea17fee8095fd2f6380fdeb/celery-2.4.0.tar.gz", 
+                "md5_digest": "ebf718d2f50af2b81eba8e9c939c1c50", 
+                "downloads": 7440, 
+                "filename": "celery-2.4.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "e1/af/4869eb4780d3013e069b3083afba2dec1d760ea17fee8095fd2f6380fdeb/celery-2.4.0.tar.gz", 
+                "size": 887849
+            }
+        ], 
+        "2.4.7": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-07-11T00:42:19", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/9c/7f/e4adc8a54010c7668cb99ebdd45da74bf6a87da9d92396788c9f993d5e5b/celery-2.4.7.tar.gz", 
+                "md5_digest": "4c9072ec0ec0480b63e1e4ad4765d5ce", 
+                "downloads": 12067, 
+                "filename": "celery-2.4.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "9c/7f/e4adc8a54010c7668cb99ebdd45da74bf6a87da9d92396788c9f993d5e5b/celery-2.4.7.tar.gz", 
+                "size": 892513
+            }
+        ], 
+        "2.4.6": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-12-28T14:26:21", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/d6/ab/3741995520ca6b13bc1ecb3844f6eac4402ca374a589383c714f9cd60503/celery-2.4.6.tar.gz", 
+                "md5_digest": "a480dd8741b0d5ed694b6a36a25a47ce", 
+                "downloads": 81444, 
+                "filename": "celery-2.4.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "d6/ab/3741995520ca6b13bc1ecb3844f6eac4402ca374a589383c714f9cd60503/celery-2.4.6.tar.gz", 
+                "size": 892396
+            }
+        ], 
+        "2.4.5": [
+            {
+                "has_sig": true, 
+                "upload_time": "2011-12-02T18:39:18", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/d7/a5/21ddeeb1afc5ab23b470133716bc030fa391e2002944bbf6f5ce31748ef6/celery-2.4.5.tar.gz", 
+                "md5_digest": "a8648b3fa9e0cdd6b6a4be71d7f496c8", 
+                "downloads": 39215, 
+                "filename": "celery-2.4.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "d7/a5/21ddeeb1afc5ab23b470133716bc030fa391e2002944bbf6f5ce31748ef6/celery-2.4.5.tar.gz", 
+                "size": 892282
+            }
+        ], 
+        "2.4.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-11-25T18:24:08", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b8/5d/9394e874de3151defad5eb77cb2827798ac777e90cb2b9dd2ea0c938e92d/celery-2.4.4.tar.gz", 
+                "md5_digest": "e168bc9856b263edcb0801a04eb9ee9f", 
+                "downloads": 11100, 
+                "filename": "celery-2.4.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b8/5d/9394e874de3151defad5eb77cb2827798ac777e90cb2b9dd2ea0c938e92d/celery-2.4.4.tar.gz", 
+                "size": 889111
+            }
+        ], 
+        "1.0.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-06-01T15:00:23", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/a2/10/f51deedda46be3051d5db96905a2835264ff8022b2f20b8fae67a326d163/celery-1.0.5.tar.gz", 
+                "md5_digest": "c93f7522c2ce98a32e1cc1a970a7dba1", 
+                "downloads": 10596, 
+                "filename": "celery-1.0.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "a2/10/f51deedda46be3051d5db96905a2835264ff8022b2f20b8fae67a326d163/celery-1.0.5.tar.gz", 
+                "size": 1507642
+            }
+        ], 
+        "0.1.14": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-05-19T13:10:10", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/e8/d0/b3c2b77335f0d77661412d0fc3d7ee5ba268a7791cd614ff09a5737de93e/celery-0.1.14.tar.gz", 
+                "md5_digest": "9fccaba71ef42dc60a9b96b450e84280", 
+                "downloads": 5229, 
+                "filename": "celery-0.1.14.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "e8/d0/b3c2b77335f0d77661412d0fc3d7ee5ba268a7791cd614ff09a5737de93e/celery-0.1.14.tar.gz", 
+                "size": 245230
+            }
+        ], 
+        "0.1.15": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-05-19T16:21:07", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/94/98/361d09b0042f22c2eae96e41516d0bb7675f2dcb2f0906e0c87b4496d7d0/celery-0.1.15.tar.gz", 
+                "md5_digest": "a69642c5a741c575a7df6219008708b1", 
+                "downloads": 5228, 
+                "filename": "celery-0.1.15.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "94/98/361d09b0042f22c2eae96e41516d0bb7675f2dcb2f0906e0c87b4496d7d0/celery-0.1.15.tar.gz", 
+                "size": 276842
+            }
+        ], 
+        "0.1.8": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-05-07T12:30:48", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/5f/07/e57c2365cba307801a3b44d40c773297f2ee7c9f7f0b9a22db66d53e88da/celery-0.1.8.tar.gz", 
+                "md5_digest": "aad8ea8df4c7b7b05aad7c37f6b12e26", 
+                "downloads": 5229, 
+                "filename": "celery-0.1.8.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "5f/07/e57c2365cba307801a3b44d40c773297f2ee7c9f7f0b9a22db66d53e88da/celery-0.1.8.tar.gz", 
+                "size": 50456
+            }
+        ], 
+        "0.2.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-05-27T18:19:48", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/0a/8b/b533a83bf19fdaab487a7f1b2cd11f546336858e321292be7b56b8f2375e/celery-0.2.0.tar.gz", 
+                "md5_digest": "16e8e984153d898e6a2841d2b904fb0c", 
+                "downloads": 5263, 
+                "filename": "celery-0.2.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "0a/8b/b533a83bf19fdaab487a7f1b2cd11f546336858e321292be7b56b8f2375e/celery-0.2.0.tar.gz", 
+                "size": 374824
+            }
+        ], 
+        "2.1.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-10-29T15:28:02", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/be/34/606caa843ae459d3f3f05c8b03a9cc699038b427c4d67dfff1e9e5df0f14/celery-2.1.2.tar.gz", 
+                "md5_digest": "54037484df43ca1104e3685da8fd2fa6", 
+                "downloads": 7732, 
+                "filename": "celery-2.1.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "be/34/606caa843ae459d3f3f05c8b03a9cc699038b427c4d67dfff1e9e5df0f14/celery-2.1.2.tar.gz", 
+                "size": 1429767
+            }
+        ], 
+        "2.1.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-11-09T16:02:03", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/50/57/c9432fb792e72598ae7102e8b25ea2d522d680b120c8456b27b58245348f/celery-2.1.3.tar.gz", 
+                "md5_digest": "029476100b9ba4763abc06da4fea2358", 
+                "downloads": 14095, 
+                "filename": "celery-2.1.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "50/57/c9432fb792e72598ae7102e8b25ea2d522d680b120c8456b27b58245348f/celery-2.1.3.tar.gz", 
+                "size": 1430582
+            }
+        ], 
+        "2.1.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-10-08T11:49:28", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/93/b1/bf36d36ff626c686699f5a9162faec0914620f740d79604a7a1033c85d9d/celery-2.1.0.tar.gz", 
+                "md5_digest": "dd7e2b38357a1c9641233d4627884109", 
+                "downloads": 6315, 
+                "filename": "celery-2.1.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "93/b1/bf36d36ff626c686699f5a9162faec0914620f740d79604a7a1033c85d9d/celery-2.1.0.tar.gz", 
+                "size": 1424761
+            }
+        ], 
+        "2.1.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-10-14T14:22:54", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/35/a8/19c376a01d086491c166d1644a357b8cd18c13db3a7ae3d08953d338ad86/celery-2.1.1.tar.gz", 
+                "md5_digest": "5ecf0d03a5b4050ba6d207d28515ef7d", 
+                "downloads": 8300, 
+                "filename": "celery-2.1.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "35/a8/19c376a01d086491c166d1644a357b8cd18c13db3a7ae3d08953d338ad86/celery-2.1.1.tar.gz", 
+                "size": 1427895
+            }
+        ], 
+        "0.1.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-04-27T16:25:42", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/c5/bd/b6d02275036d749ed04eeca6fa4791f8da0c12364ac534f50cf4cb0f67d0/celery-0.1.4.tar.gz", 
+                "md5_digest": "0eeae544975b5a51d7c12f2156fc17f1", 
+                "downloads": 5260, 
+                "filename": "celery-0.1.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "c5/bd/b6d02275036d749ed04eeca6fa4791f8da0c12364ac534f50cf4cb0f67d0/celery-0.1.4.tar.gz", 
+                "size": 12873
+            }
+        ], 
+        "0.1.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-04-27T12:49:20", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/c9/b7/4ea5dba86291f3c04c54b90388b39fa22cf55010cb93ca57f25b978987e0/celery-0.1.2.tar.gz", 
+                "md5_digest": "a63df9f3ce1883b90fdcd18df4ae79f7", 
+                "downloads": 5254, 
+                "filename": "celery-0.1.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "c9/b7/4ea5dba86291f3c04c54b90388b39fa22cf55010cb93ca57f25b978987e0/celery-0.1.2.tar.gz", 
+                "size": 11383
+            }
+        ], 
+        "2.1.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-12-03T16:11:49", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/81/9d/3dcc36bded082122f22ba18c51317a61bf6b42ca965a40b66ff86d3dcf66/celery-2.1.4.tar.gz", 
+                "md5_digest": "1930be498c3278180d11e772435076ec", 
+                "downloads": 20401, 
+                "filename": "celery-2.1.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "81/9d/3dcc36bded082122f22ba18c51317a61bf6b42ca965a40b66ff86d3dcf66/celery-2.1.4.tar.gz", 
+                "size": 1442476
+            }
+        ], 
+        "0.1.7": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-04-30T14:32:02", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/65/41/2ec777848ba6ba6d255f8f618bb5f7dba7401d40fc8cbca6ecc714ebd6e8/celery-0.1.7.tar.gz", 
+                "md5_digest": "8a8c0444e3e7b23b01c703db1ff74e19", 
+                "downloads": 5219, 
+                "filename": "celery-0.1.7.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "65/41/2ec777848ba6ba6d255f8f618bb5f7dba7401d40fc8cbca6ecc714ebd6e8/celery-0.1.7.tar.gz", 
+                "size": 32059
+            }
+        ], 
+        "0.3.20": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-06-25T20:53:37", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/31/82/ff63b78e39221ff0303eef2a870d290349a72f00d36c660ebe6fd82b3d8a/celery-0.3.20.tar.gz", 
+                "md5_digest": "2a00ad8c98e47f2be80197834e611a43", 
+                "downloads": 5266, 
+                "filename": "celery-0.3.20.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "31/82/ff63b78e39221ff0303eef2a870d290349a72f00d36c660ebe6fd82b3d8a/celery-0.3.20.tar.gz", 
+                "size": 437683
+            }
+        ], 
+        "0.1.6": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-04-29T16:50:02", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/c1/6b/2adaf75ea00d95e1acc6a669b8cec3e5d8de8152b942dd59888099b8a5bf/celery-0.1.6.tar.gz", 
+                "md5_digest": "a037f7f1f4319efdeb8dea2872c07716", 
+                "downloads": 5221, 
+                "filename": "celery-0.1.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "c1/6b/2adaf75ea00d95e1acc6a669b8cec3e5d8de8152b942dd59888099b8a5bf/celery-0.1.6.tar.gz", 
+                "size": 29537
+            }
+        ], 
+        "2.3.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-08-05T17:19:41", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/69/da/ac56e297e0a3e442dd60fad008daa222e74b57df24b5450dcd73d99d9f4e/celery-2.3.0.tar.gz", 
+                "md5_digest": "b2eec534b0bca07e5dd50c470ee99017", 
+                "downloads": 7328, 
+                "filename": "celery-2.3.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "69/da/ac56e297e0a3e442dd60fad008daa222e74b57df24b5450dcd73d99d9f4e/celery-2.3.0.tar.gz", 
+                "size": 865346
+            }
+        ], 
+        "2.3.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-08-07T23:25:00", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/57/af/feac53f2b6fc5e971d60c1da8217efdc5f986cc147af119e588e3c9d7347/celery-2.3.1.tar.gz", 
+                "md5_digest": "d41c6448f47148040e630a72faa8126e", 
+                "downloads": 22896, 
+                "filename": "celery-2.3.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "57/af/feac53f2b6fc5e971d60c1da8217efdc5f986cc147af119e588e3c9d7347/celery-2.3.1.tar.gz", 
+                "size": 866144
+            }
+        ], 
+        "2.3.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-09-07T17:57:06", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/5d/c8/188313effbbfdf1e88f312c2014bb72be62286a124f1d1bda306a67ca758/celery-2.3.2.tar.gz", 
+                "md5_digest": "39c812d7bd14c54c4f24609dfe20e1bd", 
+                "downloads": 13681, 
+                "filename": "celery-2.3.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "5d/c8/188313effbbfdf1e88f312c2014bb72be62286a124f1d1bda306a67ca758/celery-2.3.2.tar.gz", 
+                "size": 870999
+            }
+        ], 
+        "2.3.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-09-16T18:08:16", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/38/10/a5d84d3bdee3e37f34a9f413999222c42531d3b4d1873dd32ff2e3269e21/celery-2.3.3.tar.gz", 
+                "md5_digest": "fa6c661cf037b1b95ec81e67386bccb7", 
+                "downloads": 32792, 
+                "filename": "celery-2.3.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "38/10/a5d84d3bdee3e37f34a9f413999222c42531d3b4d1873dd32ff2e3269e21/celery-2.3.3.tar.gz", 
+                "size": 871312
+            }
+        ], 
+        "2.3.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-11-25T17:47:51", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/ca/00/5ddb92f4053eca182e3506d51aa202d2306b8b98884a6bcc685c19a99588/celery-2.3.4.tar.gz", 
+                "md5_digest": "f4b3693aac331d0c47b7f9c66aabdfe0", 
+                "downloads": 4990, 
+                "filename": "celery-2.3.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "ca/00/5ddb92f4053eca182e3506d51aa202d2306b8b98884a6bcc685c19a99588/celery-2.3.4.tar.gz", 
+                "size": 871648
+            }
+        ], 
+        "2.3.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-12-28T14:23:04", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/01/0a/ea2859892c53b8829ceee0bff028645e237afcf4680d8278f5f5ff971ec4/celery-2.3.5.tar.gz", 
+                "md5_digest": "23893e021d172ebf330f850fe9366b99", 
+                "downloads": 5515, 
+                "filename": "celery-2.3.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "01/0a/ea2859892c53b8829ceee0bff028645e237afcf4680d8278f5f5ff971ec4/celery-2.3.5.tar.gz", 
+                "size": 871796
+            }
+        ], 
+        "2.5.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-06-07T12:18:26", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/8e/69/318d91bc367134a85db5749cd50ecee5e3c87455df040ef4c51251c6bbbb/celery-2.5.5.tar.gz", 
+                "md5_digest": "9fa40c1300d18e176db63f833a378647", 
+                "downloads": 133276, 
+                "filename": "celery-2.5.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "8e/69/318d91bc367134a85db5749cd50ecee5e3c87455df040ef4c51251c6bbbb/celery-2.5.5.tar.gz", 
+                "size": 945555
+            }
+        ], 
+        "2.5.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-04-13T17:36:51", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/5b/d3/6af7f863f79218b20995172a9a8af8e1ee28dc73ab1df0b858a29daacb7d/celery-2.5.2.tar.gz", 
+                "md5_digest": "2c49deb7bdf470d9f77916d688e68687", 
+                "downloads": 7411, 
+                "filename": "celery-2.5.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "5b/d3/6af7f863f79218b20995172a9a8af8e1ee28dc73ab1df0b858a29daacb7d/celery-2.5.2.tar.gz", 
+                "size": 945885
+            }
+        ], 
+        "2.5.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-04-16T19:51:37", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/43/2c/d515f5b12fc1474697730094a5f9b09bfa870544f08c39b012a8f831d45d/celery-2.5.3.tar.gz", 
+                "md5_digest": "a3361c800fb8455e1e50024aaa940f07", 
+                "downloads": 75931, 
+                "filename": "celery-2.5.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "43/2c/d515f5b12fc1474697730094a5f9b09bfa870544f08c39b012a8f831d45d/celery-2.5.3.tar.gz", 
+                "size": 946218
+            }
+        ], 
+        "2.5.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-02-24T17:19:56", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/9f/97/4f73bc4d1ec2533485addb24650a96e9c184fb47cc861ca44687df31177e/celery-2.5.0.tar.gz", 
+                "md5_digest": "0a207f123bed26c8e9634cd0c179abc0", 
+                "downloads": 24202, 
+                "filename": "celery-2.5.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "9f/97/4f73bc4d1ec2533485addb24650a96e9c184fb47cc861ca44687df31177e/celery-2.5.0.tar.gz", 
+                "size": 941813
+            }
+        ], 
+        "2.5.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-03-01T13:51:14", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/2b/2b/8328e9bc884e66f0b19c80528c64e56782a7bed4873e0aa4bdb4585fc4a4/celery-2.5.1.tar.gz", 
+                "md5_digest": "c0912f29b69929219b353c748e0bf936", 
+                "downloads": 53004, 
+                "filename": "celery-2.5.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "2b/2b/8328e9bc884e66f0b19c80528c64e56782a7bed4873e0aa4bdb4585fc4a4/celery-2.5.1.tar.gz", 
+                "size": 942335
+            }
+        ], 
+        "3.1.13": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-07-10T21:11:14", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/e9/ac/7ae35524916523726072361375c810c79b4976581a751431bd1cee1f5c04/celery-3.1.13-py2.py3-none-any.whl", 
+                "md5_digest": "facd8c237e1b4e1185ebc1de6d1f8433", 
+                "downloads": 307467, 
+                "filename": "celery-3.1.13-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "e9/ac/7ae35524916523726072361375c810c79b4976581a751431bd1cee1f5c04/celery-3.1.13-py2.py3-none-any.whl", 
+                "size": 513621
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-07-10T21:01:29", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/0d/d7/197fee639c230eb8ec5d17f8388e99aa59fb1e71e8ea0496cb206849c964/celery-3.1.13.tar.gz", 
+                "md5_digest": "549aa12b13f77d1363e9087d3deb4742", 
+                "downloads": 65226, 
+                "filename": "celery-3.1.13.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "0d/d7/197fee639c230eb8ec5d17f8388e99aa59fb1e71e8ea0496cb206849c964/celery-3.1.13.tar.gz", 
+                "size": 1292738
+            }
+        ], 
+        "3.1.12": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-06-09T22:16:51", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/0f/2a/4888ef72f74c22729fa06cb8f7c60ad1f00f41cdd6d0e4237f119a234d38/celery-3.1.12-py2.py3-none-any.whl", 
+                "md5_digest": "16cbb616c5ece32eff74debda26caf4c", 
+                "downloads": 147996, 
+                "filename": "celery-3.1.12-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "0f/2a/4888ef72f74c22729fa06cb8f7c60ad1f00f41cdd6d0e4237f119a234d38/celery-3.1.12-py2.py3-none-any.whl", 
+                "size": 513519
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-06-09T22:16:03", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/d0/bf/447ba1a5f6914722541dae537085c210ce0a0897638742facac99070732b/celery-3.1.12.tar.gz", 
+                "md5_digest": "31927b26c3225fac0250ac4fe2849824", 
+                "downloads": 54902, 
+                "filename": "celery-3.1.12.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "d0/bf/447ba1a5f6914722541dae537085c210ce0a0897638742facac99070732b/celery-3.1.12.tar.gz", 
+                "size": 1291525
+            }
+        ], 
+        "3.1.11": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-04-16T23:45:42", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/f4/c4/63d760c4b578f3b82478af47696eb55ec03852a2ef8e17aa7c0426187adf/celery-3.1.11-py27-none-any.whl", 
+                "md5_digest": "338c5d39c0c1f46e8e3b6882cae2cc4f", 
+                "downloads": 171491, 
+                "filename": "celery-3.1.11-py27-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "f4/c4/63d760c4b578f3b82478af47696eb55ec03852a2ef8e17aa7c0426187adf/celery-3.1.11-py27-none-any.whl", 
+                "size": 513865
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-04-16T23:44:59", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/95/fa/7534da21cab73646d53211ebd620ade01317d08a2eb21a0801bbb2613695/celery-3.1.11.tar.gz", 
+                "md5_digest": "f7ae17cd1e21e391d970368f1fb6427e", 
+                "downloads": 162488, 
+                "filename": "celery-3.1.11.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "95/fa/7534da21cab73646d53211ebd620ade01317d08a2eb21a0801bbb2613695/celery-3.1.11.tar.gz", 
+                "size": 1289359
+            }
+        ], 
+        "3.1.10": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-03-22T21:47:15", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/69/fb/5595ddf29fd1feaf5abd062ad997b547ee3096b5ee62ec83008a1ac34973/celery-3.1.10-py27-none-any.whl", 
+                "md5_digest": "c56a63e89de1c507ff20d676120c7b13", 
+                "downloads": 73415, 
+                "filename": "celery-3.1.10-py27-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "69/fb/5595ddf29fd1feaf5abd062ad997b547ee3096b5ee62ec83008a1ac34973/celery-3.1.10-py27-none-any.whl", 
+                "size": 512857
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-03-22T21:45:48", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/6d/00/46c60054e46e7dd3728c52a19b16dcedbec743612ca51a2e3297b3946655/celery-3.1.10.tar.gz", 
+                "md5_digest": "b172ac3047be77cadda516214a720cb6", 
+                "downloads": 120876, 
+                "filename": "celery-3.1.10.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "6d/00/46c60054e46e7dd3728c52a19b16dcedbec743612ca51a2e3297b3946655/celery-3.1.10.tar.gz", 
+                "size": 1287618
+            }
+        ], 
+        "3.1.17": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-11-19T15:32:07", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/12/28/0b6cfb91734fe3bbf57fea6e87d9796977c54f5c5640e87183a695f61118/celery-3.1.17-py2.py3-none-any.whl", 
+                "md5_digest": "e0978680f5a340ce4d022897f3e43c42", 
+                "downloads": 1150669, 
+                "filename": "celery-3.1.17-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "12/28/0b6cfb91734fe3bbf57fea6e87d9796977c54f5c5640e87183a695f61118/celery-3.1.17-py2.py3-none-any.whl", 
+                "size": 514940
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-11-19T15:31:59", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/b5/2e/0c95c6b95d4d9fcb8b00bdc38921448570761b006aab0ed8380fd398ee28/celery-3.1.17.tar.gz", 
+                "md5_digest": "e37f5d93b960bf68fc26c1325f30fd16", 
+                "downloads": 170188, 
+                "filename": "celery-3.1.17.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "b5/2e/0c95c6b95d4d9fcb8b00bdc38921448570761b006aab0ed8380fd398ee28/celery-3.1.17.tar.gz", 
+                "size": 1297008
+            }
+        ], 
+        "3.1.16": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-10-03T22:36:35", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/85/7f/0cd3d70eac0e022df72c4bd42a958b64ca0034b9469f0422aced56b5f368/celery-3.1.16-py2.py3-none-any.whl", 
+                "md5_digest": "498b515252b94dc69e7808e19ed38d88", 
+                "downloads": 309013, 
+                "filename": "celery-3.1.16-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "85/7f/0cd3d70eac0e022df72c4bd42a958b64ca0034b9469f0422aced56b5f368/celery-3.1.16-py2.py3-none-any.whl", 
+                "size": 514222
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-10-03T22:37:40", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/2c/87/22c4cb487cdce239b1945507e5366d3c9074f94c61504b88e873a9474905/celery-3.1.16.tar.gz", 
+                "md5_digest": "465f0b707886349eb9ec962dc866789d", 
+                "downloads": 116131, 
+                "filename": "celery-3.1.16.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "2c/87/22c4cb487cdce239b1945507e5366d3c9074f94c61504b88e873a9474905/celery-3.1.16.tar.gz", 
+                "size": 1296002
+            }
+        ], 
+        "3.1.15": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-09-14T23:28:59", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/26/1d/09af39b4da466c93eab0cc9e0c0225764b619ce69fe0951d10a9ab04ffa3/celery-3.1.15-py2.py3-none-any.whl", 
+                "md5_digest": "434a911245b021a0af867f354ef4af31", 
+                "downloads": 112341, 
+                "filename": "celery-3.1.15-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "26/1d/09af39b4da466c93eab0cc9e0c0225764b619ce69fe0951d10a9ab04ffa3/celery-3.1.15-py2.py3-none-any.whl", 
+                "size": 513935
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-09-14T23:28:51", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/a8/88/295ccc83ccc78c3f493a342a541e57ef48080fc489c0cb9b374a5afc34a0/celery-3.1.15.tar.gz", 
+                "md5_digest": "670382ef244228b645a91c65bc200ab4", 
+                "downloads": 30983, 
+                "filename": "celery-3.1.15.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "a8/88/295ccc83ccc78c3f493a342a541e57ef48080fc489c0cb9b374a5afc34a0/celery-3.1.15.tar.gz", 
+                "size": 1295292
+            }
+        ], 
+        "3.1.14": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-09-08T14:53:41", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/8c/d4/19b76fb1f22c3a2d3e3cfc9ded52fdf952bec6566aacb0c407fd32b4c316/celery-3.1.14-py2.py3-none-any.whl", 
+                "md5_digest": "c37b580b2827b4edb8e309c69faadd6b", 
+                "downloads": 31185, 
+                "filename": "celery-3.1.14-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "8c/d4/19b76fb1f22c3a2d3e3cfc9ded52fdf952bec6566aacb0c407fd32b4c316/celery-3.1.14-py2.py3-none-any.whl", 
+                "size": 513922
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2014-09-08T14:53:29", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/98/87/fbb1e7095c4a5e3cce4bf22c18ea32fa635877491418fa91cdb77cd2d447/celery-3.1.14.tar.gz", 
+                "md5_digest": "9afdefe648ff12284c0beab8d9ce7f5a", 
+                "downloads": 10453, 
+                "filename": "celery-3.1.14.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "98/87/fbb1e7095c4a5e3cce4bf22c18ea32fa635877491418fa91cdb77cd2d447/celery-3.1.14.tar.gz", 
+                "size": 1295021
+            }
+        ], 
+        "3.1.19": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-10-26T20:08:29", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/55/e1/65d2b3ded641a5388055bdd8845a9a8e5b60e0bfd8280fc2bd85f931dc3a/celery-3.1.19-py2.py3-none-any.whl", 
+                "md5_digest": "14b6cc4882dcc60252273e27c0a7650c", 
+                "downloads": 425171, 
+                "filename": "celery-3.1.19-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "55/e1/65d2b3ded641a5388055bdd8845a9a8e5b60e0bfd8280fc2bd85f931dc3a/celery-3.1.19-py2.py3-none-any.whl", 
+                "size": 517433
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-10-26T20:08:23", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/f2/76/7178b22c4fb72575b31a62e223996b359c6630adaeb4ec283523dd35c430/celery-3.1.19.tar.gz", 
+                "md5_digest": "fba8c4b269814dc6dbc36abb0e66c384", 
+                "downloads": 54023, 
+                "filename": "celery-3.1.19.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "f2/76/7178b22c4fb72575b31a62e223996b359c6630adaeb4ec283523dd35c430/celery-3.1.19.tar.gz", 
+                "size": 1302241
+            }
+        ], 
+        "3.1.18": [
+            {
+                "has_sig": true, 
+                "upload_time": "2015-04-22T17:47:41", 
+                "comment_text": "", 
+                "python_version": "2.7", 
+                "url": "https://pypi.python.org/packages/94/50/2b824c2a2b53a05763a71138fa494f913b272511ead9757522a9ab3c0077/celery-3.1.18-py2.py3-none-any.whl", 
+                "md5_digest": "692453eb7257cc7b70b538fb3fc2f395", 
+                "downloads": 1143512, 
+                "filename": "celery-3.1.18-py2.py3-none-any.whl", 
+                "packagetype": "bdist_wheel", 
+                "path": "94/50/2b824c2a2b53a05763a71138fa494f913b272511ead9757522a9ab3c0077/celery-3.1.18-py2.py3-none-any.whl", 
+                "size": 515913
+            }, 
+            {
+                "has_sig": true, 
+                "upload_time": "2015-04-22T17:47:30", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/2f/b9/8a5d74bb351c5082465aaddf8772cfe6d4e954da68f3ac0f79bfd48f22df/celery-3.1.18.tar.gz", 
+                "md5_digest": "1c25973250f75788fb9c690d4fc68957", 
+                "downloads": 189690, 
+                "filename": "celery-3.1.18.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "2f/b9/8a5d74bb351c5082465aaddf8772cfe6d4e954da68f3ac0f79bfd48f22df/celery-3.1.18.tar.gz", 
+                "size": 1298756
+            }
+        ], 
+        "3.0.25": [
+            {
+                "has_sig": true, 
+                "upload_time": "2014-07-10T20:58:29", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/4e/9d/560053fdb8e79cb6c6afcf9ef0fd9ee5a5038c2ea0d4b88fa5e530ba72e5/celery-3.0.25.tar.gz", 
+                "md5_digest": "f869b9ddca813f33e844e77fc9708a19", 
+                "downloads": 78751, 
+                "filename": "celery-3.0.25.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "4e/9d/560053fdb8e79cb6c6afcf9ef0fd9ee5a5038c2ea0d4b88fa5e530ba72e5/celery-3.0.25.tar.gz", 
+                "size": 1099104
+            }
+        ], 
+        "3.0.24": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-10-11T16:37:44", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/7f/60/40867734f08257bd0fdf25daa08a860e4b38127cfeae7768dc33809478aa/celery-3.0.24.tar.gz", 
+                "md5_digest": "e864856a849468f277031ac2c5fd65b6", 
+                "downloads": 283759, 
+                "filename": "celery-3.0.24.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "7f/60/40867734f08257bd0fdf25daa08a860e4b38127cfeae7768dc33809478aa/celery-3.0.24.tar.gz", 
+                "size": 1097427
+            }
+        ], 
+        "3.0.21": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-07-05T15:18:15", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/30/1b/a95d938e7b3f2c983cc5fa1ec0b50750d471b9421d7c992810a4ed78752e/celery-3.0.21.tar.gz", 
+                "md5_digest": "73885b62957af0b844f41d4acca9778c", 
+                "downloads": 131139, 
+                "filename": "celery-3.0.21.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "30/1b/a95d938e7b3f2c983cc5fa1ec0b50750d471b9421d7c992810a4ed78752e/celery-3.0.21.tar.gz", 
+                "size": 1094747
+            }
+        ], 
+        "3.0.20": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-06-28T14:41:36", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/f8/24/c89cbc65ce1909ad9888a5fb8c8ac8229a83fda46a20e587bf713b0a4c1b/celery-3.0.20.tar.gz", 
+                "md5_digest": "13c62d862d3cc108c4b661d7ea58f0c7", 
+                "downloads": 19882, 
+                "filename": "celery-3.0.20.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "f8/24/c89cbc65ce1909ad9888a5fb8c8ac8229a83fda46a20e587bf713b0a4c1b/celery-3.0.20.tar.gz", 
+                "size": 1094641
+            }
+        ], 
+        "3.0.23": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-09-02T12:00:29", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/30/26/ce4cdbae333ff95c1bd3d433a5f000882508cb0f0e5cfb24bf6da74e7b70/celery-3.0.23.tar.gz", 
+                "md5_digest": "095a80df47adf153f2826429282ae176", 
+                "downloads": 193938, 
+                "filename": "celery-3.0.23.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "30/26/ce4cdbae333ff95c1bd3d433a5f000882508cb0f0e5cfb24bf6da74e7b70/celery-3.0.23.tar.gz", 
+                "size": 1096420
+            }
+        ], 
+        "3.0.22": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-08-16T16:01:52", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/42/80/54076a5b6ff52db5106dcacf512c5714aac389d9d3d1e403cc0929bca75f/celery-3.0.22.tar.gz", 
+                "md5_digest": "faa7881c5d051257829b5a292c922da3", 
+                "downloads": 50339, 
+                "filename": "celery-3.0.22.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "42/80/54076a5b6ff52db5106dcacf512c5714aac389d9d3d1e403cc0929bca75f/celery-3.0.22.tar.gz", 
+                "size": 1095861
+            }
+        ]
+    }, 
+    "urls": [
+        {
+            "has_sig": true, 
+            "upload_time": "2016-12-16T00:14:59", 
+            "comment_text": "", 
+            "python_version": "2.7", 
+            "url": "https://pypi.python.org/packages/11/46/3524d4730d3217960b5e32cb8b202420af8714e2b123b9f95882e1fb2067/celery-4.0.2-py2.py3-none-any.whl", 
+            "md5_digest": "3ff97b53107b491baeb42f662be14a06", 
+            "downloads": 59099, 
+            "filename": "celery-4.0.2-py2.py3-none-any.whl", 
+            "packagetype": "bdist_wheel", 
+            "path": "11/46/3524d4730d3217960b5e32cb8b202420af8714e2b123b9f95882e1fb2067/celery-4.0.2-py2.py3-none-any.whl", 
+            "size": 396437
+        }, 
+        {
+            "has_sig": true, 
+            "upload_time": "2016-12-16T00:14:42", 
+            "comment_text": "", 
+            "python_version": "source", 
+            "url": "https://pypi.python.org/packages/b2/b7/888565f3e955473247aef86174db5121d16de6661b69bd8f3d10aff574f6/celery-4.0.2.tar.gz", 
+            "md5_digest": "364dbf014ad57a6aa60d823670642e5d", 
+            "downloads": 2692, 
+            "filename": "celery-4.0.2.tar.gz", 
+            "packagetype": "sdist", 
+            "path": "b2/b7/888565f3e955473247aef86174db5121d16de6661b69bd8f3d10aff574f6/celery-4.0.2.tar.gz", 
+            "size": 1337804
+        }
+    ]
+}

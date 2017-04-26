@@ -1,3 +1,5 @@
+from __future__ import print_function, unicode_literals
+
 import mimetypes
 import os
 
@@ -23,7 +25,7 @@ class RequirementsDetector(object):
         for argument in requirements_arg:
             if self._is_valid_requirements_file(argument):
                 self.filenames.append(argument)
-            else:
+            else:  # pragma: nocover
                 print('Invalid requirements file: {}'.format(argument))
 
     def autodetect_files(self):

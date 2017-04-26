@@ -25,7 +25,7 @@ Help:
   
   https://github.com/simion/pip-upgrader
 """
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 from colorclass import Windows, Color
 from docopt import docopt
 
@@ -37,14 +37,18 @@ from pip_upgrader.requirements_detector import RequirementsDetector
 from . import __version__ as VERSION
 
 
+def get_options():
+    return docopt(__doc__, version=VERSION)
+
+
 def main():
     """ Main CLI entrypoint. """
-    options = docopt(__doc__, version=VERSION)
+    options = get_options()
     Windows.enable(auto_colors=True, reset_atexit=True)
 
     try:
         # 1. detect requirements files
-        filenames = RequirementsDetector(options['<requirements_file>']).get_filenames()
+        filenames = RequirementsDetector(options.get('<requirements_file>')).get_filenames()
         print(Color('{{autoyellow}}Found valid requirements file(s):{{/autoyellow}} '
                     '{{autocyan}}\n{}{{/autocyan}}'.format('\n'.join(filenames))))
 
@@ -65,7 +69,7 @@ def main():
         if options['--dry-run']:
             print(Color('{automagenta}Actually, no, because this was a simulation using --dry-run{/automagenta}'))
 
-    except KeyboardInterrupt:
+    except KeyboardInterrupt:  # pragma: nocover
         print(Color('{autored}Upgrade cancelled.{/autored}'))
 
 

@@ -1,3 +1,7 @@
 # this file is only used for testing the cli
+-r production.txt
 
 ipython==6.0.0
+
+# this kind of upgrade is not yet supported
+ipdb>=0.0.1

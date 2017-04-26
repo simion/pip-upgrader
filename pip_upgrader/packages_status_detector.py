@@ -1,4 +1,4 @@
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 import requests
 import sys
@@ -16,14 +16,15 @@ class PackagesStatusDetector(object):
         self.packages_status_map = {}
 
     def detect_available_upgrades(self, options):
-        prerelease = options['--prerelease']
+        prerelease = options.get('--prerelease', False)
         explicit_packages_lower = None
         if options['-p'] and options['-p'] != ['all']:
             explicit_packages_lower = [pack_name.lower() for pack_name in options['-p']]
 
         for i, package in enumerate(self.packages):
+
             package_name, pinned_version = self._expand_package(package)
-            if not package_name or not pinned_version:
+            if not package_name or not pinned_version:  # pragma: nocover
                 # todo: treat <= or >= instead of ==
                 continue
 
@@ -39,8 +40,9 @@ class PackagesStatusDetector(object):
 
                 # query for upgrade available
                 response = requests.get(self.PYPI_API_URL.format(package=package_name))
-                if not response.ok:
-                    print('pypi API error:', response.reason)
+
+                if not response.ok:  # pragma: nocover
+                    print('pypi API error: {}'.format(response.reason))
                     continue
                 data = response.json()
                 # latest_stable_version = version.parse(data['info']['version'])
@@ -56,10 +58,11 @@ class PackagesStatusDetector(object):
                 try:
                     try:
                         latest_version_info = data['releases'][str(latest_version)][0]
-                    except KeyError:  # non-RFC versions, get the latest from pypi response
+                    except KeyError:  # pragma: nocover
+                        # non-RFC versions, get the latest from pypi response
                         latest_version = version.parse(data['info']['version'])
                         latest_version_info = data['releases'][str(latest_version)][0]
-                except Exception:
+                except Exception:  # pragma: nocover
                     print('error while parsing version')
                     continue
 
@@ -71,7 +74,7 @@ class PackagesStatusDetector(object):
                                                                                  latest_version,
                                                                                  upload_time))
                 else:
-                    print('up to date: ', current_version)
+                    print('up to date: {}'.format(current_version))
                 sys.stdout.flush()
 
                 self.packages_status_map[package_name] = {

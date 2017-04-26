@@ -61,7 +61,7 @@ setup(
     packages=find_packages(exclude=['docs', 'tests*']),
     install_requires=['docopt', 'packaging', 'requests', 'terminaltables', 'colorclass'],
     extras_require={
-        'test': ['coverage', 'pytest', 'pytest-cov', 'mock'],
+        'test': ['coverage', 'pytest', 'pytest-cov', 'mock', 'responses'],
     },
     entry_points={
         'console_scripts': [

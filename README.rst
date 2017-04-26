@@ -1,6 +1,7 @@
 pip-upgrader
 =========
-
+.. image:: https://travis-ci.org/simion/pip-upgrader.svg?branch=master
+    :target: https://travis-ci.org/simion/pip-upgrader
 *An interactive pip requirements upgrader. Because upgrading requirements, package by package, is a pain in the ass.
 It also updates the version in your requirements.txt file.
 

@@ -58,6 +58,9 @@ Examples:
 
 Have fun! :)
 
+
+TODO: tests / travis ci checks / coveralls
+
 ::
 Note for me:
 Release new version:

@@ -15,7 +15,7 @@ If no requirements are given, the command **attempts to detect the requirements 
 
 Quick preview:
 
-![alt text](https://raw.githubusercontent.com/simion/pip-upgrader/master/preview.gif)
+.. image:: https://raw.githubusercontent.com/simion/pip-upgrader/master/preview.gif
 
 Installation
 ------------

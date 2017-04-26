@@ -13,9 +13,18 @@ and also **update the pinned version from requirements file(s)**.
 
 If no requirements are given, the command **attempts to detect the requirements file(s)** in the current directory.
 
+Installation
+------------
+
+::
+
+    pip install pip-upgrader
+
 Usage
 -----
-
+Activate your virtualenv.
+CD into your project.
+Then:
 ::
 
     $ pip-upgrade [<requirements_file>] ... [--prerelease] [-p=<package>...]

@@ -56,15 +56,20 @@ Examples:
     pip-upgrade --prerelease
 
 
+Final notes
+-----------
+If you encounter any bugs, please open an issue and it will be magically resolved :)
+TODO (nothing major):
+- implement support for `package>=0.1.0` (only works for `package==0.1.0`)
+- tests / travis ci checks / coveralls
+
+
 Have fun! :)
-
-
-TODO: tests / travis ci checks / coveralls
 
 ::
 Note for me:
 Release new version:
 ::
 
-    $ python setup.py sdist bdist_wheel
-    $ twine upload dist/* -u my_username -p my_pass
+    $ rm -rf dist && python setup.py sdist bdist_wheel
+    $ twine upload dist/* -u SimionBaws -p my_pass

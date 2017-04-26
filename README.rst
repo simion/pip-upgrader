@@ -60,6 +60,7 @@ Final notes
 -----------
 If you encounter any bugs, please open an issue and it will be magically resolved :)
 TODO (nothing major):
+
 - implement support for `package>=0.1.0` (only works for `package==0.1.0`)
 - tests / travis ci checks / coveralls
 

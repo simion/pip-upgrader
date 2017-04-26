@@ -28,7 +28,7 @@ class RunTests(Command):
 
     def run(self):
         """Run all tests!"""
-        err = call(['py.test', '--cov=pip_upgrader', '--cov-report=term-missing'])
+        err = call(['py.test', '--cov=pip_upgrader', '--cov-report=term-missing', '-s'])
         raise SystemExit(err)
 
 
@@ -61,7 +61,7 @@ setup(
     packages=find_packages(exclude=['docs', 'tests*']),
     install_requires=['docopt', 'packaging', 'requests', 'terminaltables', 'colorclass'],
     extras_require={
-        'test': ['coverage', 'pytest', 'pytest-cov'],
+        'test': ['coverage', 'pytest', 'pytest-cov', 'mock'],
     },
     entry_points={
         'console_scripts': [

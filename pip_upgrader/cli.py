@@ -2,12 +2,13 @@
 pip-upgrade
 
 Usage:
-  pip-upgrade [<requirements_file>] ... [--prerelease] [-p=<package>...]
+  pip-upgrade [<requirements_file>] ... [--prerelease] [-p=<package>...] [--dry-run]
 
 Arguments:
     requirements_file       The requirement FILE, or WILDCARD PATH to multiple files.
     --prerelease            Include prerelease versions for upgrade, when querying pypi repositories.
     -p <package>            Pre-choose which packages tp upgrade. Skips any prompt.
+    -dry-run                Run all the command logic, except it doesn't install new packages neither replace the version in txt files.
 
 
 Examples:
@@ -16,6 +17,7 @@ Examples:
   pip-upgrade requirements/dev.txt requirements/production.txt
   pip-upgrade requirements.txt -p django -p celery
   pip-upgrade requirements.txt -p all
+  pip-upgrade requirements.txt --dry-run  # run everything as a simulation (don't do the actual upgrade)
     
 Help:
   Interactively upgrade packages from requirements file, and also update the pinned version from requirements file(s). 
@@ -43,24 +45,26 @@ def main():
     try:
         # 1. detect requirements files
         filenames = RequirementsDetector(options['<requirements_file>']).get_filenames()
-        # print(filenames)
+        print(Color('{{autoyellow}}Found valid requirements file(s):{{/autoyellow}} '
+                    '{{autocyan}}\n{}{{/autocyan}}'.format('\n'.join(filenames))))
 
         # 2. detect all packages inside requirements
         packages = PackagesDetector(filenames).get_packages()
-        # print(packages)
 
         # 3. query pypi API, see which package has a newer version vs the one in requirements (or current env)
         packages_status_map = PackagesStatusDetector(packages).detect_available_upgrades(options)
-        # print(packages_status_map)
 
         # 4. [optionally], show interactive screen when user can choose which packages to upgrade
         selected_packages = PackageInteractiveSelector(packages_status_map, options).get_packages()
 
         # 5. having the list of packages, do the actual upgrade and replace the version inside all filenames
-        upgraded_packages = PackagesUpgrader(selected_packages, filenames).do_upgrade()
+        upgraded_packages = PackagesUpgrader(selected_packages, filenames, options['--dry-run']).do_upgrade()
 
         print(Color('{{autogreen}}Successfully upgraded (and updated requirements) for the following packages: '
                     '{}{{/autogreen}}'.format(','.join([package['name'] for package in upgraded_packages]))))
+        if options['--dry-run']:
+            print(Color('{automagenta}Actually, no, because this was a simulation using --dry-run{/automagenta}'))
+
     except KeyboardInterrupt:
         print(Color('{autored}Upgrade cancelled.{/autored}'))
 

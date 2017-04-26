@@ -6,6 +6,11 @@ from unittest import TestCase
 
 from pip_upgrader import __version__ as VERSION
 
+try:
+    from unittest import mock
+except ImportError:
+    import mock
+
 
 class TestHelp(TestCase):
     def test_returns_usage_information(self):
@@ -25,7 +30,9 @@ class TestVersion(TestCase):
 # class TestCommand(TestCase):
 #     # todo: implement the actual tests
 #
-#     def test_command_auto_discovery(self):
+#     @mock.patch('')
+#     def test_command_basic_usage(self):
+#         import ipdb; ipdb.set_trace()
 #         output = popen(['pip-upgrade'], stdout=PIPE).communicate()[0]
 #         print(output)
 #

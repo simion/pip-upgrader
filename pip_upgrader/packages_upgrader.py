@@ -12,11 +12,13 @@ class PackagesUpgrader(object):
     selected_packages = None
     requirements_files = None
     upgraded_packages = None
+    dry_run = False
 
-    def __init__(self, selected_packages, requirements_files):
+    def __init__(self, selected_packages, requirements_files, dry_run):
         self.selected_packages = selected_packages
         self.requirements_files = requirements_files
         self.upgraded_packages = []
+        self.dry_run = dry_run
 
     def do_upgrade(self):
         for package in self.selected_packages:
@@ -27,7 +29,10 @@ class PackagesUpgrader(object):
     def _update_package(self, package):
         """ Update (install) the package in current environment, and if success, also replace version in file """
         try:
-            subprocess.check_call(['pip', 'install', '{}=={}'.format(package['name'], package['latest_version'])])
+            if not self.dry_run:
+                subprocess.check_call(['pip', 'install', '{}=={}'.format(package['name'], package['latest_version'])])
+            else:
+                print('[Dry Run]: skipping package installation:', package['name'])
             # update only if installation success
             self._update_requirements_package(package)
 
@@ -71,4 +76,9 @@ class PackagesUpgrader(object):
         if line != original_line:
             self.upgraded_packages.append(package)
 
+            if self.dry_run:
+                print('[Dry Run]: skipping requirements replacement:',
+                      original_line.replace('\n', ''), ' / ',
+                      line.replace('\n', ''))
+                return original_line
         return line

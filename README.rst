@@ -13,6 +13,10 @@ and also **update the pinned version from requirements file(s)**.
 
 If no requirements are given, the command **attempts to detect the requirements file(s)** in the current directory.
 
+Quick preview:
+
+![alt text](https://raw.githubusercontent.com/simion/pip-upgrader/master/preview.gif)
+
 Installation
 ------------
 

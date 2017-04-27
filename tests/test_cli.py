@@ -34,6 +34,7 @@ class TestVersion(TestCase):
 
 
 @patch('pip_upgrader.packages_interactive_selector.user_input', return_value='all')
+@patch('pip_upgrader.virtualenv_checker.is_virtualenv', return_value=True)
 class TestCommand(TestCase):
 
     def _add_responses_mocks(self):
@@ -50,7 +51,7 @@ class TestCommand(TestCase):
 
     @responses.activate
     @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': []})
-    def test_command_basic_usage(self, options_mock, user_input_mock):
+    def test_command_basic_usage(self, options_mock, is_virtualenv_mock, user_input_mock):
 
         with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
             cli.main()
@@ -67,7 +68,7 @@ class TestCommand(TestCase):
 
     @responses.activate
     @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': []})
-    def test_command_interactive_bad_choices(self, options_mock, user_input_mock):
+    def test_command_interactive_bad_choices(self, options_mock, is_virtualenv_mock, user_input_mock):
 
         user_input_mock.return_value = ''
         with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
@@ -87,7 +88,7 @@ class TestCommand(TestCase):
 
     @responses.activate
     @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': ['all']})
-    def test_command_not_interactive_all_packages(self, options_mock, user_input_mock):
+    def test_command_not_interactive_all_packages(self, options_mock, is_virtualenv_mock, user_input_mock):
 
         with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
             cli.main()
@@ -108,7 +109,7 @@ class TestCommand(TestCase):
 
     @responses.activate
     @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': ['django', 'bad_package']})
-    def test_command_not_interactive_specific_package(self, options_mock, user_input_mock):
+    def test_command_not_interactive_specific_package(self, options_mock, is_virtualenv_mock, user_input_mock):
 
         with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
             cli.main()
@@ -127,7 +128,7 @@ class TestCommand(TestCase):
 
     @responses.activate
     @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': ['ipython']})
-    def test_command_not_interactive_all_packages_up_to_date(self, options_mock, user_input_mock):
+    def test_command_not_interactive_all_packages_up_to_date(self, options_mock, is_virtualenv_mock, user_input_mock):
 
         with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
             cli.main()
@@ -140,7 +141,7 @@ class TestCommand(TestCase):
     @responses.activate
     @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': ['all'],
                                                          '<requirements_file>': ['requirements/production.txt']})
-    def test_command_not_interactive_explicit_requirements_file(self, options_mock, user_input_mock):
+    def test_command_not_interactive_explicit_requirements(self, options_mock, is_virtualenv_mock, user_input_mock):
 
         with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
             cli.main()
@@ -159,7 +160,7 @@ class TestCommand(TestCase):
 
     @responses.activate
     @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': ['django'], '--prerelease': True})
-    def test_command_not_interactive_specific_package(self, options_mock, user_input_mock):
+    def test_command_not_interactive_specific_package(self, options_mock, is_virtualenv_mock, user_input_mock):
 
         with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
             cli.main()
@@ -174,4 +175,35 @@ class TestCommand(TestCase):
         self.assertNotIn('ipdb', output)
         self.assertNotIn('celery ... upgrade available: 3.1.1 ==>', output)
 
+        self.assertIn('Successfully upgraded', output)
+
+    @responses.activate
+    @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '--skip-virtualenv-check': False,
+                                                         '-p': ['django']})
+    def test_command_not_interactive_not_virtualenv(self, options_mock, is_virtualenv_mock, user_input_mock):
+        is_virtualenv_mock.return_value = False
+
+        with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        self.assertIn("It seems you haven't activated a virtualenv", output)
+        self.assertNotIn('Successfully upgraded', output)
+
+    @responses.activate
+    @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '--skip-virtualenv-check': True,
+                                                         '-p': ['django']})
+    def test_command_not_interactive_not_virtualenv_skip(self, options_mock, is_virtualenv_mock, user_input_mock):
+        is_virtualenv_mock.return_value = False
+
+        with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        self.assertFalse(user_input_mock.called)
+        self.assertIn('Django ... upgrade available: 1.10 ==>', output)
+        self.assertNotIn('django-rest-auth', output)
+        self.assertNotIn('ipython ... up to date', output)
+        self.assertNotIn('ipdb', output)
+        self.assertNotIn('celery ... upgrade available: 3.1.1 ==>', output)
         self.assertIn('Successfully upgraded', output)

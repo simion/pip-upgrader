@@ -33,6 +33,9 @@ class RequirementsDetector(object):
         if self._is_valid_requirements_file('requirements.txt'):
             self.filenames.append('requirements.txt')
 
+        if self._is_valid_requirements_file('requirements.pip'):  # pragma: nocover
+            self.filenames.append('requirements.pip')
+
         if os.path.isdir('requirements'):
             for filename in os.listdir('requirements'):
                 file_path = os.path.join('requirements', filename)
@@ -41,6 +44,5 @@ class RequirementsDetector(object):
 
     @staticmethod
     def _is_valid_requirements_file(filename):
-        return filename.endswith('txt') \
-               and os.path.isfile(filename) \
-               and mimetypes.guess_type(filename)[0] == 'text/plain'
+        extension_ok = filename.endswith('txt') or filename.endswith('pip')
+        return extension_ok and os.path.isfile(filename) and mimetypes.guess_type(filename)[0] in ['text/plain', None]

@@ -1,12 +1,19 @@
 language: python
 python:
-    - "2.7"
-    - "3.5"
-    - "3.6"
+  - '2.7'
+  - '3.5'
+  - '3.6'
 install:
-    - pip install tox-travis coveralls
+  - pip install tox-travis coveralls
 script:
-    - tox
-
+  - tox
 after_success:
-    - coveralls
+  - coveralls
+deploy:
+  provider: pypi
+  user: SimionBaws
+  password:
+    secure: NoUFtEVjrcNwd9KiPQBZgoUClAO+3p/7dmwvvdnuh5eI7Zq66/SjVjdZjRrQVE0G6j9sG7znw9QnC0dWb4OeH4dREnhDGzHbWMOZEEDg7b/vyINCmkJzkS+2N/9PxdBZEzGojN9t6zcMo4bcihKSM98AjbDXiz3+wDjNCIGvk2z5WkJv34vx8DJrnm+2oVXZw+8dcVIBBv9F7x6utbMLo/5NbrGG8L1OLdMJ2bdAUpEM59ar8B5hSZCLyVMxkvfPSYUO5fDDaFmTqDp/baNyKBKOCsjIfYY4c004KA8fE3JRdBByITybgxeu5xIUUm+DZW2CdUNQkX+0HktPowHppBYp2tb8MydCHBGGA9re8MjrJr/g9JvmqY6zV2tbwMeNRAJtvFLT5AFUB9lNUcyfHb6qAClccwOrSKDeGHI8vWpOEB2KOtz2+5OhpfSedu/CV2cJurkyBPafk7mqbaMIeKgVe3GA8WpBoYetGsx32J9KsgYKNU9z3X0iFLXx16FOvB3iTSCQLXtntR0GDJE12GeEFLsD9WLvxAOKXmMMpOlb08OXKDC8pOY83LPYFV4f6rfx/odO2MTEehGxvq1PN4WJMNW3+1jRnE3v8DEr7j4S8vHMiVcJ634h+KUdh+BSXDzgbDyAKXDMfSa6+7f3in+cdQfv5Ppgkj+LVkyQo/k=
+  distributions: "sdist bdist_wheel"
+  on:
+    tags: true

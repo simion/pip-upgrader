@@ -48,6 +48,7 @@ Arguments:
     --dry-run                     Simulates the upgrade, but does not execute the actual upgrade.
     --skip-package-installation   Only upgrade the version in requirements files, don't install the new package.
     --skip-virtualenv-check       Disable virtualenv check. Allows installing the new packages outside the virtualenv.
+    --use-default-index           Skip searching for custom index-url in pip configuration file(s).
 
 Examples:
 

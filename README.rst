@@ -41,12 +41,12 @@ Then:
 
 Arguments:
 
--    requirements_file(s)          The requirement FILE, or WILDCARD PATH to multiple files. (positional arguments)
--    --prerelease                  Include prerelease versions for upgrade, when querying pypi repositories.
--    -p <package>                  Pre-choose which packages tp upgrade. Skips any prompt.
--    --dry-run                     Simulates the upgrade, but does not execute the actual upgrade.
--    --skip-package-installation   Only upgrade the version in requirements files, don't install the new package.
--    --skip-virtualenv-check       Disable virtualenv check. Allows installing the new packages outside the virtualenv.
+- requirements_file(s)          The requirement FILE, or WILDCARD PATH to multiple files. (positional arguments)
+- --prerelease                  Include prerelease versions for upgrade, when querying pypi repositories.
+- -p <package>                  Pre-choose which packages tp upgrade. Skips any prompt.
+- --dry-run                     Simulates the upgrade, but does not execute the actual upgrade.
+- --skip-package-installation   Only upgrade the version in requirements files, don't install the new package.
+- --skip-virtualenv-check       Disable virtualenv check. Allows installing the new packages outside the virtualenv.
 
 
 Examples:

@@ -93,9 +93,11 @@ This command will :
 - print pep8 errors
 
 
-Notes for me:
+(Notes for me):
 Release new version:
+
+- increment version in :code:`pip_upgrader/__init__.py`
+- commit everything, push on master, then
 ::
 
-    $ rm -rf dist && python setup.py sdist bdist_wheel
-    $ twine upload dist/* -u SimionBaws -p my_pass
+    git tag v`pip-upgrade --version` && git push --tags

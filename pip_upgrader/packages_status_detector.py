@@ -1,19 +1,87 @@
 from __future__ import print_function, unicode_literals
 
+import os
+
 import requests
 import sys
+
+from colorclass import Color
 from packaging import version
+from pip.locations import site_config_files
+
+try:
+    from configparser import ConfigParser
+except ImportError:   # pragma: nocover
+    from ConfigParser import ConfigParser, NoOptionError
 
 
 class PackagesStatusDetector(object):
     packages = []
     packages_status_map = {}
+    PYPI_API_URL = None
+    pip_config_locations = [
+        '~/.pip/pip.conf',
+        '~/.pip/pip.ini',
+        'pip.test.conf',  # for testing
+        '~/.config/pip/pip.conf',
+        '~/.config/pip/pip.ini',
+    ]
 
-    PYPI_API_URL = 'https://pypi.python.org/pypi/{package}/json'
-
-    def __init__(self, packages):
+    def __init__(self, packages, use_default_index=False):
         self.packages = packages
         self.packages_status_map = {}
+        self.PYPI_API_URL = 'https://pypi.python.org/pypi/{package}/json'
+
+        if not use_default_index:
+            self._update_index_url_from_configs()
+
+    def _update_index_url_from_configs(self):
+        """ Checks for alternative index-url in pip.conf """
+
+        if 'VIRTUAL_ENV' in os.environ:
+            self.pip_config_locations.append(os.path.join(os.environ['VIRTUAL_ENV'], 'pip.conf'))
+            self.pip_config_locations.append(os.path.join(os.environ['VIRTUAL_ENV'], 'pip.ini'))
+
+        if site_config_files:
+            self.pip_config_locations.extend(site_config_files)
+
+        index_url = None
+        custom_config = None
+        for pip_config_filename in self.pip_config_locations:
+            if pip_config_filename.startswith('~'):
+                pip_config_filename = os.path.expanduser(pip_config_filename)
+
+            if os.path.isfile(pip_config_filename):
+                config = ConfigParser()
+                config.read([pip_config_filename])
+                try:
+                    index_url = config.get('global', 'index-url')
+                    custom_config = pip_config_filename
+                    break  # stop on first detected, because config locations have a priority
+                except NoOptionError:  # pragma: nocover
+                    pass
+
+        if index_url:
+            self.PYPI_API_URL = self._prepare_api_url(index_url)
+            print(Color('Setting API url to {{autoyellow}}{}{{/autoyellow}} as found in {{autoyellow}}{}{{/autoyellow}}'
+                        '. Use --default-index-url to use pypi default index'.format(self.PYPI_API_URL, custom_config)))
+
+    @staticmethod
+    def _prepare_api_url(index_url):  # pragma: nocover
+        if '/pypi/' in index_url:
+            base_url = index_url.split('/pypi/')[0]
+            return '{}/pypi/{{package}}/json'.format(base_url)
+
+        if '/simple' in index_url:
+            base_url = index_url.split('/simple/')[0]
+            return '{}/pypi/{{package}}/json'.format(base_url)
+
+        if '/+simple' in index_url:
+            base_url = index_url.split('/+simple')[0]
+            return '{}/pypi/{{package}}/json'.format(base_url)
+
+        base_url = index_url.rstrip('/')
+        return '{}/pypi/{{package}}/json'.format(base_url)
 
     def detect_available_upgrades(self, options):
         prerelease = options.get('--prerelease', False)

@@ -14,7 +14,7 @@ except ImportError:
 
 try:
     from io import StringIO
-except ImportError:
+except ImportError:  # pragma: nocover
     from cStringIO import StringIO
 
 
@@ -58,6 +58,8 @@ class TestCommand(TestCase):
             output = stdout_mock.getvalue()
 
         self.assertTrue(user_input_mock.called)
+        # checks if new index-url was discovered from config file
+        self.assertIn('Setting API url', output)
 
         self.assertIn('Available upgrades', output)
         self.assertIn('ipython ... up to date', output)
@@ -65,6 +67,18 @@ class TestCommand(TestCase):
         self.assertNotIn('ipdb', output)
         self.assertIn('Successfully upgraded', output)
         self.assertIn('this was a simulation using --dry-run', output)
+
+    @responses.activate
+    @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': [], '--use-default-index': True})
+    def test_command__use_default_index(self, options_mock, is_virtualenv_mock, user_input_mock):
+
+        with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        # checks if new index-url was discovered from config file
+        self.assertNotIn('Setting API url', output)
+        self.assertIn('Successfully upgraded', output)
 
     @responses.activate
     @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': []})

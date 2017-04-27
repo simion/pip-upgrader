@@ -17,4 +17,5 @@ deploy:
   distributions: sdist bdist_wheel
   on:
     condition: $TRAVIS_PYTHON_VERSION = "2.7"
+    branch: master
     tags: true

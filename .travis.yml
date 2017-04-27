@@ -1,19 +1,20 @@
 language: python
 python:
-  - '2.7'
-  - '3.5'
-  - '3.6'
+- '2.7'
+- '3.5'
+- '3.6'
 install:
-  - pip install tox-travis coveralls
+- pip install tox-travis coveralls
 script:
-  - tox
+- tox
 after_success:
-  - coveralls
+- coveralls
 deploy:
   provider: pypi
   user: SimionBaws
   password:
-    secure: NoUFtEVjrcNwd9KiPQBZgoUClAO+3p/7dmwvvdnuh5eI7Zq66/SjVjdZjRrQVE0G6j9sG7znw9QnC0dWb4OeH4dREnhDGzHbWMOZEEDg7b/vyINCmkJzkS+2N/9PxdBZEzGojN9t6zcMo4bcihKSM98AjbDXiz3+wDjNCIGvk2z5WkJv34vx8DJrnm+2oVXZw+8dcVIBBv9F7x6utbMLo/5NbrGG8L1OLdMJ2bdAUpEM59ar8B5hSZCLyVMxkvfPSYUO5fDDaFmTqDp/baNyKBKOCsjIfYY4c004KA8fE3JRdBByITybgxeu5xIUUm+DZW2CdUNQkX+0HktPowHppBYp2tb8MydCHBGGA9re8MjrJr/g9JvmqY6zV2tbwMeNRAJtvFLT5AFUB9lNUcyfHb6qAClccwOrSKDeGHI8vWpOEB2KOtz2+5OhpfSedu/CV2cJurkyBPafk7mqbaMIeKgVe3GA8WpBoYetGsx32J9KsgYKNU9z3X0iFLXx16FOvB3iTSCQLXtntR0GDJE12GeEFLsD9WLvxAOKXmMMpOlb08OXKDC8pOY83LPYFV4f6rfx/odO2MTEehGxvq1PN4WJMNW3+1jRnE3v8DEr7j4S8vHMiVcJ634h+KUdh+BSXDzgbDyAKXDMfSa6+7f3in+cdQfv5Ppgkj+LVkyQo/k=
-  distributions: "sdist bdist_wheel"
+    secure: cw9bkYt6WQGX1zVbzIS08O3W7WxXSsCcAacf/m/3dGTb/sFMQj4AyCbjggnr3PT403Z2HHbKAXlDi64oohKdsrgW7CPUKDuOAVPssKttt499YhGSnT4lypsYL8SAY9Xc8ahpMf8+grHycbDIm0r0AOuPunJ7rZhRQ3vU85OZCarm3hE1gbymtGFZAKbgvV/VhwlMJic1FckoNAlLG5ZcRPq2W+K4kjcMqbEOCtuEkDVE37EI79uICiyWOnW8phltD68f8Gsg2HA2VKfcdynZWzP8ZcUp2Kehk9rrpTkQOHWG0JRuVUxQjXy05Sur+uzeT/NNwQqnw/JMsQnRJl+dk4bOx6cR04p7EqmuYUnRwhQDp1TgJfLirjQaui+7Wq9MwEV2xdrf/R0Tg/3J651iC1YRymgqc/Cs1X9k9l9W1tp5KrWevwLJIf+dL0jsryF5hBF0KmrJXu6pNlXfB11v/NgNUgqbBqzzUrSt/iarL9ecKjHCVqV8+CaVvdTK0c9/pXPxdh6FyxTcb9FslzzI6+zRF8y7Shp/HyI5dTwoxJXORBs7mJKHPsTxQdCb/ybxm37QAw7mUmyd2oMpGVlJkEFeywtX+TpqE5v90brExQphglOeLun4+k07yR0nc/cGsAcAjHMzPs5FK+AbbWcCEOjwOS2o0tjXJ8cqvA8dSvE=
+  distributions: sdist bdist_wheel
   on:
+    condition: $TRAVIS_PYTHON_VERSION = "2.7"
     tags: true

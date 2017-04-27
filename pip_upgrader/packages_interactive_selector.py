@@ -71,19 +71,33 @@ class PackageInteractiveSelector(object):
         print(table.table)
         print('')
 
-        print('Please choose which packages should be upgraded. Choices: "all" or "1 2 3"')
+        print('Please choose which packages should be upgraded. Choices: "all", "q" (quit), "x" (exit) or "1 2 3"')
         choice = user_input(Color('{autogreen}Choice:{/autogreen} ')).strip()
 
         if not choice and not choice.strip():
             print(Color('{autored}No choice selected.{/autored}'))
             raise KeyboardInterrupt()
 
+        choice = choice.strip()
+
+        if choice == 'q':  # pragma: nocover
+            print(Color('{autored}Quit.{/autored}'))
+            raise KeyboardInterrupt()
+
+        if choice == 'x':  # pragma: nocover
+            print(Color('{autored}Exit.{/autored}'))
+            raise KeyboardInterrupt()
+
         if choice == "all":
             self._select_packages(self.packages_for_upgrade.keys())
         else:
-            selected = list(self._select_packages([int(index.strip()) for index in choice.split(' ')]))
-            if not any(selected):
-                print(Color('{autored}No valid choice selected.{/autored}'))
+            try:
+                selected = list(self._select_packages([int(index.strip()) for index in choice.split(' ')]))
+                if not any(selected):
+                    print(Color('{autored}No valid choice selected.{/autored}'))
+                    raise KeyboardInterrupt()
+            except ValueError:  # pragma: nocover
+                print(Color('{autored}Invalid choice{/autored}'))
                 raise KeyboardInterrupt()
 
     def _select_packages(self, indexes):

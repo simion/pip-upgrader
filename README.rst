@@ -6,7 +6,7 @@ pip-upgrader
     :target: https://coveralls.io/github/simion/pip-upgrader?branch=master
 
 
-*An interactive pip requirements upgrader. Because upgrading requirements, package by package, is a pain in the ass.
+An interactive *pypi* pip requirements upgrader. Because upgrading requirements, package by package, is a pain in the ass.
 It also updates the version in your requirements.txt file.
 
 
@@ -69,10 +69,10 @@ Final notes
 -----------
 If you encounter any bugs, please open an issue and it will be magically resolved :)
 
-**TODO (nothing major):**
+**TODO:**
 
+- support for local caches (index-url) from `~/.pip/pip.conf` (ex: devpi)
 - support for :code:`package>=0.1.0` (only works for :code:`package==0.1.0`)
-- support for `~/.pip/pip.conf` (ex: devpi)
 
 
 Have fun! :)

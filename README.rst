@@ -72,7 +72,7 @@ If you encounter any bugs, please open an issue and it will be magically resolve
 
 **TODO:**
 
-- support for local caches (index-url) from `~/.pip/pip.conf` (ex: devpi)
+- implement some sort of dependency detection, and nested display. Useful for requirements generated with pip freeze.
 - support for :code:`package>=0.1.0` (only works for :code:`package==0.1.0`)
 
 

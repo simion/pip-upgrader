@@ -96,3 +96,11 @@ For detailed coverage report, after *py.test* run
 ::
 
     coverage html && open htmlcov/index.html
+
+**Testing against all python version**
+Make sure you have python 2.7, 3.5, 3.6 installed (maybe use pyenv). Then: 
+::
+
+    pip install tox
+
+    tox

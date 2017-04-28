@@ -6,7 +6,7 @@ pip-upgrader
     :target: https://coveralls.io/github/simion/pip-upgrader?branch=master
 
 
-An interactive *pypi* pip requirements upgrader. Because upgrading requirements, package by package, is a pain in the ass.
+An interactive pip requirements upgrader. Because upgrading requirements, package by package, is a pain in the ass.
 It also updates the version in your requirements.txt file.
 
 

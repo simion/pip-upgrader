@@ -39,7 +39,7 @@ setup(
     url='https://github.com/simion/pip-upgrader',
     author='Simion Baws',
     author_email='simion.agv@gmail.com',
-    license='MIT',
+    license='Apache License 2.0',
     classifiers=[
         'Intended Audience :: Developers',
         'Topic :: Utilities',

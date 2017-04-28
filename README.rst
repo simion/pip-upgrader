@@ -92,12 +92,7 @@ This command will :
 - print coverage report
 - print pep8 errors
 
-
-(Notes for me):
-Release new version:
-
-- increment version in :code:`pip_upgrader/__init__.py`
-- commit everything, push on master, then
+For detailed coverage report, after *py.test* run
 ::
 
-    git tag v`pip-upgrade --version` && git push --tags
+    coverage html && open htmlcov/index.html

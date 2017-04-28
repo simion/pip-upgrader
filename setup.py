@@ -58,7 +58,7 @@ setup(
     ],
     keywords='cli,pip,pypi,requirements,upgrade',
     packages=find_packages(exclude=['docs', 'tests*']),
-    install_requires=['docopt', 'packaging', 'requests', 'terminaltables', 'colorclass', 'setuptools_scm'],
+    install_requires=['docopt', 'packaging', 'requests', 'terminaltables', 'colorclass'],
     extras_require={
         'test': ['coverage', 'pytest', 'pytest-cov', 'pytest-pep8', 'mock', 'responses'],
     },

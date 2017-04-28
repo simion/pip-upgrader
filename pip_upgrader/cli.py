@@ -30,8 +30,8 @@ Help:
 from __future__ import print_function, unicode_literals
 from colorclass import Windows, Color
 from docopt import docopt
-from setuptools_scm import get_version
 
+from pip_upgrader import __version__ as VERSION
 from pip_upgrader.packages_detector import PackagesDetector
 from pip_upgrader.packages_interactive_selector import PackageInteractiveSelector
 from pip_upgrader.packages_status_detector import PackagesStatusDetector
@@ -41,8 +41,7 @@ from pip_upgrader.virtualenv_checker import check_for_virtualenv
 
 
 def get_options():
-    version = get_version(root='..', relative_to=__file__)
-    return docopt(__doc__, version=version)
+    return docopt(__doc__, version=VERSION)
 
 
 def main():

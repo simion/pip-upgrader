@@ -4,8 +4,9 @@ from subprocess import PIPE, Popen as popen
 from unittest import TestCase
 
 import responses
+from setuptools_scm import get_version
 
-from pip_upgrader import __version__ as VERSION, cli
+from pip_upgrader import cli
 
 try:
     from unittest.mock import patch
@@ -30,7 +31,7 @@ class TestHelp(TestCase):
 class TestVersion(TestCase):
     def test_returns_version_information(self):
         output = popen(['pip-upgrade', '--version'], stdout=PIPE).communicate()[0]
-        self.assertEqual(output.strip().decode('utf-8'), VERSION)
+        self.assertEqual(output.strip().decode('utf-8'), get_version(root='..', relative_to=__file__))
 
 
 @patch('pip_upgrader.packages_interactive_selector.user_input', return_value='all')

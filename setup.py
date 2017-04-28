@@ -7,8 +7,6 @@ from subprocess import call
 
 from setuptools import Command, find_packages, setup
 
-from pip_upgrader import __version__
-
 
 this_dir = abspath(dirname(__file__))
 with open(join(this_dir, 'README.rst'), encoding='utf-8') as file:
@@ -34,7 +32,8 @@ class RunTests(Command):
 
 setup(
     name='pip_upgrader',
-    version=__version__,
+    use_scm_version=True,
+    setup_requires=['setuptools_scm'],
     description='An interactive pip requirements upgrader. It also updates the version in your requirements.txt file.',
     long_description=long_description,
     url='https://github.com/simion/pip-upgrader',
@@ -59,7 +58,7 @@ setup(
     ],
     keywords='cli,pip,pypi,requirements,upgrade',
     packages=find_packages(exclude=['docs', 'tests*']),
-    install_requires=['docopt', 'packaging', 'requests', 'terminaltables', 'colorclass'],
+    install_requires=['docopt', 'packaging', 'requests', 'terminaltables', 'colorclass', 'setuptools_scm'],
     extras_require={
         'test': ['coverage', 'pytest', 'pytest-cov', 'pytest-pep8', 'mock', 'responses'],
     },

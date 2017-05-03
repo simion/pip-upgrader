@@ -4,9 +4,12 @@ from subprocess import PIPE, Popen as popen
 from unittest import TestCase
 
 import responses
+from packaging.utils import canonicalize_name
+
 from pip_upgrader import __version__ as VERSION
 
 from pip_upgrader import cli
+from pip_upgrader.packages_status_detector import PackagesStatusDetector
 
 try:
     from unittest.mock import patch
@@ -43,9 +46,16 @@ class TestCommand(TestCase):
             with open('tests/fixtures/{}.json'.format(package)) as fh:
                 body = fh.read()
 
-            responses.add(responses.GET, "https://pypi.python.org/pypi/{}/json".format(package),
+            responses.add(responses.GET,
+                          "https://pypi.python.org/pypi/{}/json".format(package),
                           body=body,
                           content_type="application/json")
+
+            with open('tests/fixtures/{}.html'.format(canonicalize_name(package))) as fh:
+                body_html = fh.read()
+            responses.add(responses.GET,
+                          "https://pypi.python.org/simple/{}".format(canonicalize_name(package)),
+                          body=body_html)
 
     def setUp(self):
         self._add_responses_mocks()
@@ -59,8 +69,28 @@ class TestCommand(TestCase):
             output = stdout_mock.getvalue()
 
         self.assertTrue(user_input_mock.called)
+
+        self.assertIn('Available upgrades', output)
+        self.assertIn('ipython ... up to date', output)
+        self.assertIn('django-rest-auth ... upgrade available: 0.9.0 ==>', output)
+        self.assertNotIn('ipdb', output)
+        self.assertIn('Successfully upgraded', output)
+        self.assertIn('this was a simulation using --dry-run', output)
+
+    @responses.activate
+    @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': []})
+    def test_command_simple_html_index_url(self, options_mock, is_virtualenv_mock, user_input_mock):
+
+        with patch('sys.stdout', new_callable=StringIO) as stdout_mock, \
+                patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations',
+                      new=PackagesStatusDetector.pip_config_locations + ['pip.test.conf']):
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        self.assertTrue(user_input_mock.called)
         # checks if new index-url was discovered from config file
         self.assertIn('Setting API url', output)
+        self.assertIn('https://pypi.python.org/simple/{package}', output)
 
         self.assertIn('Available upgrades', output)
         self.assertIn('ipython ... up to date', output)
@@ -73,7 +103,9 @@ class TestCommand(TestCase):
     @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': [], '--use-default-index': True})
     def test_command__use_default_index(self, options_mock, is_virtualenv_mock, user_input_mock):
 
-        with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
+        with patch('sys.stdout', new_callable=StringIO) as stdout_mock, \
+                patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations',
+                      new=PackagesStatusDetector.pip_config_locations + ['pip.test.conf']):
             cli.main()
             output = stdout_mock.getvalue()
 
@@ -92,6 +124,7 @@ class TestCommand(TestCase):
 
         self.assertTrue(user_input_mock.called)
         self.assertIn('No choice selected', output)
+        self.assertNotIn('Setting API url', output)
 
         user_input_mock.return_value = '5 6 7'
         with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
@@ -112,6 +145,7 @@ class TestCommand(TestCase):
         # no user_input should be called
         self.assertFalse(user_input_mock.called)
 
+        self.assertNotIn('Setting API url', output)
         self.assertNotIn('Available upgrades', output)
         self.assertIn('Django ... upgrade available: 1.10 ==>', output)
         self.assertIn('django-rest-auth ... upgrade available: 0.9.0 ==>', output)
@@ -133,6 +167,7 @@ class TestCommand(TestCase):
         # no user_input should be called
         self.assertFalse(user_input_mock.called)
 
+        self.assertNotIn('Setting API url', output)
         self.assertIn('Django ... upgrade available: 1.10 ==>', output)
         self.assertNotIn('django-rest-auth', output)
         self.assertNotIn('ipython ... up to date', output)
@@ -151,6 +186,7 @@ class TestCommand(TestCase):
 
         # no user_input should be called
         self.assertFalse(user_input_mock.called)
+        self.assertNotIn('Setting API url', output)
         self.assertIn('All packages are up-to-date.', output)
 
     @responses.activate
@@ -165,6 +201,7 @@ class TestCommand(TestCase):
         # no user_input should be called
         self.assertFalse(user_input_mock.called)
 
+        self.assertNotIn('Setting API url', output)
         self.assertNotIn('Django ... upgrade available: 1.10 ==>', output)
         self.assertNotIn('django-rest-auth', output)
         self.assertNotIn('ipython ... up to date', output)
@@ -175,7 +212,7 @@ class TestCommand(TestCase):
 
     @responses.activate
     @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': ['django'], '--prerelease': True})
-    def test_command_not_interactive_specific_package(self, options_mock, is_virtualenv_mock, user_input_mock):
+    def test_command_not_specific_package_prerelease(self, options_mock, is_virtualenv_mock, user_input_mock):
 
         with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
             cli.main()
@@ -184,7 +221,30 @@ class TestCommand(TestCase):
         # no user_input should be called
         self.assertFalse(user_input_mock.called)
 
-        self.assertIn('Django ... upgrade available: 1.10 ==>', output)
+        self.assertNotIn('Setting API url', output)
+        self.assertIn('Django ... upgrade available: 1.10 ==> 1.11rc1', output)
+        self.assertNotIn('django-rest-auth', output)
+        self.assertNotIn('ipython ... up to date', output)
+        self.assertNotIn('ipdb', output)
+        self.assertNotIn('celery ... upgrade available: 3.1.1 ==>', output)
+
+        self.assertIn('Successfully upgraded', output)
+
+    @responses.activate
+    @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': ['django'], '--prerelease': True})
+    def test_command_not_specific_package_prerelease_html_api(self, options_mock, is_virtualenv_mock, user_input_mock):
+
+        with patch('sys.stdout', new_callable=StringIO) as stdout_mock, \
+                patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations',
+                      new=PackagesStatusDetector.pip_config_locations + ['pip.test.conf']):
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        # no user_input should be called
+        self.assertFalse(user_input_mock.called)
+
+        self.assertIn('Setting API url', output)
+        self.assertIn('Django ... upgrade available: 1.10 ==> 1.11rc1', output)
         self.assertNotIn('django-rest-auth', output)
         self.assertNotIn('ipython ... up to date', output)
         self.assertNotIn('ipdb', output)
@@ -202,6 +262,7 @@ class TestCommand(TestCase):
             cli.main()
             output = stdout_mock.getvalue()
 
+        self.assertNotIn('Setting API url', output)
         self.assertIn("It seems you haven't activated a virtualenv", output)
         self.assertNotIn('Successfully upgraded', output)
 
@@ -216,6 +277,7 @@ class TestCommand(TestCase):
             output = stdout_mock.getvalue()
 
         self.assertFalse(user_input_mock.called)
+        self.assertNotIn('Setting API url', output)
         self.assertIn('Django ... upgrade available: 1.10 ==>', output)
         self.assertNotIn('django-rest-auth', output)
         self.assertNotIn('ipython ... up to date', output)

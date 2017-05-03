@@ -2,38 +2,51 @@ from __future__ import print_function, unicode_literals
 
 import os
 
+import re
 import requests
 import sys
 
 from colorclass import Color
 from packaging import version
+from packaging.utils import canonicalize_name
 from pip.locations import site_config_files
+from requests import HTTPError
 
 try:
-    from configparser import ConfigParser
+    from configparser import ConfigParser, NoOptionError
 except ImportError:   # pragma: nocover
     from ConfigParser import ConfigParser, NoOptionError
+
+try:
+    from urllib.parse import urljoin
+except ImportError:  # pragma: nocover
+    from urlparse import urljoin
 
 
 class PackagesStatusDetector(object):
     packages = []
     packages_status_map = {}
     PYPI_API_URL = None
+    PYPI_API_TYPE = None
     pip_config_locations = [
         '~/.pip/pip.conf',
         '~/.pip/pip.ini',
-        'pip.test.conf',  # for testing
         '~/.config/pip/pip.conf',
         '~/.config/pip/pip.ini',
     ]
+
+    _prerelease = False
 
     def __init__(self, packages, use_default_index=False):
         self.packages = packages
         self.packages_status_map = {}
         self.PYPI_API_URL = 'https://pypi.python.org/pypi/{package}/json'
+        self.PYPI_API_TYPE = 'pypi_json'
 
         if not use_default_index:
             self._update_index_url_from_configs()
+
+        self._prerelease = False
 
     def _update_index_url_from_configs(self):
         """ Checks for alternative index-url in pip.conf """
@@ -66,25 +79,26 @@ class PackagesStatusDetector(object):
             print(Color('Setting API url to {{autoyellow}}{}{{/autoyellow}} as found in {{autoyellow}}{}{{/autoyellow}}'
                         '. Use --default-index-url to use pypi default index'.format(self.PYPI_API_URL, custom_config)))
 
-    @staticmethod
-    def _prepare_api_url(index_url):  # pragma: nocover
+    def _prepare_api_url(self, index_url):  # pragma: nocover
+        if not index_url.endswith('/'):
+            index_url += '/'
+
+        if index_url.endswith('/simple/'):
+            self.PYPI_API_TYPE = 'simple_html'
+            return urljoin(index_url, '{package}')
+
+        if index_url.endswith('/+simple/'):
+            self.PYPI_API_TYPE = 'simple_html'
+            return urljoin(index_url, '{package}')
+
         if '/pypi/' in index_url:
             base_url = index_url.split('/pypi/')[0]
-            return '{}/pypi/{{package}}/json'.format(base_url)
+            return urljoin(base_url, '/pypi/{package}/json')
 
-        if '/simple' in index_url:
-            base_url = index_url.split('/simple/')[0]
-            return '{}/pypi/{{package}}/json'.format(base_url)
-
-        if '/+simple' in index_url:
-            base_url = index_url.split('/+simple')[0]
-            return '{}/pypi/{{package}}/json'.format(base_url)
-
-        base_url = index_url.rstrip('/')
-        return '{}/pypi/{{package}}/json'.format(base_url)
+        return urljoin(index_url, '/pypi/{package}/json')
 
     def detect_available_upgrades(self, options):
-        prerelease = options.get('--prerelease', False)
+        self._prerelease = options.get('--prerelease', False)
         explicit_packages_lower = None
         if options['-p'] and options['-p'] != ['all']:
             explicit_packages_lower = [pack_name.lower() for pack_name in options['-p']]
@@ -103,57 +117,50 @@ class PackagesStatusDetector(object):
             current_version = version.parse(pinned_version)
 
             if pinned_version and isinstance(current_version, version.Version):  # version parsing is correct
+                package_status, reason = self._fetch_index_package_info(package_name, current_version)
+                if not package_status:  # pragma: nocover
+                    print(reason)
+                    continue
+
                 print('{}/{}: {} ... '.format(i + 1, len(self.packages), package_name), end='')
                 sys.stdout.flush()
 
-                # query for upgrade available
-                response = requests.get(self.PYPI_API_URL.format(package=package_name))
-
-                if not response.ok:  # pragma: nocover
-                    print('pypi API error: {}'.format(response.reason))
-                    continue
-                data = response.json()
-                # latest_stable_version = version.parse(data['info']['version'])
-                all_versions = [version.parse(vers) for vers in data['releases'].keys()]
-                latest_version = max([vers for vers in all_versions
-                                      if not vers.is_prerelease and not vers.is_postrelease])
-
-                # even if user did not choose prerelease, if the package from requirements is pre/post release, use it
-                if prerelease or current_version.is_postrelease or current_version.is_prerelease:
-                    prerelease_versions = [vers for vers in all_versions if vers.is_prerelease or vers.is_postrelease]
-                    if prerelease_versions:
-                        latest_version = max(prerelease_versions)
-                try:
-                    try:
-                        latest_version_info = data['releases'][str(latest_version)][0]
-                    except KeyError:  # pragma: nocover
-                        # non-RFC versions, get the latest from pypi response
-                        latest_version = version.parse(data['info']['version'])
-                        latest_version_info = data['releases'][str(latest_version)][0]
-                except Exception:  # pragma: nocover
-                    print('error while parsing version')
-                    continue
-
-                upload_time = latest_version_info['upload_time'].replace('T', ' ')
-
                 # compare versions
-                if current_version < latest_version:
+                if current_version < package_status['latest_version']:
                     print('upgrade available: {} ==> {} (uploaded on {})'.format(current_version,
-                                                                                 latest_version,
-                                                                                 upload_time))
+                                                                                 package_status['latest_version'],
+                                                                                 package_status['upload_time']))
                 else:
                     print('up to date: {}'.format(current_version))
                 sys.stdout.flush()
 
-                self.packages_status_map[package_name] = {
-                    'name': package_name,
-                    'current_version': current_version,
-                    'latest_version': latest_version,
-                    'upgrade_available': current_version < latest_version,
-                    'upload_time': upload_time
-                }
+                self.packages_status_map[package_name] = package_status
 
         return self.packages_status_map
+
+    def _fetch_index_package_info(self, package_name, current_version):
+        """
+        :type package_name: str
+        :type current_version: version.Version
+        """
+
+        try:
+            package_canonical_name = package_name
+            if self.PYPI_API_TYPE == 'simple_html':
+                package_canonical_name = canonicalize_name(package_name)
+            response = requests.get(self.PYPI_API_URL.format(package=package_canonical_name), timeout=15)
+        except HTTPError as e:  # pragma: nocover
+            return False, e.message
+
+        if not response.ok:  # pragma: nocover
+            return False, 'API error: {}'.format(response.reason)
+
+        if self.PYPI_API_TYPE == 'pypi_json':
+            return self._parse_pypi_json_package_info(package_name, current_version, response)
+        elif self.PYPI_API_TYPE == 'simple_html':
+            return self._parse_simple_html_package_info(package_name, current_version, response)
+        else:  # pragma: nocover
+            raise NotImplementedError('This type of PYPI_API_TYPE type is not supported')
 
     def _expand_package(self, package_line):
         if '==' in package_line:
@@ -165,3 +172,65 @@ class PackagesStatusDetector(object):
             return name, vers
 
         return None, None
+
+    def _parse_pypi_json_package_info(self, package_name, current_version, response):
+        """
+        :type package_name: str
+        :type current_version: version.Version
+        :type response: requests.models.Response
+        """
+
+        data = response.json()
+        all_versions = [version.parse(vers) for vers in data['releases'].keys()]
+        latest_version = max([vers for vers in all_versions if not vers.is_prerelease and not vers.is_postrelease])
+
+        # even if user did not choose prerelease, if the package from requirements is pre/post release, use it
+        if self._prerelease or current_version.is_postrelease or current_version.is_prerelease:
+            prerelease_versions = [vers for vers in all_versions if vers.is_prerelease or vers.is_postrelease]
+            if prerelease_versions:
+                latest_version = max(prerelease_versions)
+        try:
+            try:
+                latest_version_info = data['releases'][str(latest_version)][0]
+            except KeyError:  # pragma: nocover
+                # non-RFC versions, get the latest from pypi response
+                latest_version = version.parse(data['info']['version'])
+                latest_version_info = data['releases'][str(latest_version)][0]
+        except Exception:  # pragma: nocover
+            return False, 'error while parsing version'
+
+        upload_time = latest_version_info['upload_time'].replace('T', ' ')
+
+        return {
+            'name': package_name,
+            'current_version': current_version,
+            'latest_version': latest_version,
+            'upgrade_available': current_version < latest_version,
+            'upload_time': upload_time
+        }, 'success'
+
+    def _parse_simple_html_package_info(self, package_name, current_version, response):
+        """
+        :type package_name: str
+        :type current_version: version.Version
+        :type response: requests.models.Response
+        """
+        pattern = r'<a.*>.*{name}-([A-z0-9\.-]*)(?:-py|\.tar).*<\/a>'.format(name=re.escape(package_name))
+        versions_match = re.findall(pattern, response.content.decode('utf-8'), flags=re.IGNORECASE)
+
+        all_versions = [version.parse(vers) for vers in versions_match]
+        latest_version = max([vers for vers in all_versions if not vers.is_prerelease and not vers.is_postrelease])
+
+        # even if user did not choose prerelease, if the package from requirements is pre/post release, use it
+        if self._prerelease or current_version.is_postrelease or current_version.is_prerelease:
+            prerelease_versions = [vers for vers in all_versions if vers.is_prerelease or vers.is_postrelease]
+            if prerelease_versions:
+                latest_version = max(prerelease_versions)
+
+        return {
+           'name': package_name,
+           'current_version': current_version,
+           'latest_version': latest_version,
+           'upgrade_available': current_version < latest_version,
+           'upload_time': '-'
+        }, 'success'

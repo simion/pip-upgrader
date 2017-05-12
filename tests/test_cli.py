@@ -100,6 +100,27 @@ class TestCommand(TestCase):
         self.assertIn('this was a simulation using --dry-run', output)
 
     @responses.activate
+    @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': []})
+    @patch.dict('os.environ', {'PIP_INDEX_URL': 'https://pypi.python.org/simple/'})
+    def test_command_pip_index_url_environ(self, options_mock, is_virtualenv_mock, user_input_mock):
+
+        with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        self.assertTrue(user_input_mock.called)
+        # checks if new index-url was discovered from config file
+        self.assertIn('Setting API url', output)
+        self.assertIn('https://pypi.python.org/simple/{package}', output)
+
+        self.assertIn('Available upgrades', output)
+        self.assertIn('ipython ... up to date', output)
+        self.assertIn('django-rest-auth ... upgrade available: 0.9.0 ==>', output)
+        self.assertNotIn('ipdb', output)
+        self.assertIn('Successfully upgraded', output)
+        self.assertIn('this was a simulation using --dry-run', output)
+
+    @responses.activate
     @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': [], '--use-default-index': True})
     def test_command__use_default_index(self, options_mock, is_virtualenv_mock, user_input_mock):
 

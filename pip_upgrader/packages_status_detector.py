@@ -60,19 +60,25 @@ class PackagesStatusDetector(object):
 
         index_url = None
         custom_config = None
-        for pip_config_filename in self.pip_config_locations:
-            if pip_config_filename.startswith('~'):
-                pip_config_filename = os.path.expanduser(pip_config_filename)
 
-            if os.path.isfile(pip_config_filename):
-                config = ConfigParser()
-                config.read([pip_config_filename])
-                try:
-                    index_url = config.get('global', 'index-url')
-                    custom_config = pip_config_filename
-                    break  # stop on first detected, because config locations have a priority
-                except NoOptionError:  # pragma: nocover
-                    pass
+        if 'PIP_INDEX_URL' in os.environ and os.environ['PIP_INDEX_URL']:
+            # environ variable takes priority
+            index_url = os.environ['PIP_INDEX_URL']
+            custom_config = 'PIP_INDEX_URL environment variable'
+        else:
+            for pip_config_filename in self.pip_config_locations:
+                if pip_config_filename.startswith('~'):
+                    pip_config_filename = os.path.expanduser(pip_config_filename)
+
+                if os.path.isfile(pip_config_filename):
+                    config = ConfigParser()
+                    config.read([pip_config_filename])
+                    try:
+                        index_url = config.get('global', 'index-url')
+                        custom_config = pip_config_filename
+                        break  # stop on first detected, because config locations have a priority
+                    except NoOptionError:  # pragma: nocover
+                        pass
 
         if index_url:
             self.PYPI_API_URL = self._prepare_api_url(index_url)

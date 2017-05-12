@@ -66,6 +66,11 @@ Examples:
     pip-upgrade --prerelease
 
 
+Features
+--------
+
+to be completed
+
 Final notes
 -----------
 If you encounter any bugs, please open an issue and it will be magically resolved :)

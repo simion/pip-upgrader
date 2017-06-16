@@ -110,37 +110,39 @@ class PackagesStatusDetector(object):
             explicit_packages_lower = [pack_name.lower() for pack_name in options['-p']]
 
         for i, package in enumerate(self.packages):
-
-            package_name, pinned_version = self._expand_package(package)
-            if not package_name or not pinned_version:  # pragma: nocover
-                # todo: treat <= or >= instead of ==
-                continue
-
-            if explicit_packages_lower and package_name.lower() not in explicit_packages_lower:
-                # skip if explicit and not chosen
-                continue
-
-            current_version = version.parse(pinned_version)
-
-            if pinned_version and isinstance(current_version, version.Version):  # version parsing is correct
-                package_status, reason = self._fetch_index_package_info(package_name, current_version)
-                if not package_status:  # pragma: nocover
-                    print(reason)
+            try:
+                package_name, pinned_version = self._expand_package(package)
+                if not package_name or not pinned_version:  # pragma: nocover
+                    # todo: treat <= or >= instead of ==
                     continue
 
-                print('{}/{}: {} ... '.format(i + 1, len(self.packages), package_name), end='')
-                sys.stdout.flush()
+                if explicit_packages_lower and package_name.lower() not in explicit_packages_lower:
+                    # skip if explicit and not chosen
+                    continue
 
-                # compare versions
-                if current_version < package_status['latest_version']:
-                    print('upgrade available: {} ==> {} (uploaded on {})'.format(current_version,
-                                                                                 package_status['latest_version'],
-                                                                                 package_status['upload_time']))
-                else:
-                    print('up to date: {}'.format(current_version))
-                sys.stdout.flush()
+                current_version = version.parse(pinned_version)
 
-                self.packages_status_map[package_name] = package_status
+                if pinned_version and isinstance(current_version, version.Version):  # version parsing is correct
+                    package_status, reason = self._fetch_index_package_info(package_name, current_version)
+                    if not package_status:  # pragma: nocover
+                        print(reason)
+                        continue
+
+                    print('{}/{}: {} ... '.format(i + 1, len(self.packages), package_name), end='')
+                    sys.stdout.flush()
+
+                    # compare versions
+                    if current_version < package_status['latest_version']:
+                        print('upgrade available: {} ==> {} (uploaded on {})'.format(current_version,
+                                                                                     package_status['latest_version'],
+                                                                                     package_status['upload_time']))
+                    else:
+                        print('up to date: {}'.format(current_version))
+                    sys.stdout.flush()
+
+                    self.packages_status_map[package_name] = package_status
+            except Exception as e:  # noqa
+                print('Error while parsing package {} (skipping). \nException: '.format(package), e)
 
         return self.packages_status_map
 
@@ -188,7 +190,12 @@ class PackagesStatusDetector(object):
 
         data = response.json()
         all_versions = [version.parse(vers) for vers in data['releases'].keys()]
-        latest_version = max([vers for vers in all_versions if not vers.is_prerelease and not vers.is_postrelease])
+        filtered_versions = [vers for vers in all_versions if not vers.is_prerelease and not vers.is_postrelease]
+
+        if not filtered_versions:
+            return False, 'error while parsing version'
+
+        latest_version = max(filtered_versions)
 
         # even if user did not choose prerelease, if the package from requirements is pre/post release, use it
         if self._prerelease or current_version.is_postrelease or current_version.is_prerelease:
@@ -225,7 +232,12 @@ class PackagesStatusDetector(object):
         versions_match = re.findall(pattern, response.content.decode('utf-8'), flags=re.IGNORECASE)
 
         all_versions = [version.parse(vers) for vers in versions_match]
-        latest_version = max([vers for vers in all_versions if not vers.is_prerelease and not vers.is_postrelease])
+        filtered_versions = [vers for vers in all_versions if not vers.is_prerelease and not vers.is_postrelease]
+
+        if not filtered_versions:
+            return False, 'error while parsing version'
+
+        latest_version = max(filtered_versions)
 
         # even if user did not choose prerelease, if the package from requirements is pre/post release, use it
         if self._prerelease or current_version.is_postrelease or current_version.is_prerelease:

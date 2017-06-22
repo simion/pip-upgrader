@@ -125,7 +125,7 @@ class PackagesStatusDetector(object):
                 if pinned_version and isinstance(current_version, version.Version):  # version parsing is correct
                     package_status, reason = self._fetch_index_package_info(package_name, current_version)
                     if not package_status:  # pragma: nocover
-                        print(reason)
+                        print(package, reason)
                         continue
 
                     print('{}/{}: {} ... '.format(i + 1, len(self.packages), package_name), end='')
@@ -141,7 +141,7 @@ class PackagesStatusDetector(object):
                     sys.stdout.flush()
 
                     self.packages_status_map[package_name] = package_status
-            except Exception as e:  # noqa
+            except Exception as e:  # noqa  # pragma: nocover
                 print('Error while parsing package {} (skipping). \nException: '.format(package), e)
 
         return self.packages_status_map
@@ -192,7 +192,7 @@ class PackagesStatusDetector(object):
         all_versions = [version.parse(vers) for vers in data['releases'].keys()]
         filtered_versions = [vers for vers in all_versions if not vers.is_prerelease and not vers.is_postrelease]
 
-        if not filtered_versions:
+        if not filtered_versions:  # pragma: nocover
             return False, 'error while parsing version'
 
         latest_version = max(filtered_versions)
@@ -234,7 +234,7 @@ class PackagesStatusDetector(object):
         all_versions = [version.parse(vers) for vers in versions_match]
         filtered_versions = [vers for vers in all_versions if not vers.is_prerelease and not vers.is_postrelease]
 
-        if not filtered_versions:
+        if not filtered_versions:  # pragma: nocover
             return False, 'error while parsing version'
 
         latest_version = max(filtered_versions)

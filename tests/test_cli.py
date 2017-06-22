@@ -232,6 +232,26 @@ class TestCommand(TestCase):
         self.assertIn('Successfully upgraded', output)
 
     @responses.activate
+    @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': ['all'],
+                                                         '<requirements_file>': ['requirements/local.txt']})
+    def test_command_not_recursive_requirements_include(self, options_mock, is_virtualenv_mock, user_input_mock):
+
+        with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        # no user_input should be called
+        self.assertFalse(user_input_mock.called)
+        self.assertIn('celery ... upgrade available: 3.1.1 ==>', output)
+        self.assertIn('requirements/local.txt', output)
+        self.assertIn('requirements/production.txt', output)
+        self.assertIn('requirements/extra/debug.txt', output)
+        self.assertIn('requirements/extra/debug2.txt', output)
+        self.assertNotIn('requirements/extra/bad_file.txt', output)
+
+        self.assertIn('Successfully upgraded', output)
+
+    @responses.activate
     @patch('pip_upgrader.cli.get_options', return_value={'--dry-run': True, '-p': ['django'], '--prerelease': True})
     def test_command_not_specific_package_prerelease(self, options_mock, is_virtualenv_mock, user_input_mock):
 

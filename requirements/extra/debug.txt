@@ -1,0 +1,3 @@
+-r debug2.txt
+
+django-debug-toolbar==1.7

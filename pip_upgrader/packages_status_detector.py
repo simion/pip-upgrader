@@ -13,7 +13,7 @@ from pip.locations import site_config_files
 from requests import HTTPError
 
 try:
-    from configparser import ConfigParser, NoOptionError
+    from configparser import ConfigParser, NoOptionError, NoSectionError
 except ImportError:   # pragma: nocover
     from ConfigParser import ConfigParser, NoOptionError
 
@@ -77,7 +77,7 @@ class PackagesStatusDetector(object):
                         index_url = config.get('global', 'index-url')
                         custom_config = pip_config_filename
                         break  # stop on first detected, because config locations have a priority
-                    except NoOptionError:  # pragma: nocover
+                    except (NoOptionError, NoSectionError):  # pragma: nocover
                         pass
 
         if index_url:

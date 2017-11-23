@@ -15,7 +15,7 @@ from requests import HTTPError
 try:
     from configparser import ConfigParser, NoOptionError, NoSectionError
 except ImportError:   # pragma: nocover
-    from ConfigParser import ConfigParser, NoOptionError
+    from ConfigParser import ConfigParser, NoOptionError, NoSectionError
 
 try:
     from urllib.parse import urljoin

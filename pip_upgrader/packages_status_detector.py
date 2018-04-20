@@ -9,8 +9,12 @@ import sys
 from colorclass import Color
 from packaging import version
 from packaging.utils import canonicalize_name
-from pip.locations import site_config_files
 from requests import HTTPError
+
+try:
+    from pip.locations import site_config_files
+except ImportError:
+    from pip._internal.locations import site_config_files
 
 try:
     from configparser import ConfigParser, NoOptionError, NoSectionError

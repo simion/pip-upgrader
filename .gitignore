@@ -9,6 +9,7 @@ dist
 
 .idea/vcs.xml
 tests/__pycache__/
+.pytest_cache/
 
 htmlcov
 .idea

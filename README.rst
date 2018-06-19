@@ -29,7 +29,8 @@ Installation
 
     pip install pip-upgrader
 
-Note: this packages installs the following requirements: :code:`'docopt', 'packaging', 'requests', 'terminaltables', 'colorclass'`
+**Note:** this packages installs the following requirements: :code:`'docopt', 'packaging', 'requests', 'terminaltables', 'colorclass'`
+
 To avoid installing all these dependencies in your project, you can install :code:`pip-upgrader` in your system, rather than your virtualenv.
 If you install it in your system, and need to upgrade it, run :code:`pip install -U pip-upgrader`
 

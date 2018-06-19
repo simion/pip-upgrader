@@ -65,6 +65,15 @@ Examples:
     # include pre-release versions
     pip-upgrade --prerelease
 
+To use ``pip-upgrader`` on install requirements located in a ``setup.py`` file,
+try this:
+
+.. code-block:: sh
+
+   ./setup.py egg_info
+   pip-upgrade $(./setup.py --name | tr -- - _)*.egg-info/requires.txt
+
+This will display any versions that can be upgraded, and helps you to manually maintain the ``install_requires`` in ``setup.py``.
 
 Features
 --------

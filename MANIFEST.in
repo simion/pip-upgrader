@@ -1,6 +1,7 @@
 exclude .gitignore
 exclude .coverage
 exclude .travis.yml
+include LICENSE
 include README.rst
 include setup.cfg
 prune .cache

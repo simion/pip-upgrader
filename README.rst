@@ -89,8 +89,10 @@ Final notes
 -----------
 If you encounter any bugs, please open an issue and it will be magically resolved :)
 
+
 **TODO:**
 
+- support for Pipfile (pipenv) 
 - implement some sort of dependency detection, and nested display. Useful for requirements generated with pip freeze.
 - support for :code:`package>=0.1.0` (only works for :code:`package==0.1.0`)
 

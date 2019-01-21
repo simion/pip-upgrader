@@ -92,7 +92,7 @@ If you encounter any bugs, please open an issue and it will be magically resolve
 
 **TODO:**
 
-- support for Pipfile (pipenv) 
+- support for Pipfile/pipenv. Meanwhile, you can do `pipenv lock -r > requirements.txt` and check for updates. It depends if you have frozen the versions in Pipfile or not. If they are "*", just run `pipenv lock` and latest versions will be fetched and locked in Pipfile.lock
 - implement some sort of dependency detection, and nested display. Useful for requirements generated with pip freeze.
 - support for :code:`package>=0.1.0` (only works for :code:`package==0.1.0`)
 

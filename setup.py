@@ -36,6 +36,7 @@ setup(
     setup_requires=['setuptools_scm'],
     description='An interactive pip requirements upgrader. It also updates the version in your requirements.txt file.',
     long_description=long_description,
+    long_description_content_type="text/x-rst",
     url='https://github.com/simion/pip-upgrader',
     author='Simion Baws',
     author_email='simion.agv@gmail.com',

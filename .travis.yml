@@ -15,6 +15,6 @@ deploy:
     secure: "Pxs4ZGFvR2am2dUHGmFWgCVF1vzNvRtQzFkFJ2aoaM5XtaTYG9odAt+KlR0yqLZ92UftealGcj/6ZdI2BukZwLFo/AyzLZ7xdqu4FIdE3eDnruvbShdFw31pYWLm84ajsHAvEK66e7XnpdBXM46YKq40OgMM/0oeUbpt8Fy2iFHGu9NO4JVvn8425cNhs9eAkjuJsWnuyjzpt5xHUGgrALihbulF/pJoMtpV6i9g2RujdrmBsu2cX+CH+wSrvuvWMOPq+WBNEPsN5SyW58mqBicltl0H1P4a/hhdg2drRFRvWgWC6DQZrjUUyX2YUY1HRE7jKeba29fqiuzS0ueEq8XbaRgarPsPX4L5iRRJaNs2XlxVEmAWxEuKNJ/Pu0FZKQ9kBke3ZCTrS74a7tz6NUA8F9LrU5nuEi+uew18zgZ+nee0V2Bx/Nzavg7v4wqNqN0FStCdgk+CnkZX+hiG3xfMkgrAt76EjW0Ipm1YXwdWiF0hZ1tUsRfYoWzLsnGwjdgW8ORx3Zopaa5UkHTWJYQpDKX5Bomqz9l/aWwTqhrsQpKODBnf9SBCMLet80XVjQBbs3W3gDCEN79AVe/HqnkxQoWSXE0A/saQURALAbtf+XpCcPB3KQXqdQ5vFm8V119O24OH6MjCCwjmf5vhilwQpIT9zZBoB/kigBBGEko="
   distributions: sdist bdist_wheel
   on:
-    python: '3.6'
+    python: '2.7'
     branch: master
     tags: true

@@ -98,11 +98,11 @@ class PackagesStatusDetector(object):
 
         if index_url.endswith('/simple/'):
             self.PYPI_API_TYPE = 'simple_html'
-            return urljoin(index_url, '{package}')
+            return urljoin(index_url, '{package}/')
 
         if index_url.endswith('/+simple/'):
             self.PYPI_API_TYPE = 'simple_html'
-            return urljoin(index_url, '{package}')
+            return urljoin(index_url, '{package}/')
 
         if '/pypi/' in index_url:
             base_url = index_url.split('/pypi/')[0]

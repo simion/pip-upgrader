@@ -72,7 +72,7 @@ class PackageInteractiveSelector(object):
         print('')
 
         print('Please choose which packages should be upgraded. Choices: "all", "q" (quit), "x" (exit) or "1 2 3"')
-        choice = user_input(Color('{autogreen}Choice:{/autogreen} ')).strip()
+        choice = user_input('Choice: ').strip()
 
         if not choice and not choice.strip():
             print(Color('{autored}No choice selected.{/autored}'))

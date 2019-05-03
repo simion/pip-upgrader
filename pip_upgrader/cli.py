@@ -82,3 +82,7 @@ def main():
 
     except KeyboardInterrupt:  # pragma: nocover
         print(Color('\n{autored}Upgrade interrupted.{/autored}'))
+
+
+if __name__ == '__main__':  # pragma: nocover
+    main()

@@ -14,7 +14,10 @@ from requests import HTTPError
 try:
     from pip.locations import site_config_files
 except ImportError:
-    from pip._internal.locations import site_config_files
+    try:
+        from pip._internal.locations import site_config_files
+    except ImportError:  # pragma: nocover
+        site_config_files = None
 
 try:
     from configparser import ConfigParser, NoOptionError, NoSectionError

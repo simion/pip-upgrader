@@ -197,10 +197,7 @@ class PackagesStatusDetector(object):
 
         data = response.json()
         all_versions = [version.parse(vers) for vers in data['releases'].keys()]
-        if not self._prerelease:
-            filtered_versions = [vers for vers in all_versions if not vers.is_prerelease and not vers.is_postrelease]
-        else:
-            filtered_versions = all_versions
+        filtered_versions = [vers for vers in all_versions if not vers.is_prerelease and not vers.is_postrelease]
 
         if not filtered_versions:  # pragma: nocover
             return False, 'error while parsing version'
@@ -211,8 +208,7 @@ class PackagesStatusDetector(object):
         if self._prerelease or current_version.is_postrelease or current_version.is_prerelease:
             prerelease_versions = [vers for vers in all_versions if vers.is_prerelease or vers.is_postrelease]
             if prerelease_versions:
-                if max(prerelease_versions) > latest_version:
-                    latest_version = max(prerelease_versions)
+                latest_version = max(prerelease_versions)
         try:
             try:
                 latest_version_info = data['releases'][str(latest_version)][0]

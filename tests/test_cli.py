@@ -54,7 +54,7 @@ class TestCommand(TestCase):
             with open('tests/fixtures/{}.html'.format(canonicalize_name(package))) as fh:
                 body_html = fh.read()
             responses.add(responses.GET,
-                          "https://pypi.python.org/simple/{}".format(canonicalize_name(package)),
+                          "https://pypi.python.org/simple/{}/".format(canonicalize_name(package)),
                           body=body_html)
 
     def setUp(self):

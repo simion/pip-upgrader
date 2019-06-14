@@ -45,7 +45,7 @@ class PackagesUpgrader(object):
                 if self.dry_run:
                     lbl = 'Dry Run'
                 else:
-                    lbl = "Skip Install"
+                    lbl = "Skip Install"  # pragma: nocover
                 print('[{}]: skipping package installation:'.format(lbl),
                       package['name'])
             # update only if installation success

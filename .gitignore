@@ -18,3 +18,7 @@ htmlcov
 
 Pipfile
 Pipfile.lock
+
+# pyenv local versions file
+/.python-version
+

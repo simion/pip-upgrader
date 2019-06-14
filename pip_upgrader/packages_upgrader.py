@@ -23,7 +23,7 @@ class PackagesUpgrader(object):
         self.dry_run = options['--dry-run']
         skip_pkg_install = options.get('--skip-package-installation', False)
         if 'PIP_UPGRADER_SKIP_PACKAGE_INSTALLATION' in os.environ:
-            skip_pkg_install = True
+            skip_pkg_install = True  # pragma: nocover
         self.skip_package_installation = skip_pkg_install
 
     def do_upgrade(self):

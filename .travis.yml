@@ -9,6 +9,8 @@ script:
 after_success:
 - coveralls
 deploy:
+  skip_cleanup: true
+  skip_existing: true
   provider: pypi
   user: SimionBaws
   password:

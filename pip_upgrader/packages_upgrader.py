@@ -1,5 +1,7 @@
 from __future__ import print_function, unicode_literals
 
+import os
+
 import subprocess
 from subprocess import CalledProcessError
 
@@ -19,7 +21,10 @@ class PackagesUpgrader(object):
         self.requirements_files = requirements_files
         self.upgraded_packages = []
         self.dry_run = options['--dry-run']
-        self.skip_package_installation = options.get('--skip-package-installation', False)
+        skip_pkg_install = options.get('--skip-package-installation', False)
+        if 'PIP_UPGRADER_SKIP_PACKAGE_INSTALLATION' in os.environ:
+            skip_pkg_install = True  # pragma: nocover
+        self.skip_package_installation = skip_pkg_install
 
     def do_upgrade(self):
         for package in self.selected_packages:
@@ -28,12 +33,21 @@ class PackagesUpgrader(object):
         return self.upgraded_packages
 
     def _update_package(self, package):
-        """ Update (install) the package in current environment, and if success, also replace version in file """
+        """ Update (install) the package in current environment,
+        and if success, also replace version in file """
         try:
             if not self.dry_run and not self.skip_package_installation:  # pragma: nocover
-                subprocess.check_call(['pip', 'install', '{}=={}'.format(package['name'], package['latest_version'])])
+                pinned = '{}=={}'.format(package['name'],
+                                         package['latest_version'])
+                subprocess.check_call(['pip', 'install', pinned])
             else:
-                print('[Dry Run]: skipping package installation:', package['name'])
+                # dry run has priority in messages
+                if self.dry_run:
+                    lbl = 'Dry Run'
+                else:
+                    lbl = "Skip Install"  # pragma: nocover
+                print('[{}]: skipping package installation:'.format(lbl),
+                      package['name'])
             # update only if installation success
             self._update_requirements_package(package)
 

@@ -9,7 +9,7 @@ from setuptools import Command, find_packages, setup
 
 
 this_dir = abspath(dirname(__file__))
-with open(join(this_dir, 'README.rst'), encoding='utf-8') as file:
+with open(join(this_dir, 'README.md'), encoding='utf-8') as file:
     long_description = file.read()
 
 
@@ -36,7 +36,7 @@ setup(
     setup_requires=['setuptools_scm'],
     description='An interactive pip requirements upgrader. It also updates the version in your requirements.txt file.',
     long_description=long_description,
-    long_description_content_type="text/x-rst",
+    long_description_content_type="text/markdown",
     url='https://github.com/simion/pip-upgrader',
     author='Simion Baws',
     author_email='simion.agv@gmail.com',

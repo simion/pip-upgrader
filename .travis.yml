@@ -1,13 +1,16 @@
 language: python
 python:
-- '2.7'
-- '3.6'
+  - '2.7'
+  - '3.5'
+  - '3.6'
+  - '3.7'
+  - '3.8'
 install:
-- pip install tox-travis coveralls
+  - pip install tox-travis coveralls
 script:
-- tox
+  - tox
 after_success:
-- coveralls
+  - coveralls
 deploy:
   skip_cleanup: true
   skip_existing: true

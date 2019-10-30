@@ -1,10 +1,10 @@
-from __future__ import print_function, unicode_literals
-
 import os
-
 import re
 import requests
 import sys
+
+from configparser import ConfigParser, NoOptionError, NoSectionError
+from urllib.parse import urljoin
 
 from colorclass import Color
 from packaging import version
@@ -18,16 +18,6 @@ except ImportError:
         from pip._internal.locations import site_config_files
     except ImportError:  # pragma: nocover
         site_config_files = None
-
-try:
-    from configparser import ConfigParser, NoOptionError, NoSectionError
-except ImportError:   # pragma: nocover
-    from ConfigParser import ConfigParser, NoOptionError, NoSectionError
-
-try:
-    from urllib.parse import urljoin
-except ImportError:  # pragma: nocover
-    from urlparse import urljoin
 
 
 class PackagesStatusDetector(object):

@@ -1,6 +1,3 @@
-from __future__ import print_function, unicode_literals
-
-
 class PackagesDetector(object):
     """ Takes list of requirements fies and returns the list of packages from all of them """
 

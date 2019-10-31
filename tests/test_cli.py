@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from subprocess import PIPE, Popen as popen
 from unittest import TestCase
 
@@ -16,10 +14,7 @@ try:
 except ImportError:
     from mock import patch
 
-try:
-    from io import StringIO
-except ImportError:  # pragma: nocover
-    from cStringIO import StringIO
+from io import StringIO
 
 
 class TestHelp(TestCase):

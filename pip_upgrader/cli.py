@@ -27,7 +27,7 @@ Help:
 
   https://github.com/simion/pip-upgrader
 """  # noqa: E501
-from __future__ import print_function, unicode_literals
+
 from colorclass import Windows, Color
 from docopt import docopt
 

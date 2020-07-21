@@ -69,7 +69,10 @@ class PackageInteractiveSelector(object):
         print(table.table)
         print('')
 
-        print('Please choose which packages should be upgraded. Choices: "all", "q" (quit), "x" (exit) or "1 2 3"')
+        print(
+            'Please choose which packages should be upgraded. '
+            'Choices: "all -1 -2 -3", "q" (quit), "x" (exit) or "1 2 3"'
+        )
         choice = user_input('Choice: ').strip()
 
         if not choice and not choice.strip():
@@ -86,17 +89,33 @@ class PackageInteractiveSelector(object):
             print(Color('{autored}Exit.{/autored}'))
             raise KeyboardInterrupt()
 
-        if choice == "all":
-            self._select_packages(self.packages_for_upgrade.keys())
-        else:
-            try:
-                selected = list(self._select_packages([int(index.strip()) for index in choice.split(' ')]))
-                if not any(selected):
-                    print(Color('{autored}No valid choice selected.{/autored}'))
-                    raise KeyboardInterrupt()
-            except ValueError:  # pragma: nocover
-                print(Color('{autored}Invalid choice{/autored}'))
+        try:
+            include = []
+
+            if choice.startswith("all"):
+                # make iterator on stripped choices
+                exclude_it = map(str.strip, choice[ 3 : ].split(" "))
+                # filter out empty strings and create set of excluded indices
+                exclude = frozenset(map(int, filter(len, exclude_it)))
+
+                # include packages on keys not in excluded set
+                include = [
+                    i for i in self.packages_for_upgrade.keys()
+                    if -i not in exclude
+                ]
+
+            else:
+                include = [int(index.strip()) for index in choice.split(' ')]
+
+            selected = list(self._select_packages(include))
+
+            if not any(selected):
+                print(Color('{autored}No valid choice selected.{/autored}'))
                 raise KeyboardInterrupt()
+
+        except ValueError:  # pragma: nocover
+            print(Color('{autored}Invalid choice{/autored}'))
+            raise KeyboardInterrupt()
 
     def _select_packages(self, indexes):
         selected = []

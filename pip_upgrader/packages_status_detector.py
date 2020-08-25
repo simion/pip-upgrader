@@ -114,8 +114,13 @@ class PackagesStatusDetector(object):
                     continue
 
                 if explicit_packages_lower and package_name.lower() not in explicit_packages_lower:
-                    # skip if explicit and not chosen
-                    continue
+                    found = False
+                    for option_package in explicit_packages_lower:
+                        if re.search(option_package, package_name.lower()):
+                            found = True
+                    if not found:
+                        # skip if explicit and not chosen
+                        continue
 
                 current_version = version.parse(pinned_version)
 

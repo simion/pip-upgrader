@@ -7,7 +7,7 @@ Usage:
 Arguments:
     requirements_file             The requirement FILE, or WILDCARD PATH to multiple files.
     --prerelease                  Include prerelease versions for upgrade, when querying pypi repositories.
-    -p <package>                  Pre-choose which packages tp upgrade. Skips any prompt.
+    -p <package>                  Pre-choose which packages tp upgrade. Skips any prompt. You can also use regular expressions to filter packages to upgrade.
     --dry-run                     Simulates the upgrade, but does not execute the actual upgrade.
     --skip-package-installation   Only upgrade the version in requirements files, don't install the new package.
     --skip-virtualenv-check       Disable virtualenv check. Allows installing the new packages outside the virtualenv.

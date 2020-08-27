@@ -114,8 +114,13 @@ class PackagesStatusDetector(object):
                     continue
 
                 if explicit_packages_lower and package_name.lower() not in explicit_packages_lower:
-                    # skip if explicit and not chosen
-                    continue
+                    found = False
+                    for option_package in explicit_packages_lower:
+                        if re.search(option_package, package_name.lower()):
+                            found = True
+                    if not found:
+                        # skip if explicit and not chosen
+                        continue
 
                 current_version = version.parse(pinned_version)
 
@@ -187,7 +192,10 @@ class PackagesStatusDetector(object):
 
         data = response.json()
         all_versions = [version.parse(vers) for vers in data['releases'].keys()]
-        filtered_versions = [vers for vers in all_versions if not vers.is_prerelease and not vers.is_postrelease]
+        if not self._prerelease:
+            filtered_versions = [vers for vers in all_versions if not vers.is_prerelease and not vers.is_postrelease]
+        else:
+            filtered_versions = all_versions
 
         if not filtered_versions:  # pragma: nocover
             return False, 'error while parsing version'
@@ -198,7 +206,8 @@ class PackagesStatusDetector(object):
         if self._prerelease or current_version.is_postrelease or current_version.is_prerelease:
             prerelease_versions = [vers for vers in all_versions if vers.is_prerelease or vers.is_postrelease]
             if prerelease_versions:
-                latest_version = max(prerelease_versions)
+                if max(prerelease_versions) > latest_version:
+                    latest_version = max(prerelease_versions)
         try:
             try:
                 latest_version_info = data['releases'][str(latest_version)][0]

@@ -1,3 +1,4 @@
+import re
 from collections import OrderedDict
 
 from colorclass import Color
@@ -41,6 +42,10 @@ class PackageInteractiveSelector(object):
                     for chosen_package in options['-p']:
                         if chosen_package.lower().strip() == package['name'].lower().strip():
                             self._select_packages([index])
+                        else:
+                            # check with regex if no match
+                            if re.search(chosen_package, package['name'].lower().strip()):
+                                self._select_packages([index])
         else:
             self.ask_for_packages()
 

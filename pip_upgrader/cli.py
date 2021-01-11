@@ -2,13 +2,14 @@
 pip-upgrade
 
 Usage:
-  pip-upgrade [<requirements_file>] ... [--prerelease] [-p=<package>...] [--dry-run] [--skip-virtualenv-check] [--skip-package-installation] [--use-default-index]
+  pip-upgrade [<requirements_file>] ... [--prerelease] [-p=<package>...] [--dry-run] [--check-greater-equal] [--skip-virtualenv-check] [--skip-package-installation] [--use-default-index]
 
 Arguments:
     requirements_file             The requirement FILE, or WILDCARD PATH to multiple files.
     --prerelease                  Include prerelease versions for upgrade, when querying pypi repositories.
     -p <package>                  Pre-choose which packages tp upgrade. Skips any prompt. You can also use regular expressions to filter packages to upgrade.
     --dry-run                     Simulates the upgrade, but does not execute the actual upgrade.
+    --check-greater-equal         Also checks packages with minimum version pinned (package>=version).
     --skip-package-installation   Only upgrade the version in requirements files, don't install the new package.
     --skip-virtualenv-check       Disable virtualenv check. Allows installing the new packages outside the virtualenv.
     --use-default-index           Skip searching for custom index-url in pip configuration file(s).
@@ -67,7 +68,7 @@ def main():
 
         # 3. query pypi API, see which package has a newer version vs the one in requirements (or current env)
         packages_status_map = PackagesStatusDetector(
-            packages, options.get('--use-default-index')).detect_available_upgrades(options)
+            packages, options).detect_available_upgrades(options)
 
         # 4. [optionally], show interactive screen when user can choose which packages to upgrade
         selected_packages = PackageInteractiveSelector(packages_status_map, options).get_packages()

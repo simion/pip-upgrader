@@ -32,17 +32,19 @@ class PackagesStatusDetector(object):
         '~/.config/pip/pip.ini',
     ]
 
+    check_gte = False
     _prerelease = False
 
-    def __init__(self, packages, use_default_index=False):
+    def __init__(self, packages, options):
         self.packages = packages
         self.packages_status_map = {}
         self.PYPI_API_URL = 'https://pypi.python.org/pypi/{package}/json'
         self.PYPI_API_TYPE = 'pypi_json'
 
-        if not use_default_index:
+        if not options.get('--use-default-index'):
             self._update_index_url_from_configs()
 
+        self.check_gte = options['--check-greater-equal']
         self._prerelease = False
 
     def _update_index_url_from_configs(self):
@@ -173,13 +175,16 @@ class PackagesStatusDetector(object):
             raise NotImplementedError('This type of PYPI_API_TYPE type is not supported')
 
     def _expand_package(self, package_line):
-        if '==' in package_line:
-            name, vers = package_line.split('==')
+        pin_types = ['==', '>='] if self.check_gte else ['==']
 
-            if '[' in name and name.strip().endswith(']'):
-                name = name.split('[')[0]
+        for pin_type in pin_types:
+            if pin_type in package_line:
+                name, vers = package_line.split(pin_type)
 
-            return name, vers
+                if '[' in name and name.strip().endswith(']'):
+                    name = name.split('[')[0]
+
+                return name, vers
 
         return None, None
 

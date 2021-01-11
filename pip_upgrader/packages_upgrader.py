@@ -13,12 +13,14 @@ class PackagesUpgrader(object):
     requirements_files = None
     upgraded_packages = None
     dry_run = False
+    check_gte = False
 
     def __init__(self, selected_packages, requirements_files, options):
         self.selected_packages = selected_packages
         self.requirements_files = requirements_files
         self.upgraded_packages = []
         self.dry_run = options['--dry-run']
+        self.check_gte = options['--check-greater-equal']
         skip_pkg_install = options.get('--skip-package-installation', False)
         if 'PIP_UPGRADER_SKIP_PACKAGE_INSTALLATION' in os.environ:
             skip_pkg_install = True  # pragma: nocover
@@ -76,15 +78,15 @@ class PackagesUpgrader(object):
 
     def _maybe_update_line_package(self, line, package):
         original_line = line
-        pattern = r'\b{package}(?:\[\w*\])?=={old_version}\b'.format(
-            package=re.escape(package['name']),
-            old_version=re.escape(str(package['current_version'])))
+        pin_type = r'[>=]=' if self.check_gte else '=='
 
-        if re.search(pattern, line, flags=re.IGNORECASE):
-            line = line.replace(
-                '=={}'.format(package['current_version']),
-                '=={}'.format(package['latest_version'])
-            )
+        pattern = r'\b({package}(?:\[\w*\])?{pin_type})[a-zA-Z0-9\.]+\b'.format(
+            package=re.escape(package['name']),
+            pin_type=pin_type
+        )
+
+        repl = r'\g<1>{}'.format(package['latest_version'])
+        line = re.sub(pattern, repl, line)
 
         if line != original_line:
             self.upgraded_packages.append(package)

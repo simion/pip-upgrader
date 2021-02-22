@@ -320,3 +320,16 @@ class TestCommand(TestCase):
         self.assertNotIn('ipdb', output)
         self.assertNotIn('celery ... upgrade available: 3.1.1 ==>', output)
         self.assertIn('Successfully upgraded', output)
+
+    @responses.activate
+    @patch('pip_upgrader.cli.get_options', return_value={'--timeout': '60', '-p': ['ipython']})
+    def test_command_not_interactive_all_packages_up_to_date(self, options_mock, is_virtualenv_mock, user_input_mock):
+        with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
+            cli.main()
+            output = stdout_mock.getvalue()
+        print(options_mock)
+
+        # no user_input should be called
+        self.assertFalse(user_input_mock.called)
+        self.assertNotIn('Setting API url', output)
+        self.assertIn('All packages are up-to-date.', output)

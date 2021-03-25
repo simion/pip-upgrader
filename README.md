@@ -1,5 +1,8 @@
 # pip-upgrader [![Build Status](https://travis-ci.org/simion/pip-upgrader.svg?branch=master)](https://travis-ci.org/simion/pip-upgrader)
 
+
+**Currently unmaintained, I'm using poetry for all my projects**
+
 An interactive pip requirements upgrader. Because upgrading
 requirements, package by package, is a pain in the ass. It also updates
 the version in your requirements.txt file.

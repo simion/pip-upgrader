@@ -47,6 +47,11 @@ class PackagesStatusDetector(object):
         self.check_gte = options['--check-greater-equal']
         self._prerelease = False
 
+        self.pypi_timeout = 15
+        if options['timeout']:
+            if options['timeout'].isdecimal():
+                self.pypi_timeout = int(options['timeout'])
+
     def _update_index_url_from_configs(self):
         """ Checks for alternative index-url in pip.conf """
 
@@ -160,7 +165,7 @@ class PackagesStatusDetector(object):
             package_canonical_name = package_name
             if self.PYPI_API_TYPE == 'simple_html':
                 package_canonical_name = canonicalize_name(package_name)
-            response = requests.get(self.PYPI_API_URL.format(package=package_canonical_name), timeout=15)
+            response = requests.get(self.PYPI_API_URL.format(package=package_canonical_name), timeout=self.pypi_timeout)
         except HTTPError as e:  # pragma: nocover
             return False, e.message
 

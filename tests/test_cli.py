@@ -32,10 +32,13 @@ class TestVersion(TestCase):
         self.assertEqual(output.strip().decode('utf-8'), VERSION)
 
 
-@patch('pip_upgrader.packages_interactive_selector.user_input', return_value='all')
-@patch('pip_upgrader.virtualenv_checker.is_virtualenv', return_value=True)
+@patch('pip_upgrader.packages_interactive_selector.user_input',
+       return_value='all')
+@patch('pip_upgrader.virtualenv_checker.is_virtualenv',
+       return_value=True)
+@patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=list())
+@patch.dict('os.environ', dict(PIP_INDEX_URL=''))
 class TestCommand(TestCase):
-
     def _add_responses_mocks(self):
         for package in ['Django', 'celery', 'django-rest-auth', 'ipython']:
             with open('tests/fixtures/{}.json'.format(package)) as fh:

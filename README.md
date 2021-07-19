@@ -1,4 +1,4 @@
-**Currently unmaintained, I'm using poetry for all my projects**
+**Currently unmaintained, I'm using [poetry](https://python-poetry.org/) for all my projects**
 
 
 # pip-upgrader [![Build Status](https://travis-ci.org/simion/pip-upgrader.svg?branch=master)](https://travis-ci.org/simion/pip-upgrader)

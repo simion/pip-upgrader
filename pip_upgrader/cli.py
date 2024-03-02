@@ -2,7 +2,7 @@
 pip-upgrade
 
 Usage:
-  pip-upgrade [<requirements_file>] ... [--prerelease] [-p=<package>...] [--dry-run] [--check-greater-equal] [--skip-virtualenv-check] [--skip-package-installation] [--use-default-index]
+  pip-upgrade [<requirements_file>] ... [--prerelease] [-p=<package>...] [--dry-run] [--check-greater-equal] [--skip-virtualenv-check] [--skip-package-installation] [--use-default-index] [--timeout <SECONDS>]
 
 Arguments:
     requirements_file             The requirement FILE, or WILDCARD PATH to multiple files.
@@ -13,6 +13,7 @@ Arguments:
     --skip-package-installation   Only upgrade the version in requirements files, don't install the new package.
     --skip-virtualenv-check       Disable virtualenv check. Allows installing the new packages outside the virtualenv.
     --use-default-index           Skip searching for custom index-url in pip configuration file(s).
+    --timeout <SECONDS>           Set the pypi timeout in seconds [default: 15].
 
 Examples:
   pip-upgrade             # auto discovers requirements file

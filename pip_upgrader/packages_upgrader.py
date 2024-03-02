@@ -26,6 +26,11 @@ class PackagesUpgrader(object):
             skip_pkg_install = True  # pragma: nocover
         self.skip_package_installation = skip_pkg_install
 
+        self.pypi_timeout = 15
+        if options['timeout']:
+            if options['timeout'].isdecimal():
+                self.pypi_timeout = int(options['timeout'])
+
     def do_upgrade(self):
         for package in self.selected_packages:
             self._update_package(package)
@@ -39,7 +44,7 @@ class PackagesUpgrader(object):
             if not self.dry_run and not self.skip_package_installation:  # pragma: nocover
                 pinned = '{}=={}'.format(package['name'],
                                          package['latest_version'])
-                subprocess.check_call(['pip', 'install', pinned])
+                subprocess.check_call(['pip', 'install', pinned, '--timeout', self.pypi_timeout])
             else:
                 # dry run has priority in messages
                 if self.dry_run:

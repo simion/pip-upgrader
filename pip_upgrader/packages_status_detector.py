@@ -233,16 +233,36 @@ class PackagesStatusDetector(object):
             'upload_time': upload_time
         }, 'success'
 
-    def _parse_simple_html_package_info(self, package_name, current_version, response):
+    def _get_simple_html_package_info_versions(self, package_name, response):
         """
         :type package_name: str
-        :type current_version: version.Version
         :type response: requests.models.Response
         """
         pattern = r'<a.*>.*{name}-([A-z0-9\.-]*)(?:-py|\.tar).*<\/a>'.format(name=re.escape(package_name))
         versions_match = re.findall(pattern, response.content.decode('utf-8'), flags=re.IGNORECASE)
 
         all_versions = [version.parse(vers) for vers in versions_match]
+        return all_versions
+
+    def _parse_simple_html_package_info(self, package_name, current_version, response):
+        """
+        :type package_name: str
+        :type current_version: version.Version
+        :type response: requests.models.Response
+        """
+        all_versions = self._get_simple_html_package_info_versions(
+            package_name, response)
+        if not all_versions:
+            # print("{}: NO VERSIONS AVAILLABLE".format( package_name))
+            fixed_name = package_name
+            # if we find a dash, presume earlier name used an underscore
+            if '-' in package_name:
+                fixed_name = package_name.replace('-', '_')
+            all_versions = self._get_simple_html_package_info_versions(
+                fixed_name, response)
+        if not all_versions:
+            raise RuntimeError("Unable to retrieve versions for {}".format(package_name))
+
         filtered_versions = [vers for vers in all_versions if not vers.is_prerelease and not vers.is_postrelease]
 
         if not filtered_versions:  # pragma: nocover

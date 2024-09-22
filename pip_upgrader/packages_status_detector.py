@@ -144,6 +144,11 @@ class PackagesStatusDetector(object):
                         print('up to date: {}'.format(current_version))
                     sys.stdout.flush()
 
+                    old_status = self.packages_status_map.get(package_name, None)
+
+                    if old_status is not None and old_status["upgrade_available"]:
+                        continue
+
                     self.packages_status_map[package_name] = package_status
             except Exception as e:  # noqa  # pragma: nocover
                 print('Error while parsing package {} (skipping). \nException: '.format(package), e)

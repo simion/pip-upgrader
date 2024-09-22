@@ -1,6 +1,7 @@
-import pkg_resources
+from importlib.metadata import version 
 
 try:
-    __version__ = pkg_resources.get_distribution('pip_upgrader').version
+    __version__ = version('pip_upgrader')
 except Exception:  # pragma: nocover
     __version__ = 'unknown'
+ 

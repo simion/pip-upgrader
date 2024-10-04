@@ -44,8 +44,7 @@ class RequirementsDetector(object):
 
     @staticmethod
     def _is_valid_requirements_file(filename):
-        extension_ok = filename.endswith('txt') or filename.endswith('pip')
-        return extension_ok and os.path.isfile(filename) and mimetypes.guess_type(filename)[0] in ['text/plain', None]
+        return os.path.isfile(filename) and mimetypes.guess_type(filename)[0] in ['text/plain', None]
 
     def _check_inclusions_recursively(self):
         for filename in self.filenames:

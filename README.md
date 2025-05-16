@@ -1,4 +1,4 @@
-**Currently unmaintained, I'm using [poetry](https://python-poetry.org/) for all my projects, but i'm happy to review and release PRs**
+**Currently unmaintained, I'm using [https://docs.astral.sh/uv/](https://docs.astral.sh/uv/) for all my projects, but i'm happy to review and release PRs**
 
 
 # pip-upgrader [![Build Status](https://travis-ci.org/simion/pip-upgrader.svg?branch=master)](https://travis-ci.org/simion/pip-upgrader)

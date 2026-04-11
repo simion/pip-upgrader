@@ -1192,6 +1192,30 @@ class TestPipfileSupport(TestCase):
         self.assertEqual(detector.get_filenames(), [])
         shutil.rmtree(tmpdir)
 
+    def test_requirements_detector_handles_non_utf8_encoding(self):
+        """RequirementsDetector should not crash on requirements files with non-UTF-8 encoding (issue #72)."""
+        detector = RequirementsDetector(['tests/fixtures/requirements_latin1.txt'])
+        self.assertIn('tests/fixtures/requirements_latin1.txt', detector.get_filenames())
+
+    def test_detect_inclusion_handles_non_utf8_encoding(self):
+        """_detect_inclusion should handle non-UTF-8 encoded files without raising UnicodeDecodeError."""
+        tmpdir = tempfile.mkdtemp()
+        # Create a main requirements file that includes a latin-1 encoded sub-file
+        included = os.path.join(tmpdir, 'requirements_base.txt')
+        with open(included, 'wb') as f:
+            # latin-1 encoded comment + a valid package line
+            f.write(b'# D\xe9pendances\nDjango>=4.2\n')
+        main = os.path.join(tmpdir, 'requirements.txt')
+        with open(main, 'w') as f:
+            f.write('-r requirements_base.txt\nrequests>=2.28\n')
+        try:
+            detector = RequirementsDetector([main])
+            filenames = detector.get_filenames()
+            self.assertIn(main, filenames)
+            self.assertIn(included, filenames)
+        finally:
+            shutil.rmtree(tmpdir)
+
     def test_packages_detector_parses_pipfile(self):
         """PackagesDetector should extract pinned deps from Pipfile."""
         detector = PackagesDetector(['tests/fixtures/Pipfile'])

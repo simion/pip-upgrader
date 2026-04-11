@@ -1,0 +1,3 @@
+# Dependinte proiect élève
+Django>=4.2
+requests>=2.28

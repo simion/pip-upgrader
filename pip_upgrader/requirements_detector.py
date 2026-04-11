@@ -97,15 +97,8 @@ class RequirementsDetector(object):
                 self._detect_inclusion(filename)
 
     def _detect_inclusion(self, filename):
-        lines = []
-        for encoding in ('utf-8-sig', 'latin-1'):
-            try:
-                with open(filename, encoding=encoding) as fh:
-                    lines = list(fh)
-                break
-            except UnicodeDecodeError:
-                continue
-        for line in lines:
+        with open(filename, encoding='utf-8', errors='surrogateescape') as fh:
+            for line in fh:
                 if line.strip().startswith('-r '):
                     included_filename = line.split('-r ')[1].strip()
                     included_filename = os.path.join(os.path.dirname(filename), included_filename)

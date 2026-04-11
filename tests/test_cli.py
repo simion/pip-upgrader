@@ -1343,3 +1343,124 @@ class TestPipfileIntegration(TestCase):
         self.assertIn('Updated versions', output)
 
         shutil.rmtree(tmpdir)
+
+
+@patch('pip_upgrader.packages_interactive_selector.questionary.checkbox', side_effect=mock_checkbox_select_all)
+class TestYankedVersions(TestCase):
+    """Test that yanked PyPI versions are excluded from upgrade suggestions."""
+
+    YANKED_PYPI_RESPONSE = {
+        "info": {
+            "version": "0.89.0",
+            "name": "fake-package",
+        },
+        "releases": {
+            "0.88.0": [
+                {
+                    "upload_time": "2025-01-01T00:00:00",
+                    "requires_python": None,
+                    "yanked": False,
+                    "yanked_reason": None,
+                }
+            ],
+            "0.89.0": [
+                {
+                    "upload_time": "2025-02-01T00:00:00",
+                    "requires_python": None,
+                    "yanked": False,
+                    "yanked_reason": None,
+                }
+            ],
+            "1.0.0": [
+                {
+                    "upload_time": "2025-03-01T00:00:00",
+                    "requires_python": None,
+                    "yanked": True,
+                    "yanked_reason": "wrong version",
+                },
+                {
+                    "upload_time": "2025-03-01T00:00:00",
+                    "requires_python": None,
+                    "yanked": True,
+                    "yanked_reason": "wrong version",
+                },
+            ],
+        },
+    }
+
+    def _setup_requirements(self):
+        self.tmpdir = tempfile.mkdtemp()
+        self.req_file = os.path.join(self.tmpdir, 'requirements.txt')
+        with open(self.req_file, 'w') as f:
+            f.write('fake-package==0.88.0\n')
+
+    def _add_responses_mock(self):
+        import json
+
+        responses.add(
+            responses.GET,
+            "https://pypi.python.org/pypi/fake-package/json",
+            body=json.dumps(self.YANKED_PYPI_RESPONSE),
+            content_type="application/json",
+        )
+
+    def setUp(self):
+        self._add_responses_mock()
+        self._setup_requirements()
+
+    def tearDown(self):
+        shutil.rmtree(self.tmpdir)
+
+    @responses.activate
+    @patch(
+        'pip_upgrader.cli.get_options',
+        return_value=make_options(**{'--dry-run': True, '-p': ['all'], '<requirements_file>': []}),
+    )
+    @patch.dict('os.environ', {}, clear=False)
+    @patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=[])
+    def test_yanked_version_excluded(self, options_mock, checkbox_mock):
+        """Yanked versions should not be suggested as upgrades (GH-73)."""
+        options_mock.return_value = make_options(
+            **{'--dry-run': True, '-p': ['all'], '<requirements_file>': [self.req_file]}
+        )
+
+        with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        # Should upgrade to 0.89.0 (latest non-yanked), NOT 1.0.0 (yanked)
+        self.assertIn('upgrade available: 0.88.0 ==> 0.89.0', output)
+        self.assertNotIn('1.0.0', output)
+
+    @responses.activate
+    @patch(
+        'pip_upgrader.cli.get_options',
+        return_value=make_options(**{'--dry-run': True, '-p': ['all'], '<requirements_file>': []}),
+    )
+    @patch.dict('os.environ', {}, clear=False)
+    @patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=[])
+    def test_partially_yanked_version_included(self, options_mock, checkbox_mock):
+        """A version where only some files are yanked should still be included."""
+        import json
+
+        partial_response = json.loads(json.dumps(self.YANKED_PYPI_RESPONSE))
+        # Make one file in 1.0.0 not yanked (partial yank)
+        partial_response['releases']['1.0.0'][0]['yanked'] = False
+
+        responses.replace(
+            responses.GET,
+            "https://pypi.python.org/pypi/fake-package/json",
+            body=json.dumps(partial_response),
+            content_type="application/json",
+        )
+
+        options_mock.return_value = make_options(
+            **{'--dry-run': True, '-p': ['all'], '<requirements_file>': [self.req_file]}
+        )
+
+        with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        # 1.0.0 should be suggested because not ALL files are yanked
+        self.assertIn('upgrade available: 0.88.0 ==> 1.0.0', output)

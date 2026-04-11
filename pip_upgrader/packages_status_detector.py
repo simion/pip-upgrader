@@ -267,6 +267,11 @@ class PackagesStatusDetector(object):
                 continue
             # Filter out versions that don't support the current Python
             release_files = data['releases'][vers]
+
+            # Skip yanked versions (all files marked as yanked)
+            if release_files and all(f.get('yanked', False) for f in release_files):
+                continue
+
             if release_files:
                 requires_python = release_files[0].get('requires_python')
                 if requires_python:

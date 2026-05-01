@@ -24,14 +24,23 @@ class PackageInteractiveSelector(object):
         self.selected_packages = []
         self.packages_for_upgrade = {}
 
+        # Compile --skip patterns upfront; plain names match exactly, regex patterns
+        # must also match the full name (use '.*django.*' to match substrings).
+        skip_patterns = []
+        for s in options.get('--skip') or []:
+            pat = s.lower().strip()
+            try:
+                skip_patterns.append(re.compile(pat))
+            except re.error as exc:
+                raise SystemExit('Invalid --skip pattern {!r}: {}'.format(pat, exc)) from exc
+
         # map with index number, for later choosing
         i = 1
-        skip_patterns = [s.lower().strip() for s in (options.get('--skip') or [])]
         skipped_names = []
         for package in packages_map.values():
             if package['upgrade_available']:
                 name = package['name'].lower().strip()
-                if any(re.fullmatch(pat, name) or re.search(pat, name) for pat in skip_patterns):
+                if any(p.fullmatch(name) for p in skip_patterns):
                     skipped_names.append(package['name'])
                     continue
                 self.packages_for_upgrade[i] = package.copy()

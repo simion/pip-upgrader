@@ -27,7 +27,7 @@ class PackageInteractiveSelector(object):
         # Compile --skip patterns upfront; plain names match exactly, regex patterns
         # must also match the full name (use '.*django.*' to match substrings).
         skip_patterns = []
-        for s in (options.get('--skip') or []):
+        for s in options.get('--skip') or []:
             pat = s.lower().strip()
             try:
                 skip_patterns.append(re.compile(pat))

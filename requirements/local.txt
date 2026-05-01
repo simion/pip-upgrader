@@ -2,7 +2,7 @@
 -r production.txt
 -r extra/debug.txt
 
-ipython==6.0.0
+ipython==8.10.0
 
 # this kind of upgrade is not yet supported
 ipdb>=0.0.1

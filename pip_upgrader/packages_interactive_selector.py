@@ -26,17 +26,26 @@ class PackageInteractiveSelector(object):
 
         # map with index number, for later choosing
         i = 1
+        skip_patterns = [s.lower().strip() for s in (options.get('--skip') or [])]
+        skipped_names = []
         for package in packages_map.values():
             if package['upgrade_available']:
+                name = package['name'].lower().strip()
+                if any(re.fullmatch(pat, name) or re.search(pat, name) for pat in skip_patterns):
+                    skipped_names.append(package['name'])
+                    continue
                 self.packages_for_upgrade[i] = package.copy()
                 i += 1
 
         # maybe all packages are up-to-date
         if not self.packages_for_upgrade:
-            print('All packages are up-to-date.')
+            skipped_suffix = ' (skipped: {})'.format(', '.join(skipped_names)) if skipped_names else ''
+            print('All packages are up-to-date.{}'.format(skipped_suffix))
             return
 
         # choose which packages to upgrade (interactive or not)
+        if skipped_names:
+            print('Skipping: {}'.format(', '.join(skipped_names)))
         if '-p' in options and options['-p']:
             if options['-p'] == ['all']:
                 self._select_packages(self.packages_for_upgrade.keys())

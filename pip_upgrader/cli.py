@@ -2,12 +2,13 @@
 pip-upgrade
 
 Usage:
-  pip-upgrade [<requirements_file>] ... [--prerelease] [-p=<package>...] [--dry-run] [--non-interactive] [--skip-greater-equal] [--use-default-index] [--timeout=<seconds>] [--minor | --patch]
+  pip-upgrade [<requirements_file>] ... [--prerelease] [-p=<package>...] [--skip=<package>...] [--dry-run] [--non-interactive] [--skip-greater-equal] [--use-default-index] [--timeout=<seconds>] [--minor | --patch]
 
 Arguments:
     requirements_file             The requirement FILE, WILDCARD PATH to multiple files, pyproject.toml, or Pipfile.
     --prerelease                  Include prerelease versions for upgrade, when querying pypi repositories.
     -p <package>                  Pre-choose which packages to upgrade. Skips any prompt. You can also use regular expressions to filter packages to upgrade.
+    --skip <package>              Skip specific packages (by name or regex). Useful with --non-interactive.
     --dry-run                     Simulates the upgrade, but does not execute the actual upgrade.
     --non-interactive             Upgrade all packages without prompting. Equivalent to -p all.
     --skip-greater-equal          Skip packages with >= and ~= pins (by default ==, >=, and ~= are checked).
@@ -25,6 +26,7 @@ Examples:
   pip-upgrade requirements.txt -p all
   pip-upgrade requirements.txt --dry-run  # run everything as a simulation (don't do the actual upgrade)
   pip-upgrade requirements.txt --non-interactive  # upgrade all packages without prompting
+  pip-upgrade requirements.txt --non-interactive --skip django --skip celery  # upgrade all except django and celery
   pip-upgrade requirements.txt --minor    # only upgrade within same major version
   pip-upgrade requirements.txt --patch    # only upgrade within same major.minor version
 

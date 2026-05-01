@@ -24,6 +24,7 @@ DEFAULT_OPTIONS = {
     '--minor': False,
     '--patch': False,
     '--non-interactive': False,
+    '--skip': [],
     '-p': [],
     '<requirements_file>': [],
 }
@@ -213,6 +214,84 @@ class TestCommand(TestCase):
         self.assertFalse(checkbox_mock.called)
         self.assertIn('Django ... upgrade available: 1.10 ==>', output)
         self.assertIn('django-rest-auth ... upgrade available: 0.9.0 ==>', output)
+        self.assertIn('Dry run complete', output)
+
+    @responses.activate
+    @patch(
+        'pip_upgrader.cli.get_options',
+        return_value=make_options(
+            **{
+                '--dry-run': True,
+                '--non-interactive': True,
+                '--skip': ['^django$'],
+                '<requirements_file>': ['requirements.txt'],
+            }
+        ),
+    )
+    @patch.dict('os.environ', {}, clear=False)
+    @patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=[])
+    def test_command_non_interactive_with_skip(self, options_mock, checkbox_mock):
+        """--non-interactive with --skip should upgrade all packages except the skipped ones."""
+        with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        self.assertFalse(checkbox_mock.called)
+        # django is skipped, django-rest-auth should still be upgraded
+        dry_run_line = [line for line in output.split('\n') if 'Dry run complete' in line][0]
+        self.assertNotIn('django', dry_run_line.lower().replace('django-rest-auth', ''))
+        self.assertIn('django-rest-auth', dry_run_line.lower())
+        self.assertIn('Dry run complete', output)
+
+    @responses.activate
+    @patch(
+        'pip_upgrader.cli.get_options',
+        return_value=make_options(
+            **{
+                '--dry-run': True,
+                '--non-interactive': True,
+                '--skip': ['django.*'],
+                '<requirements_file>': ['requirements.txt'],
+            }
+        ),
+    )
+    @patch.dict('os.environ', {}, clear=False)
+    @patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=[])
+    def test_command_non_interactive_with_skip_regex(self, options_mock, checkbox_mock):
+        """--skip with a wildcard regex should skip all matching packages."""
+        with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        self.assertFalse(checkbox_mock.called)
+        # both django and django-rest-auth match 'django.*', nothing left to upgrade
+        self.assertIn('All packages are up-to-date. (skipped: Django, django-rest-auth)', output)
+
+    @responses.activate
+    @patch(
+        'pip_upgrader.cli.get_options',
+        return_value=make_options(
+            **{
+                '--dry-run': True,
+                '--skip': ['^django$'],
+                '<requirements_file>': ['requirements.txt'],
+            }
+        ),
+    )
+    @patch.dict('os.environ', {}, clear=False)
+    @patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=[])
+    def test_command_interactive_with_skip(self, options_mock, checkbox_mock):
+        """--skip should filter packages before the interactive prompt."""
+        with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        # checkbox was called (interactive mode) with django already filtered out
+        self.assertTrue(checkbox_mock.called)
+        dry_run_line = [line for line in output.split('\n') if 'Dry run complete' in line][0]
+        # django (exact) is skipped; django-rest-auth should still appear
+        self.assertNotIn('django', dry_run_line.lower().replace('django-rest-auth', ''))
+        self.assertIn('django-rest-auth', dry_run_line.lower())
         self.assertIn('Dry run complete', output)
 
     @responses.activate

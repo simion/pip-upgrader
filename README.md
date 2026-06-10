@@ -55,41 +55,43 @@ Arguments:
 
 Examples:
 
-    pip-upgrade             # auto discovers requirements file(s), pyproject.toml, and Pipfile
-    pip-upgrade requirements.txt
-    pip-upgrade pyproject.toml
-    pip-upgrade Pipfile
-    pip-upgrade requirements/dev.txt requirements/production.txt
+```sh
+pip-upgrade             # auto discovers requirements file(s), pyproject.toml, and Pipfile
+pip-upgrade requirements.txt
+pip-upgrade pyproject.toml
+pip-upgrade Pipfile
+pip-upgrade requirements/dev.txt requirements/production.txt
 
-    # skip prompt and manually choose some/all packages for upgrade
-    pip-upgrade requirements.txt -p django -p celery
-    pip-upgrade requirements.txt -p all
+# skip prompt and manually choose some/all packages for upgrade
+pip-upgrade requirements.txt -p django -p celery
+pip-upgrade requirements.txt -p all
 
-    # upgrade all packages without any prompt (non-interactive / CI-friendly)
-    pip-upgrade requirements.txt --non-interactive
-    pip-upgrade --non-interactive  # auto-discovers requirements files
+# upgrade all packages without any prompt (non-interactive / CI-friendly)
+pip-upgrade requirements.txt --non-interactive
+pip-upgrade --non-interactive  # auto-discovers requirements files
 
-    # skip specific packages (works in both interactive and non-interactive mode)
-    pip-upgrade --non-interactive --skip django --skip celery
-    pip-upgrade --non-interactive --skip "django.*"  # regex: skip all django-* packages
+# skip specific packages (works in both interactive and non-interactive mode)
+pip-upgrade --non-interactive --skip django --skip celery
+pip-upgrade --non-interactive --skip "django.*"  # regex: skip all django-* packages
 
-    # upgrade dependencies in pyproject.toml (PEP 621 or Poetry)
-    pip-upgrade pyproject.toml -p all
+# upgrade dependencies in pyproject.toml (PEP 621 or Poetry)
+pip-upgrade pyproject.toml -p all
 
-    # include pre-release versions
-    pip-upgrade --prerelease
+# include pre-release versions
+pip-upgrade --prerelease
 
-    # skip packages pinned with >= or ~= (only upgrade == pins)
-    pip-upgrade --skip-greater-equal
+# skip packages pinned with >= or ~= (only upgrade == pins)
+pip-upgrade --skip-greater-equal
 
-    # only upgrade within the same major version (no breaking changes)
-    pip-upgrade --minor
+# only upgrade within the same major version (no breaking changes)
+pip-upgrade --minor
 
-    # only upgrade patch versions (safest)
-    pip-upgrade --patch
+# only upgrade patch versions (safest)
+pip-upgrade --patch
 
-    # set a custom timeout for PyPI requests
-    pip-upgrade --timeout 30
+# set a custom timeout for PyPI requests
+pip-upgrade --timeout 30
+```
 
 ## Supported Formats
 

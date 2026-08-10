@@ -1,3 +1,8 @@
+2.4.9 (2026-08-10)
+---------------------
+* fix ``--respect-constraints`` false-pass when a non-upgraded package constrains one of the bumped packages (#83)
+* the resolver now sees the full requirements set (all existing pins + proposed new versions) rather than only the upgraded packages, so cross-package caps like ``django-celery-beat<6.1`` are caught and honoured
+
 2.4.8 (2026-08-10)
 ---------------------
 * add ``--cve-only`` flag that runs pip-audit and upgrades only packages with known CVEs, each to the minimum version that clears every vulnerability affecting it (rather than the latest PyPI release) (#65)

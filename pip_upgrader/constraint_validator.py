@@ -4,8 +4,9 @@ When upgrading each package to its latest PyPI version in isolation, the
 resulting set of pins can be internally unsatisfiable: one package may cap a
 dependency below the "latest" version chosen for another package. This module
 runs pip's own resolver (via ``pip install --dry-run --report``) over the
-proposed pins and, on conflict, adopts the versions pip actually resolved to
-(which are lower but compatible) instead of the absolute latest.
+full requirements set (upgraded packages at new versions + all non-upgraded
+pins from the original files) and, on conflict, adopts the versions pip
+actually resolved to (which are lower but compatible) instead of the latest.
 """
 
 import json
@@ -73,12 +74,27 @@ def _parse_resolved_versions(report_path):
     return resolved
 
 
+def _extract_package_name(line):
+    """Return the bare package name from a requirements line, or None."""
+    stripped = line.strip()
+    if not stripped or stripped.startswith('#') or stripped.startswith('-'):
+        return None
+    for sep in ('==', '>=', '~=', '<=', '!=', '>',  '<'):
+        if sep in stripped:
+            name = stripped.split(sep)[0].strip()
+            if '[' in name:
+                name = name.split('[')[0].strip()
+            return name or None
+    return None
+
+
 class ConstraintValidator(object):
     """Adjust selected packages so the resulting pin set is installable."""
 
-    def __init__(self, selected_packages):
+    def __init__(self, selected_packages, requirements_filenames=None):
         # selected_packages: list of dicts with 'name' and 'latest_version'
         self.selected_packages = selected_packages
+        self.requirements_filenames = requirements_filenames or []
 
     def validate_and_adjust(self):
         """Validate proposed upgrades; clamp any that pip cannot resolve.
@@ -102,9 +118,27 @@ class ConstraintValidator(object):
         tmp_reqs = os.path.join(tmp_dir, 'constraint_reqs.txt')
         report_path = os.path.join(tmp_dir, 'report.json')
 
+        upgraded_names = {canonicalize_name(p['name']) for p in self.selected_packages}
+
         with open(tmp_reqs, 'w') as fh:
+            # Write upgraded packages at their proposed new versions.
             for package in self.selected_packages:
                 fh.write('{}=={}\n'.format(package['name'], package['latest_version']))
+
+            # Append non-upgraded lines from original requirements files so
+            # pip's resolver sees the full dependency graph, not just the
+            # packages being bumped (fixes false-pass when an already-pinned
+            # package constrains one of the upgraded packages).
+            for filename in self.requirements_filenames:
+                try:
+                    with open(filename) as rf:
+                        for line in rf:
+                            pkg_name = _extract_package_name(line)
+                            if pkg_name and canonicalize_name(pkg_name) in upgraded_names:
+                                continue  # already included with new version above
+                            fh.write(line)
+                except (IOError, OSError):
+                    pass
 
         try:
             result = _run_pip_dry_run(tmp_reqs, report_path)
@@ -113,7 +147,7 @@ class ConstraintValidator(object):
             return self.selected_packages
 
         if result.returncode == 0:
-            print('Constraint check passed: all proposed upgrades are mutually compatible.')
+            print('Constraint check passed: all proposed upgrades are compatible with the full requirements set.')
             return self.selected_packages
 
         # Conflict: try to adopt the versions pip resolved to instead.

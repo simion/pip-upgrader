@@ -142,7 +142,7 @@ def main():
             options.get('--non-interactive') and not options.get('--no-respect-constraints')
         )
         if respect_constraints:
-            selected_packages = ConstraintValidator(selected_packages).validate_and_adjust()
+            selected_packages = ConstraintValidator(selected_packages, filenames).validate_and_adjust()
 
         upgraded_packages = PackagesUpgrader(selected_packages, filenames, options).do_upgrade()
 

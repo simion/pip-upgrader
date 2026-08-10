@@ -1681,6 +1681,47 @@ class TestConstraintValidator(TestCase):
         self.assertEqual(result[0]['latest_version'], '6.1')
         self.assertIn('no report', output)
 
+    def test_non_upgraded_package_context_included_in_temp_file(self):
+        """Temp requirements file must include non-upgraded pins so cross-package caps are caught."""
+        import tempfile
+
+        from packaging import version
+
+        from pip_upgrader.constraint_validator import ConstraintValidator
+
+        # Only django is being upgraded; django-celery-beat is pinned but not in selected_packages.
+        # The bug: if we only check upgraded packages, the Django<6.1 cap from celery-beat is missed.
+        packages = [{'name': 'django', 'latest_version': '6.1'}]
+        written_lines = []
+
+        def fake_run(cmd, **kwargs):
+            # Capture the temp requirements file contents so we can assert on them.
+            req_path = cmd[cmd.index('-r') + 1]
+            with open(req_path) as fh:
+                written_lines.extend(fh.readlines())
+            result = MagicMock()
+            result.returncode = 0
+            return result
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as tmp_reqs:
+            tmp_reqs.write('django==6.0.8\n')
+            tmp_reqs.write('django-celery-beat==2.9.0\n')
+            tmp_reqs_path = tmp_reqs.name
+
+        with (
+            patch('pip_upgrader.constraint_validator._get_pip_version', return_value=version.parse('24.0')),
+            patch('pip_upgrader.constraint_validator.subprocess.run', side_effect=fake_run),
+            patch('sys.stdout', new_callable=StringIO),
+        ):
+            ConstraintValidator(packages, [tmp_reqs_path]).validate_and_adjust()
+
+        # django should appear at the proposed new version (6.1), not old (6.0.8)
+        self.assertTrue(any('django==6.1' in l for l in written_lines))
+        # django-celery-beat (non-upgraded) must be included so its constraint is visible
+        self.assertTrue(any('django-celery-beat' in l for l in written_lines))
+        # old django version must NOT appear (replaced by the new one)
+        self.assertFalse(any('django==6.0.8' in l for l in written_lines))
+
 
 @patch('pip_upgrader.packages_interactive_selector.questionary.checkbox', side_effect=mock_checkbox_select_all)
 class TestRespectConstraintsIntegration(TestCase):

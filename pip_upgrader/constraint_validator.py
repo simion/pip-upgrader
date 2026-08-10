@@ -79,7 +79,7 @@ def _extract_package_name(line):
     stripped = line.strip()
     if not stripped or stripped.startswith('#') or stripped.startswith('-'):
         return None
-    for sep in ('==', '>=', '~=', '<=', '!=', '>',  '<'):
+    for sep in ('==', '>=', '~=', '<=', '!=', '>', '<'):
         if sep in stripped:
             name = stripped.split(sep)[0].strip()
             if '[' in name:

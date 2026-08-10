@@ -1868,9 +1868,7 @@ class TestMinAgeDays(TestCase):
         from pip_upgrader.packages_status_detector import PackagesStatusDetector
 
         detector = PackagesStatusDetector([], make_options(**{'--min-age-days': min_age_days}))
-        return detector._parse_pypi_json_package_info(
-            'somepkg', version.parse(current), self._build_response(releases)
-        )
+        return detector._parse_pypi_json_package_info('somepkg', version.parse(current), self._build_response(releases))
 
     def test_recent_version_is_skipped(self):
         """A candidate published inside the cooldown window is not offered."""
@@ -1922,7 +1920,7 @@ class TestMinAgeDays(TestCase):
             '1.0.0': [{'upload_time': self._days_ago(100)}],
             '2.0.0': [
                 {'upload_time': self._days_ago(30)},  # sdist old
-                {'upload_time': self._days_ago(1)},   # a wheel added recently
+                {'upload_time': self._days_ago(1)},  # a wheel added recently
             ],
         }
         status, reason = self._parse(releases, '1.0.0', min_age_days=7)

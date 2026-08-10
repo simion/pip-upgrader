@@ -1,3 +1,8 @@
+2.4.11 (2026-08-10)
+---------------------
+* fix ``--respect-constraints`` surgical hard-conflict handling: when pip names specific packages in the conflict error, only those packages are reverted to their current pin — unrelated upgrades in the same run now proceed normally (#83)
+* the fallback (revert all) still applies when the conflict output cannot be parsed to identify the offending package
+
 2.4.10 (2026-08-10)
 ---------------------
 * fix ``--respect-constraints`` hard-conflict case: when pip can find no compatible set and produces no report, packages are now reverted to their current pins instead of writing the unsatisfiable upgrade (#83)

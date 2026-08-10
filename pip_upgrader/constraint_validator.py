@@ -88,6 +88,16 @@ def _extract_package_name(line):
     return None
 
 
+def _find_conflicting_in_output(stdout, selected_packages):
+    """Return canonical names of our proposed upgrades mentioned in pip's conflict output."""
+    if not stdout:
+        return set()
+    text = stdout.decode('utf-8', errors='replace') if isinstance(stdout, bytes) else stdout
+    text_lower = text.lower()
+    upgraded_names = {canonicalize_name(p['name']) for p in selected_packages}
+    return {name for name in upgraded_names if name in text_lower}
+
+
 class ConstraintValidator(object):
     """Adjust selected packages so the resulting pin set is installable."""
 
@@ -114,62 +124,85 @@ class ConstraintValidator(object):
             )
             return self.selected_packages
 
-        tmp_dir = tempfile.mkdtemp()
-        tmp_reqs = os.path.join(tmp_dir, 'constraint_reqs.txt')
-        report_path = os.path.join(tmp_dir, 'report.json')
+        already_reverted = set()
 
-        upgraded_names = {canonicalize_name(p['name']) for p in self.selected_packages}
+        # Loop to handle chains of hard conflicts: each iteration either succeeds,
+        # handles a soft conflict, or identifies and reverts at least one more package.
+        # Terminates in at most len(selected_packages) + 1 iterations.
+        while True:
+            tmp_dir = tempfile.mkdtemp()
+            tmp_reqs = os.path.join(tmp_dir, 'constraint_reqs.txt')
+            report_path = os.path.join(tmp_dir, 'report.json')
 
-        with open(tmp_reqs, 'w') as fh:
-            # Write upgraded packages at their proposed new versions.
-            for package in self.selected_packages:
-                fh.write('{}=={}\n'.format(package['name'], package['latest_version']))
+            upgraded_names = {canonicalize_name(p['name']) for p in self.selected_packages}
 
-            # Append non-upgraded lines from original requirements files so
-            # pip's resolver sees the full dependency graph, not just the
-            # packages being bumped (fixes false-pass when an already-pinned
-            # package constrains one of the upgraded packages).
-            for filename in self.requirements_filenames:
+            with open(tmp_reqs, 'w') as fh:
+                # Write upgraded packages at their proposed new versions.
+                for package in self.selected_packages:
+                    fh.write('{}=={}\n'.format(package['name'], package['latest_version']))
+
+                # Append non-upgraded lines from original requirements files so
+                # pip's resolver sees the full dependency graph, not just the
+                # packages being bumped (fixes false-pass when an already-pinned
+                # package constrains one of the upgraded packages).
+                for filename in self.requirements_filenames:
+                    try:
+                        with open(filename) as rf:
+                            for line in rf:
+                                pkg_name = _extract_package_name(line)
+                                if pkg_name and canonicalize_name(pkg_name) in upgraded_names:
+                                    continue  # already included with new version above
+                                fh.write(line)
+                    except (IOError, OSError):
+                        pass
+
+            try:
+                result = _run_pip_dry_run(tmp_reqs, report_path)
+            except Exception as exc:  # pragma: nocover
+                print('Warning: could not run pip for constraint validation: {}. Skipping.'.format(exc))
+                return self.selected_packages
+
+            if result.returncode == 0:
+                print('Constraint check passed: all proposed upgrades are compatible with the full requirements set.')
+                return self.selected_packages
+
+            if os.path.exists(report_path):
+                # Soft conflict: pip resolved to lower-but-compatible versions.
                 try:
-                    with open(filename) as rf:
-                        for line in rf:
-                            pkg_name = _extract_package_name(line)
-                            if pkg_name and canonicalize_name(pkg_name) in upgraded_names:
-                                continue  # already included with new version above
-                            fh.write(line)
-                except (IOError, OSError):
-                    pass
+                    resolved = _parse_resolved_versions(report_path)
+                except Exception as exc:  # pragma: nocover
+                    print('Warning: could not parse pip report for constraint validation: {}. Skipping.'.format(exc))
+                    return self.selected_packages
+                self._apply_resolved_versions(resolved)
+                return self.selected_packages
 
-        try:
-            result = _run_pip_dry_run(tmp_reqs, report_path)
-        except Exception as exc:  # pragma: nocover
-            print('Warning: could not run pip for constraint validation: {}. Skipping.'.format(exc))
-            return self.selected_packages
+            # Hard conflict: pip found no compatible set and produced no report.
+            # Try to identify which of our proposed upgrades pip named in the error
+            # and revert only those — leaving unrelated upgrades intact.
+            conflicting = _find_conflicting_in_output(result.stdout, self.selected_packages)
+            new_conflicts = conflicting - already_reverted
 
-        if result.returncode == 0:
-            print('Constraint check passed: all proposed upgrades are compatible with the full requirements set.')
-            return self.selected_packages
+            if not new_conflicts:
+                # Can't identify any new offending package — fall back to reverting all.
+                print(
+                    'Warning: pip resolver found a conflict with no compatible set. '
+                    'Keeping existing pins for all packages:\n{}'.format(_tail(result.stdout))
+                )
+                for package in self.selected_packages:
+                    package['latest_version'] = package['current_version']
+                return self.selected_packages
 
-        # Conflict: try to adopt the versions pip resolved to instead.
-        if not os.path.exists(report_path):
-            # Hard conflict: pip found no resolvable set and produced no report.
-            # Revert all packages to their current versions so nothing broken is written.
-            print(
-                'Warning: pip resolver found a conflict with no compatible set. '
-                'Keeping existing pins for all packages:\n{}'.format(_tail(result.stdout))
-            )
             for package in self.selected_packages:
-                package['latest_version'] = package['current_version']
-            return self.selected_packages
+                if canonicalize_name(package['name']) in new_conflicts:
+                    print(
+                        'Constraint conflict: {} held at {} (no compatible upgrade found)'.format(
+                            package['name'], package['current_version']
+                        )
+                    )
+                    package['latest_version'] = package['current_version']
 
-        try:
-            resolved = _parse_resolved_versions(report_path)
-        except Exception as exc:  # pragma: nocover
-            print('Warning: could not parse pip report for constraint validation: {}. Skipping.'.format(exc))
-            return self.selected_packages
-
-        self._apply_resolved_versions(resolved)
-        return self.selected_packages
+            already_reverted |= new_conflicts
+            # Continue the loop to re-validate with the remaining pending upgrades.
 
     def _apply_resolved_versions(self, resolved):
         """Clamp any package whose resolved version is lower than the target."""

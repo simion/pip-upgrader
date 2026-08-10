@@ -1667,8 +1667,8 @@ class TestConstraintValidator(TestCase):
         self.assertEqual(by_name['django-celery-beat']['latest_version'], '2.8.1')
         self.assertIn('Constraint conflict: django', output)
 
-    def test_conflict_without_report_reverts_to_current(self):
-        """Hard conflict with no report: packages are reverted to current_version, not written at latest."""
+    def test_hard_conflict_unidentifiable_reverts_all(self):
+        """Hard conflict where pip output doesn't mention our packages: revert all as safe fallback."""
         from packaging import version
 
         from pip_upgrader.constraint_validator import ConstraintValidator
@@ -1678,7 +1678,8 @@ class TestConstraintValidator(TestCase):
         def fake_run(cmd, **kwargs):
             result = MagicMock()
             result.returncode = 1
-            result.stdout = b'ResolutionImpossible: something went wrong'
+            # Output doesn't mention 'django' → can't identify conflicting package
+            result.stdout = b'ResolutionImpossible: something went wrong with an unknown package'
             return result
 
         with (
@@ -1691,6 +1692,47 @@ class TestConstraintValidator(TestCase):
 
         self.assertEqual(result[0]['latest_version'], version.parse('6.0.8'))
         self.assertIn('no compatible set', output)
+
+    def test_hard_conflict_surgical_revert_leaves_unrelated_upgrades(self):
+        """Hard conflict names only one package: revert it, leave the other upgrade intact."""
+        from packaging import version
+
+        from pip_upgrader.constraint_validator import ConstraintValidator
+
+        packages = [
+            {'name': 'django', 'current_version': version.parse('6.0.8'), 'latest_version': '6.1'},
+            {'name': 'redis', 'current_version': version.parse('8.0.0'), 'latest_version': '8.1.0'},
+        ]
+        call_count = [0]
+
+        def fake_run(cmd, **kwargs):
+            call_count[0] += 1
+            result = MagicMock()
+            if call_count[0] == 1:
+                # First call: conflict mentioning django (not redis)
+                result.returncode = 1
+                result.stdout = b'ERROR: Cannot install django==6.1 due to ResolutionImpossible'
+            else:
+                # Second call (redis alone + context): passes
+                result.returncode = 0
+                result.stdout = b''
+            return result
+
+        with (
+            patch('pip_upgrader.constraint_validator._get_pip_version', return_value=version.parse('24.0')),
+            patch('pip_upgrader.constraint_validator.subprocess.run', side_effect=fake_run),
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            result = ConstraintValidator(packages).validate_and_adjust()
+            output = stdout_mock.getvalue()
+
+        by_name = {p['name']: p for p in result}
+        # django was conflicting — reverted to current
+        self.assertEqual(by_name['django']['latest_version'], version.parse('6.0.8'))
+        # redis was unrelated — should still be upgraded
+        self.assertEqual(by_name['redis']['latest_version'], '8.1.0')
+        self.assertIn('django', output)
+        self.assertEqual(call_count[0], 2)
 
     def test_non_upgraded_package_context_included_in_temp_file(self):
         """Temp requirements file must include non-upgraded pins so cross-package caps are caught."""

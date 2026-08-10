@@ -25,6 +25,8 @@ DEFAULT_OPTIONS = {
     '--patch': False,
     '--non-interactive': False,
     '--skip': [],
+    '--respect-constraints': False,
+    '--no-respect-constraints': False,
     '-p': [],
     '<requirements_file>': [],
 }
@@ -1543,3 +1545,256 @@ class TestYankedVersions(TestCase):
 
         # 1.0.0 should be suggested because not ALL files are yanked
         self.assertIn('upgrade available: 0.88.0 ==> 1.0.0', output)
+
+
+class TestConstraintValidator(TestCase):
+    """Unit tests for the --respect-constraints validation (issue #83)."""
+
+    def _make_report(self, tmp_dir, packages):
+        """Write a pip --report style JSON file describing resolved packages."""
+        report = {
+            'version': '1',
+            'install': [{'metadata': {'name': name, 'version': ver}} for name, ver in packages.items()],
+        }
+        report_path = os.path.join(tmp_dir, 'report.json')
+        with open(report_path, 'w') as fh:
+            import json
+
+            json.dump(report, fh)
+        return report_path
+
+    def test_skips_when_pip_too_old(self):
+        """Validation should be skipped and packages returned unchanged on old pip."""
+        from pip_upgrader.constraint_validator import ConstraintValidator
+
+        packages = [{'name': 'django', 'latest_version': '6.1'}]
+        with (
+            patch('pip_upgrader.constraint_validator._get_pip_version') as pip_ver_mock,
+            patch('pip_upgrader.constraint_validator.subprocess.run') as run_mock,
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            from packaging import version
+
+            pip_ver_mock.return_value = version.parse('21.0')
+            result = ConstraintValidator(packages).validate_and_adjust()
+            output = stdout_mock.getvalue()
+
+        self.assertFalse(run_mock.called)
+        self.assertEqual(result[0]['latest_version'], '6.1')
+        self.assertIn('too old', output)
+
+    def test_passes_when_compatible(self):
+        """When pip returns 0, packages are returned unchanged."""
+        from packaging import version
+
+        from pip_upgrader.constraint_validator import ConstraintValidator
+
+        packages = [{'name': 'django', 'latest_version': '6.0.5'}]
+
+        def fake_run(cmd, **kwargs):
+            result = MagicMock()
+            result.returncode = 0
+            return result
+
+        with (
+            patch('pip_upgrader.constraint_validator._get_pip_version', return_value=version.parse('24.0')),
+            patch('pip_upgrader.constraint_validator.subprocess.run', side_effect=fake_run),
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            result = ConstraintValidator(packages).validate_and_adjust()
+            output = stdout_mock.getvalue()
+
+        self.assertEqual(result[0]['latest_version'], '6.0.5')
+        self.assertIn('Constraint check passed', output)
+
+    def test_clamps_to_resolved_version_on_conflict(self):
+        """On conflict, the offending package is clamped to pip's resolved version."""
+        from packaging import version
+
+        from pip_upgrader.constraint_validator import ConstraintValidator
+
+        packages = [
+            {'name': 'django', 'latest_version': '6.1'},
+            {'name': 'django-celery-beat', 'latest_version': '2.8.1'},
+        ]
+
+        def fake_run(cmd, **kwargs):
+            # cmd holds '--report <path>'; write a resolved report where pip
+            # picked the compatible Django (6.0.5) instead of the latest (6.1).
+            report_path = cmd[cmd.index('--report') + 1]
+            with open(report_path, 'w') as fh:
+                import json
+
+                json.dump(
+                    {
+                        'install': [
+                            {'metadata': {'name': 'django', 'version': '6.0.5'}},
+                            {'metadata': {'name': 'django-celery-beat', 'version': '2.8.1'}},
+                        ]
+                    },
+                    fh,
+                )
+            result = MagicMock()
+            result.returncode = 1
+            result.stdout = b'ResolutionImpossible'
+            return result
+
+        with (
+            patch('pip_upgrader.constraint_validator._get_pip_version', return_value=version.parse('24.0')),
+            patch('pip_upgrader.constraint_validator.subprocess.run', side_effect=fake_run),
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            result = ConstraintValidator(packages).validate_and_adjust()
+            output = stdout_mock.getvalue()
+
+        by_name = {p['name']: p for p in result}
+        self.assertEqual(by_name['django']['latest_version'], '6.0.5')
+        # unaffected package keeps its version
+        self.assertEqual(by_name['django-celery-beat']['latest_version'], '2.8.1')
+        self.assertIn('Constraint conflict: django', output)
+
+    def test_conflict_without_report_keeps_latest(self):
+        """If pip conflicts but writes no report, latest versions are kept with a warning."""
+        from packaging import version
+
+        from pip_upgrader.constraint_validator import ConstraintValidator
+
+        packages = [{'name': 'django', 'latest_version': '6.1'}]
+
+        def fake_run(cmd, **kwargs):
+            result = MagicMock()
+            result.returncode = 1
+            result.stdout = b'ResolutionImpossible: something went wrong'
+            return result
+
+        with (
+            patch('pip_upgrader.constraint_validator._get_pip_version', return_value=version.parse('24.0')),
+            patch('pip_upgrader.constraint_validator.subprocess.run', side_effect=fake_run),
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            result = ConstraintValidator(packages).validate_and_adjust()
+            output = stdout_mock.getvalue()
+
+        self.assertEqual(result[0]['latest_version'], '6.1')
+        self.assertIn('no report', output)
+
+
+@patch('pip_upgrader.packages_interactive_selector.questionary.checkbox', side_effect=mock_checkbox_select_all)
+class TestRespectConstraintsIntegration(TestCase):
+    """Integration tests wiring --respect-constraints through cli.main() (issue #83)."""
+
+    PACKAGE_NAMES = ['Django', 'celery', 'django-rest-auth', 'ipython']
+
+    def _add_responses_mocks(self):
+        for package in self.PACKAGE_NAMES:
+            canonical = canonicalize_name(package)
+            with open('tests/fixtures/{}.json'.format(package)) as fh:
+                body = fh.read()
+            responses.add(
+                responses.GET,
+                "https://pypi.python.org/pypi/{}/json".format(canonical),
+                body=body,
+                content_type="application/json",
+            )
+
+    def setUp(self):
+        self._add_responses_mocks()
+
+    @responses.activate
+    @patch(
+        'pip_upgrader.cli.get_options',
+        return_value=make_options(
+            **{'--dry-run': True, '--non-interactive': True, '<requirements_file>': ['requirements.txt']}
+        ),
+    )
+    @patch.dict('os.environ', {}, clear=False)
+    @patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=[])
+    def test_non_interactive_runs_validation_by_default(self, options_mock, checkbox_mock):
+        """--non-interactive should trigger constraint validation without an explicit flag."""
+        from packaging import version
+
+        def fake_run(cmd, **kwargs):
+            result = MagicMock()
+            result.returncode = 0
+            return result
+
+        with (
+            patch('pip_upgrader.constraint_validator._get_pip_version', return_value=version.parse('24.0')),
+            patch('pip_upgrader.constraint_validator.subprocess.run', side_effect=fake_run) as run_mock,
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        self.assertTrue(run_mock.called)
+        self.assertIn('Constraint check passed', output)
+        self.assertIn('Dry run complete', output)
+
+    @responses.activate
+    @patch(
+        'pip_upgrader.cli.get_options',
+        return_value=make_options(
+            **{
+                '--dry-run': True,
+                '--non-interactive': True,
+                '--no-respect-constraints': True,
+                '<requirements_file>': ['requirements.txt'],
+            }
+        ),
+    )
+    @patch.dict('os.environ', {}, clear=False)
+    @patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=[])
+    def test_no_respect_constraints_disables_validation(self, options_mock, checkbox_mock):
+        """--no-respect-constraints should skip validation even in --non-interactive mode."""
+        with (
+            patch('pip_upgrader.constraint_validator.subprocess.run') as run_mock,
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        self.assertFalse(run_mock.called)
+        self.assertIn('Dry run complete', output)
+
+    @responses.activate
+    @patch(
+        'pip_upgrader.cli.get_options',
+        return_value=make_options(
+            **{
+                '--dry-run': True,
+                '-p': ['all'],
+                '--respect-constraints': True,
+                '<requirements_file>': ['requirements.txt'],
+            }
+        ),
+    )
+    @patch.dict('os.environ', {}, clear=False)
+    @patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=[])
+    def test_respect_constraints_clamps_conflicting_upgrade(self, options_mock, checkbox_mock):
+        """--respect-constraints should lower a package's target to pip's resolved version."""
+        from packaging import version
+
+        def fake_run(cmd, **kwargs):
+            # Force Django down to 1.10.1 (a lower, "compatible" version).
+            report_path = cmd[cmd.index('--report') + 1]
+            with open(report_path, 'w') as fh:
+                import json
+
+                json.dump({'install': [{'metadata': {'name': 'Django', 'version': '1.10.1'}}]}, fh)
+            result = MagicMock()
+            result.returncode = 1
+            result.stdout = b'ResolutionImpossible'
+            return result
+
+        with (
+            patch('pip_upgrader.constraint_validator._get_pip_version', return_value=version.parse('24.0')),
+            patch('pip_upgrader.constraint_validator.subprocess.run', side_effect=fake_run),
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        self.assertIn('Constraint conflict: Django', output)
+        # Django was clamped to the resolved 1.10.1, so that appears in the dry-run result
+        dry_run_line = [line for line in output.split('\n') if 'Dry run complete' in line][0]
+        self.assertIn('Django', dry_run_line)

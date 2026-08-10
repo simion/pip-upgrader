@@ -1,3 +1,9 @@
+2.4.6 (2026-08-10)
+---------------------
+* add ``--respect-constraints`` flag that validates proposed upgrades against pip's resolver and clamps any that would produce unsatisfiable pins to the highest compatible version (#83)
+* constraint validation runs by default with ``--non-interactive``; disable it with ``--no-respect-constraints``
+* validation is skipped with a warning when pip is older than 22.2 (``--report`` support)
+
 1.4.0 (2017-05-12)
 ---------------------
 * support for custom index-url, scanned from several sources (pip configs, PIP_INDEX_URL environment variable)

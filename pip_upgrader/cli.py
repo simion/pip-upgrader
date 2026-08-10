@@ -2,7 +2,7 @@
 pip-upgrade
 
 Usage:
-  pip-upgrade [<requirements_file>] ... [--prerelease] [-p=<package>...] [--skip=<package>...] [--dry-run] [--non-interactive] [--skip-greater-equal] [--use-default-index] [--timeout=<seconds>] [--minor | --patch]
+  pip-upgrade [<requirements_file>] ... [--prerelease] [-p=<package>...] [--skip=<package>...] [--dry-run] [--non-interactive] [--skip-greater-equal] [--use-default-index] [--timeout=<seconds>] [--minor | --patch] [--respect-constraints | --no-respect-constraints]
 
 Arguments:
     requirements_file             The requirement FILE, WILDCARD PATH to multiple files, pyproject.toml, or Pipfile.
@@ -16,6 +16,9 @@ Arguments:
     --timeout <seconds>           Set a custom timeout for PyPI requests (default: 15 seconds).
     --minor                       Only upgrade within the same major version (e.g. 1.2.3 -> 1.x.y).
     --patch                       Only upgrade within the same major.minor version (e.g. 1.2.3 -> 1.2.x).
+    --respect-constraints         Validate proposed upgrades with pip's resolver and clamp any that would produce
+                                  unsatisfiable pins to the highest compatible version. On by default with --non-interactive.
+    --no-respect-constraints      Disable the constraint validation that runs by default with --non-interactive.
 
 Examples:
   pip-upgrade             # auto discovers requirements file(s), pyproject.toml, and Pipfile
@@ -29,6 +32,8 @@ Examples:
   pip-upgrade requirements.txt --non-interactive --skip django --skip celery  # upgrade all except django and celery
   pip-upgrade requirements.txt --minor    # only upgrade within same major version
   pip-upgrade requirements.txt --patch    # only upgrade within same major.minor version
+  pip-upgrade requirements.txt --respect-constraints  # clamp upgrades to versions pip can actually resolve together
+  pip-upgrade requirements.txt --non-interactive --no-respect-constraints  # skip the default constraint validation
 
 Help:
   Interactively upgrade packages from requirements file, and also update the pinned version from requirements file(s).
@@ -41,6 +46,7 @@ Help:
 from docopt import docopt
 
 from pip_upgrader import __version__ as VERSION
+from pip_upgrader.constraint_validator import ConstraintValidator
 from pip_upgrader.packages_detector import PackagesDetector
 from pip_upgrader.packages_interactive_selector import PackageInteractiveSelector
 from pip_upgrader.packages_status_detector import PackagesStatusDetector
@@ -83,6 +89,16 @@ def main():
         # 5. having the list of packages, replace the version inside all filenames
         if not selected_packages:
             return
+
+        # 5b. optionally validate the proposed pins against pip's resolver and clamp
+        # any that would be unsatisfiable. On by default with --non-interactive,
+        # unless explicitly disabled with --no-respect-constraints.
+        respect_constraints = options.get('--respect-constraints') or (
+            options.get('--non-interactive') and not options.get('--no-respect-constraints')
+        )
+        if respect_constraints:
+            selected_packages = ConstraintValidator(selected_packages).validate_and_adjust()
+
         upgraded_packages = PackagesUpgrader(selected_packages, filenames, options).do_upgrade()
 
         pkg_names = ', '.join([package['name'] for package in upgraded_packages])

@@ -29,6 +29,7 @@ DEFAULT_OPTIONS = {
     '--skip': [],
     '--respect-constraints': False,
     '--no-respect-constraints': False,
+    '--cve-only': False,
     '-p': [],
     '<requirements_file>': [],
 }
@@ -1905,3 +1906,334 @@ class TestMinAgeDays(TestCase):
         }
         status, reason = self._parse(releases, '1.0.0', min_age_days=7)
         self.assertEqual(str(status['latest_version']), '1.0.0')
+
+
+class TestCVEAuditor(TestCase):
+    """Unit tests for the CVEAuditor (--cve-only) helper (issue #65)."""
+
+    def _audit_output(self, dependencies):
+        """Build a pip-audit -f json style payload as raw bytes."""
+        import json
+
+        return json.dumps({'dependencies': dependencies}).encode('utf-8')
+
+    def _run(self, dependencies):
+        from pip_upgrader.cve_auditor import CVEAuditor
+
+        def fake_run(cmd, **kwargs):
+            result = MagicMock()
+            result.stdout = self._audit_output(dependencies)
+            result.stderr = b''
+            result.returncode = 0
+            return result
+
+        with (
+            patch('pip_upgrader.cve_auditor._find_pip_audit', return_value='/usr/bin/pip-audit'),
+            patch('pip_upgrader.cve_auditor.subprocess.run', side_effect=fake_run),
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            result = CVEAuditor(['requirements.txt']).get_min_fix_versions()
+        return result, stdout_mock.getvalue()
+
+    def test_single_vuln_min_fix(self):
+        """A package with one vuln maps to the smallest fix version."""
+        deps = [{'name': 'flask', 'version': '0.5', 'vulns': [{'id': 'X', 'fix_versions': ['1.0', '1.1']}]}]
+        result, _ = self._run(deps)
+        self.assertEqual(result, {'flask': '1.0'})
+
+    def test_multiple_vulns_takes_max_of_mins(self):
+        """The safe version is the max across each vuln's minimum fix."""
+        deps = [
+            {
+                'name': 'flask',
+                'version': '0.5',
+                'vulns': [
+                    {'id': 'A', 'fix_versions': ['1.0']},
+                    {'id': 'B', 'fix_versions': ['0.12.3']},
+                    {'id': 'C', 'fix_versions': ['2.2.5', '2.3.2']},
+                ],
+            }
+        ]
+        result, _ = self._run(deps)
+        # min per vuln: 1.0, 0.12.3, 2.2.5 -> max is 2.2.5
+        self.assertEqual(result, {'flask': '2.2.5'})
+
+    def test_package_without_fix_is_skipped(self):
+        """A vulnerable package with no fix version is skipped with a warning."""
+        deps = [{'name': 'somepkg', 'version': '1.0', 'vulns': [{'id': 'X', 'fix_versions': []}]}]
+        result, output = self._run(deps)
+        self.assertEqual(result, {})
+        self.assertIn('no fix version available', output)
+
+    def test_package_without_vulns_ignored(self):
+        """A package with no vulnerabilities is not reported."""
+        deps = [{'name': 'clean', 'version': '2.0', 'vulns': []}]
+        result, _ = self._run(deps)
+        self.assertEqual(result, {})
+
+    def test_name_is_canonicalized(self):
+        """Result keys use canonical (lowercased, normalized) names."""
+        deps = [{'name': 'Django', 'version': '1.10', 'vulns': [{'id': 'X', 'fix_versions': ['1.10.5']}]}]
+        result, _ = self._run(deps)
+        self.assertEqual(result, {'django': '1.10.5'})
+
+    def test_missing_pip_audit_returns_empty(self):
+        """When pip-audit is not installed, an empty dict is returned gracefully."""
+        from pip_upgrader.cve_auditor import CVEAuditor
+
+        with (
+            patch('pip_upgrader.cve_auditor._find_pip_audit', return_value=None),
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            result = CVEAuditor(['requirements.txt']).get_min_fix_versions()
+            output = stdout_mock.getvalue()
+
+        self.assertEqual(result, {})
+        self.assertIn('pip-audit not found', output)
+
+
+@patch('pip_upgrader.packages_interactive_selector.questionary.checkbox', side_effect=mock_checkbox_select_all)
+class TestCVEOnlyIntegration(TestCase):
+    """Integration tests wiring --cve-only through cli.main() (issue #65)."""
+
+    PACKAGE_NAMES = ['Django', 'celery', 'django-rest-auth', 'ipython']
+
+    def _add_responses_mocks(self):
+        for package in self.PACKAGE_NAMES:
+            canonical = canonicalize_name(package)
+            with open('tests/fixtures/{}.json'.format(package)) as fh:
+                body = fh.read()
+            responses.add(
+                responses.GET,
+                "https://pypi.python.org/pypi/{}/json".format(canonical),
+                body=body,
+                content_type="application/json",
+            )
+
+    def setUp(self):
+        self._add_responses_mocks()
+
+    def _fake_pip_audit(self, dependencies):
+        """Return a subprocess.run replacement emitting a pip-audit JSON report."""
+        import json
+
+        def fake_run(cmd, **kwargs):
+            result = MagicMock()
+            result.stdout = json.dumps({'dependencies': dependencies}).encode('utf-8')
+            result.stderr = b''
+            result.returncode = 0
+            return result
+
+        return fake_run
+
+    @responses.activate
+    @patch(
+        'pip_upgrader.cli.get_options',
+        return_value=make_options(
+            **{
+                '--dry-run': True,
+                '--non-interactive': True,
+                '--no-respect-constraints': True,
+                '--cve-only': True,
+                '<requirements_file>': ['requirements.txt'],
+            }
+        ),
+    )
+    @patch.dict('os.environ', {}, clear=False)
+    @patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=[])
+    def test_cve_only_upgrades_only_affected_packages(self, options_mock, checkbox_mock):
+        """Only CVE-flagged packages are upgraded; others are dropped."""
+        # Only Django is flagged, fixed at 1.10.5 (below the 1.11 latest).
+        deps = [{'name': 'Django', 'version': '1.10', 'vulns': [{'id': 'X', 'fix_versions': ['1.10.5']}]}]
+
+        with (
+            patch('pip_upgrader.cve_auditor._find_pip_audit', return_value='/usr/bin/pip-audit'),
+            patch('pip_upgrader.cve_auditor.subprocess.run', side_effect=self._fake_pip_audit(deps)),
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        dry_run_line = [line for line in output.split('\n') if 'Dry run complete' in line][0]
+        self.assertIn('Django', dry_run_line)
+        # django-rest-auth and celery are not CVE-flagged, so excluded
+        self.assertNotIn('django-rest-auth', dry_run_line)
+        self.assertNotIn('celery', dry_run_line)
+        # Clamped to the fix version, not the 1.11 latest
+        self.assertIn('CVE fix -> upgrading to 1.10.5', output)
+
+    @responses.activate
+    @patch(
+        'pip_upgrader.cli.get_options',
+        return_value=make_options(
+            **{
+                '--dry-run': True,
+                '--non-interactive': True,
+                '--no-respect-constraints': True,
+                '--cve-only': True,
+                '<requirements_file>': ['requirements.txt'],
+            }
+        ),
+    )
+    @patch.dict('os.environ', {}, clear=False)
+    @patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=[])
+    def test_cve_only_skips_package_without_fix(self, options_mock, checkbox_mock):
+        """A CVE-flagged package with no fix version is skipped, nothing upgraded."""
+        deps = [{'name': 'Django', 'version': '1.10', 'vulns': [{'id': 'X', 'fix_versions': []}]}]
+
+        with (
+            patch('pip_upgrader.cve_auditor._find_pip_audit', return_value='/usr/bin/pip-audit'),
+            patch('pip_upgrader.cve_auditor.subprocess.run', side_effect=self._fake_pip_audit(deps)),
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        self.assertIn('no fix version available', output)
+        self.assertIn('No CVE-affected packages to upgrade.', output)
+
+    @responses.activate
+    @patch(
+        'pip_upgrader.cli.get_options',
+        return_value=make_options(
+            **{
+                '--dry-run': True,
+                '--non-interactive': True,
+                '--no-respect-constraints': True,
+                '--cve-only': True,
+                '<requirements_file>': ['requirements.txt'],
+            }
+        ),
+    )
+    @patch.dict('os.environ', {}, clear=False)
+    @patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=[])
+    def test_cve_only_dry_run_does_not_write(self, options_mock, checkbox_mock):
+        """--cve-only with --dry-run must not modify the requirements file."""
+        tmpdir = tempfile.mkdtemp()
+        tmp_req = os.path.join(tmpdir, 'requirements.txt')
+        shutil.copy('requirements.txt', tmp_req)
+        with open(tmp_req) as f:
+            before = f.read()
+
+        options_mock.return_value = make_options(
+            **{
+                '--dry-run': True,
+                '--non-interactive': True,
+                '--no-respect-constraints': True,
+                '--cve-only': True,
+                '<requirements_file>': [tmp_req],
+            }
+        )
+        deps = [{'name': 'Django', 'version': '1.10', 'vulns': [{'id': 'X', 'fix_versions': ['1.10.5']}]}]
+
+        with (
+            patch('pip_upgrader.cve_auditor._find_pip_audit', return_value='/usr/bin/pip-audit'),
+            patch('pip_upgrader.cve_auditor.subprocess.run', side_effect=self._fake_pip_audit(deps)),
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        with open(tmp_req) as f:
+            after = f.read()
+        self.assertEqual(before, after)
+        self.assertIn('Dry run complete', output)
+        shutil.rmtree(tmpdir)
+
+    @responses.activate
+    @patch(
+        'pip_upgrader.cli.get_options',
+        return_value=make_options(
+            **{
+                '--dry-run': False,
+                '--non-interactive': True,
+                '--no-respect-constraints': True,
+                '--cve-only': True,
+                '<requirements_file>': ['requirements.txt'],
+            }
+        ),
+    )
+    @patch.dict('os.environ', {}, clear=False)
+    @patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=[])
+    def test_cve_only_non_interactive_writes_min_fix(self, options_mock, checkbox_mock):
+        """--cve-only --non-interactive writes the min fix version to the file."""
+        tmpdir = tempfile.mkdtemp()
+        tmp_req = os.path.join(tmpdir, 'requirements.txt')
+        shutil.copy('requirements.txt', tmp_req)
+
+        options_mock.return_value = make_options(
+            **{
+                '--dry-run': False,
+                '--non-interactive': True,
+                '--no-respect-constraints': True,
+                '--cve-only': True,
+                '<requirements_file>': [tmp_req],
+            }
+        )
+        deps = [{'name': 'Django', 'version': '1.10', 'vulns': [{'id': 'X', 'fix_versions': ['1.10.5']}]}]
+
+        with (
+            patch('pip_upgrader.cve_auditor._find_pip_audit', return_value='/usr/bin/pip-audit'),
+            patch('pip_upgrader.cve_auditor.subprocess.run', side_effect=self._fake_pip_audit(deps)),
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        with open(tmp_req) as f:
+            content = f.read()
+        self.assertFalse(checkbox_mock.called)
+        self.assertIn('Django==1.10.5', content)
+        self.assertIn('Updated versions', output)
+        shutil.rmtree(tmpdir)
+
+    @responses.activate
+    @patch(
+        'pip_upgrader.cli.get_options',
+        return_value=make_options(
+            **{
+                '--dry-run': True,
+                '-p': ['all'],
+                '--respect-constraints': True,
+                '--cve-only': True,
+                '<requirements_file>': ['requirements.txt'],
+            }
+        ),
+    )
+    @patch.dict('os.environ', {}, clear=False)
+    @patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=[])
+    def test_cve_only_with_respect_constraints(self, options_mock, checkbox_mock):
+        """--cve-only composes with --respect-constraints (validation runs on the clamped set)."""
+        from packaging import version as pkg_version
+
+        deps = [{'name': 'Django', 'version': '1.10', 'vulns': [{'id': 'X', 'fix_versions': ['1.10.5']}]}]
+
+        import json as _json
+
+        # cve_auditor and constraint_validator share the same subprocess module,
+        # so a single side_effect must service both call sites, routed by argv.
+        def fake_run(cmd, **kwargs):
+            result = MagicMock()
+            if 'pip-audit' in cmd[0]:
+                result.stdout = _json.dumps({'dependencies': deps}).encode('utf-8')
+                result.stderr = b''
+                result.returncode = 0
+            else:
+                result.returncode = 0
+            return result
+
+        with (
+            patch('pip_upgrader.cve_auditor._find_pip_audit', return_value='/usr/bin/pip-audit'),
+            patch('pip_upgrader.constraint_validator._get_pip_version', return_value=pkg_version.parse('24.0')),
+            patch('pip_upgrader.constraint_validator.subprocess.run', side_effect=fake_run) as run_mock,
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
+            cli.main()
+            output = stdout_mock.getvalue()
+
+        # Constraint validation ran, and only Django (the CVE package) was upgraded.
+        self.assertTrue(run_mock.called)
+        self.assertIn('Constraint check passed', output)
+        dry_run_line = [line for line in output.split('\n') if 'Dry run complete' in line][0]
+        self.assertIn('Django', dry_run_line)
+        self.assertNotIn('celery', dry_run_line)

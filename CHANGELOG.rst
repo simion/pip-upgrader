@@ -1,3 +1,10 @@
+2.4.8 (2026-08-10)
+---------------------
+* add ``--cve-only`` flag that runs pip-audit and upgrades only packages with known CVEs, each to the minimum version that clears every vulnerability affecting it (rather than the latest PyPI release) (#65)
+* the minimum safe version is the max across each vulnerability's own minimum fix version, so the resulting pin is free of all reported CVEs
+* vulnerable packages with no available fix are skipped with a warning; if pip-audit is missing the flag degrades gracefully and skips CVE filtering
+* composes with ``--non-interactive``, ``--dry-run`` and ``--respect-constraints``
+
 2.4.7 (2026-08-10)
 ---------------------
 * add ``--min-age-days=<N>`` flag that skips candidate versions published less than N days ago, providing a cooldown period that protects against malicious packages that appear briefly on PyPI (#66)

@@ -1,6 +1,7 @@
 import os
 import shutil
 import tempfile
+from datetime import datetime, timedelta, timezone
 from io import StringIO
 from subprocess import PIPE
 from subprocess import Popen as popen
@@ -21,6 +22,7 @@ DEFAULT_OPTIONS = {
     '--skip-greater-equal': False,
     '--use-default-index': False,
     '--timeout': None,
+    '--min-age-days': None,
     '--minor': False,
     '--patch': False,
     '--non-interactive': False,
@@ -1798,3 +1800,108 @@ class TestRespectConstraintsIntegration(TestCase):
         # Django was clamped to the resolved 1.10.1, so that appears in the dry-run result
         dry_run_line = [line for line in output.split('\n') if 'Dry run complete' in line][0]
         self.assertIn('Django', dry_run_line)
+
+
+class TestMinAgeDays(TestCase):
+    """Tests for the --min-age-days cooldown period for newly published versions."""
+
+    @staticmethod
+    def _build_response(releases):
+        """Build a fake requests.Response wrapping a minimal PyPI JSON payload."""
+        import json
+
+        data = {'info': {'version': max(releases.keys())}, 'releases': releases}
+        response = MagicMock()
+        response.ok = True
+        response.json.return_value = json.loads(json.dumps(data))
+        return response
+
+    @staticmethod
+    def _days_ago(days):
+        return (datetime.now(timezone.utc) - timedelta(days=days)).strftime('%Y-%m-%dT%H:%M:%S')
+
+    def _parse(self, releases, current, min_age_days=None):
+        from packaging import version
+
+        from pip_upgrader.packages_status_detector import PackagesStatusDetector
+
+        detector = PackagesStatusDetector([], make_options(**{'--min-age-days': min_age_days}))
+        return detector._parse_pypi_json_package_info(
+            'somepkg', version.parse(current), self._build_response(releases)
+        )
+
+    def test_recent_version_is_skipped(self):
+        """A candidate published inside the cooldown window is not offered."""
+        releases = {
+            '1.0.0': [{'upload_time': self._days_ago(100)}],
+            '2.0.0': [{'upload_time': self._days_ago(2)}],  # too new
+        }
+        status, reason = self._parse(releases, '1.0.0', min_age_days=7)
+        self.assertEqual(reason, 'success')
+        # Stays on 1.0.0 because 2.0.0 is only 2 days old
+        self.assertEqual(str(status['latest_version']), '1.0.0')
+        self.assertFalse(status['upgrade_available'])
+
+    def test_old_enough_version_is_offered(self):
+        """A candidate older than the cooldown window is offered normally."""
+        releases = {
+            '1.0.0': [{'upload_time': self._days_ago(100)}],
+            '2.0.0': [{'upload_time': self._days_ago(30)}],
+        }
+        status, reason = self._parse(releases, '1.0.0', min_age_days=7)
+        self.assertEqual(reason, 'success')
+        self.assertEqual(str(status['latest_version']), '2.0.0')
+        self.assertTrue(status['upgrade_available'])
+
+    def test_disabled_by_default(self):
+        """Without --min-age-days, even a brand-new version is offered."""
+        releases = {
+            '1.0.0': [{'upload_time': self._days_ago(100)}],
+            '2.0.0': [{'upload_time': self._days_ago(0)}],
+        }
+        status, reason = self._parse(releases, '1.0.0')
+        self.assertEqual(reason, 'success')
+        self.assertEqual(str(status['latest_version']), '2.0.0')
+
+    def test_falls_back_to_intermediate_version(self):
+        """When the newest is too recent, the next-oldest eligible version wins."""
+        releases = {
+            '1.0.0': [{'upload_time': self._days_ago(100)}],
+            '2.0.0': [{'upload_time': self._days_ago(30)}],
+            '3.0.0': [{'upload_time': self._days_ago(1)}],  # too new
+        }
+        status, reason = self._parse(releases, '1.0.0', min_age_days=7)
+        self.assertEqual(reason, 'success')
+        self.assertEqual(str(status['latest_version']), '2.0.0')
+
+    def test_uses_latest_file_upload_time(self):
+        """The cutoff uses the newest distribution file of a release."""
+        releases = {
+            '1.0.0': [{'upload_time': self._days_ago(100)}],
+            '2.0.0': [
+                {'upload_time': self._days_ago(30)},  # sdist old
+                {'upload_time': self._days_ago(1)},   # a wheel added recently
+            ],
+        }
+        status, reason = self._parse(releases, '1.0.0', min_age_days=7)
+        # newest file is 1 day old -> whole version considered too new
+        self.assertEqual(str(status['latest_version']), '1.0.0')
+
+    def test_missing_upload_time_fails_open(self):
+        """Versions without upload time metadata are kept (fail open)."""
+        releases = {
+            '1.0.0': [{'upload_time': self._days_ago(100)}],
+            '2.0.0': [{}],  # no upload_time
+        }
+        status, reason = self._parse(releases, '1.0.0', min_age_days=7)
+        self.assertEqual(str(status['latest_version']), '2.0.0')
+
+    def test_iso_8601_field_supported(self):
+        """upload_time_iso_8601 with trailing Z is parsed correctly."""
+        recent = (datetime.now(timezone.utc) - timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+        releases = {
+            '1.0.0': [{'upload_time': self._days_ago(100)}],
+            '2.0.0': [{'upload_time_iso_8601': recent}],
+        }
+        status, reason = self._parse(releases, '1.0.0', min_age_days=7)
+        self.assertEqual(str(status['latest_version']), '1.0.0')

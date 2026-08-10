@@ -1,3 +1,8 @@
+2.4.7 (2026-08-10)
+---------------------
+* add ``--min-age-days=<N>`` flag that skips candidate versions published less than N days ago, providing a cooldown period that protects against malicious packages that appear briefly on PyPI (#66)
+* the cutoff is taken from the latest ``upload_time`` across all distribution files of a candidate version; when a version has no upload time metadata it is kept (fail open)
+
 2.4.6 (2026-08-10)
 ---------------------
 * add ``--respect-constraints`` flag that validates proposed upgrades against pip's resolver and clamps any that would produce unsatisfiable pins to the highest compatible version (#83)

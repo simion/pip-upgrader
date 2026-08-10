@@ -2,6 +2,7 @@ import os
 import re
 import sys
 from configparser import ConfigParser, NoOptionError, NoSectionError
+from datetime import datetime, timedelta, timezone
 from urllib.parse import urljoin
 
 import requests
@@ -47,6 +48,12 @@ class PackagesStatusDetector(object):
         self._prerelease = False
         timeout_val = options.get('--timeout')
         self._timeout = int(timeout_val) if timeout_val else 15
+
+        # Minimum age (in days) a candidate version must have before it is
+        # considered for upgrade. Protects against malicious packages that
+        # appear briefly on PyPI. 0 (default) disables the check.
+        min_age_val = options.get('--min-age-days')
+        self._min_age_days = int(min_age_val) if min_age_val else 0
 
         # Upgrade constraint: 'patch', 'minor', or None (allow any)
         if options.get('--patch'):
@@ -240,6 +247,42 @@ class PackagesStatusDetector(object):
             versions = [v for v in versions if v.major == current_version.major]
         return versions
 
+    @staticmethod
+    def _latest_upload_time(release_files):
+        """Return the latest upload_time (as an aware UTC datetime) across the
+        distribution files of a release, or None if unavailable."""
+        upload_times = []
+        for f in release_files:
+            raw = f.get('upload_time_iso_8601') or f.get('upload_time')
+            if not raw:
+                continue
+            value = raw.replace('Z', '+00:00')
+            try:
+                parsed = datetime.fromisoformat(value)
+            except ValueError:
+                continue
+            if parsed.tzinfo is None:
+                # PyPI upload_time is UTC without an offset
+                parsed = parsed.replace(tzinfo=timezone.utc)
+            upload_times.append(parsed)
+        return max(upload_times) if upload_times else None
+
+    def _filter_too_recent_versions(self, versions, releases):
+        """Drop versions whose latest distribution file was uploaded less than
+        ``--min-age-days`` days ago. No-op when the check is disabled."""
+        if not self._min_age_days:
+            return versions
+
+        cutoff = datetime.now(timezone.utc) - timedelta(days=self._min_age_days)
+        kept = []
+        for vers in versions:
+            release_files = releases.get(str(vers), [])
+            upload_time = self._latest_upload_time(release_files)
+            # If we can't determine the upload time, keep the version (fail open).
+            if upload_time is None or upload_time <= cutoff:
+                kept.append(vers)
+        return kept
+
     def _pick_latest_version(self, all_versions, filtered_versions, current_version):
         latest_version = max(filtered_versions)
         if self._prerelease or current_version.is_postrelease or current_version.is_prerelease:
@@ -290,8 +333,12 @@ class PackagesStatusDetector(object):
         filtered_versions = self._apply_version_constraints(filtered_versions, current_version, max_version)
         all_versions = self._apply_version_constraints(all_versions, current_version, max_version)
 
-        if not filtered_versions:  # pragma: nocover
-            return False, 'error while parsing version'
+        # Drop versions published too recently (--min-age-days cooldown)
+        filtered_versions = self._filter_too_recent_versions(filtered_versions, data['releases'])
+        all_versions = self._filter_too_recent_versions(all_versions, data['releases'])
+
+        if not filtered_versions:
+            return False, 'no version older than --min-age-days available'
 
         latest_version = self._pick_latest_version(all_versions, filtered_versions, current_version)
         try:
@@ -304,7 +351,7 @@ class PackagesStatusDetector(object):
         except Exception:  # pragma: nocover
             return False, 'error while parsing version'
 
-        upload_time = latest_version_info['upload_time'].replace('T', ' ')
+        upload_time = latest_version_info.get('upload_time', '-').replace('T', ' ')
 
         return {
             'name': package_name,

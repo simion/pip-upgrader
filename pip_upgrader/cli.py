@@ -2,7 +2,7 @@
 pip-upgrade
 
 Usage:
-  pip-upgrade [<requirements_file>] ... [--prerelease] [-p=<package>...] [--skip=<package>...] [--dry-run] [--non-interactive] [--skip-greater-equal] [--use-default-index] [--timeout=<seconds>] [--minor | --patch] [--respect-constraints | --no-respect-constraints]
+  pip-upgrade [<requirements_file>] ... [--prerelease] [-p=<package>...] [--skip=<package>...] [--dry-run] [--non-interactive] [--skip-greater-equal] [--use-default-index] [--timeout=<seconds>] [--min-age-days=<days>] [--minor | --patch] [--respect-constraints | --no-respect-constraints]
 
 Arguments:
     requirements_file             The requirement FILE, WILDCARD PATH to multiple files, pyproject.toml, or Pipfile.
@@ -14,6 +14,8 @@ Arguments:
     --skip-greater-equal          Skip packages with >= and ~= pins (by default ==, >=, and ~= are checked).
     --use-default-index           Skip searching for custom index-url in pip configuration file(s).
     --timeout <seconds>           Set a custom timeout for PyPI requests (default: 15 seconds).
+    --min-age-days <days>         Skip candidate versions published less than <days> days ago (default: 0,
+                                  disabled). Protects against malicious packages that appear briefly on PyPI.
     --minor                       Only upgrade within the same major version (e.g. 1.2.3 -> 1.x.y).
     --patch                       Only upgrade within the same major.minor version (e.g. 1.2.3 -> 1.2.x).
     --respect-constraints         Validate proposed upgrades with pip's resolver and clamp any that would produce
@@ -32,6 +34,7 @@ Examples:
   pip-upgrade requirements.txt --non-interactive --skip django --skip celery  # upgrade all except django and celery
   pip-upgrade requirements.txt --minor    # only upgrade within same major version
   pip-upgrade requirements.txt --patch    # only upgrade within same major.minor version
+  pip-upgrade requirements.txt --min-age-days 7  # ignore versions published in the last 7 days
   pip-upgrade requirements.txt --respect-constraints  # clamp upgrades to versions pip can actually resolve together
   pip-upgrade requirements.txt --non-interactive --no-respect-constraints  # skip the default constraint validation
 

@@ -1775,6 +1775,50 @@ class TestConstraintValidator(TestCase):
         # old django version must NOT appear (replaced by the new one)
         self.assertFalse(any('django==6.0.8' in line for line in written_lines))
 
+    def test_relative_r_includes_are_inlined_in_temp_file(self):
+        """Relative -r includes must be inlined so the temp file works from any directory."""
+        import tempfile
+
+        from packaging import version
+
+        from pip_upgrader.constraint_validator import ConstraintValidator
+
+        with tempfile.TemporaryDirectory() as tmp:
+            base_path = os.path.join(tmp, 'base.txt')
+            local_path = os.path.join(tmp, 'local.txt')
+            with open(base_path, 'w') as fh:
+                fh.write('celery==5.2.0\n')
+                fh.write('redis==4.0.0\n')
+            with open(local_path, 'w') as fh:
+                fh.write('-r base.txt\n')
+                fh.write('django==4.2.0\n')
+
+            packages = [{'name': 'django', 'latest_version': '5.0.0'}]
+            written_lines = []
+
+            def fake_run(cmd, **kwargs):
+                req_path = cmd[cmd.index('-r') + 1]
+                with open(req_path) as fh:
+                    written_lines.extend(fh.readlines())
+                result = MagicMock()
+                result.returncode = 0
+                return result
+
+            with (
+                patch('pip_upgrader.constraint_validator._get_pip_version', return_value=version.parse('24.0')),
+                patch('pip_upgrader.constraint_validator.subprocess.run', side_effect=fake_run),
+                patch('sys.stdout', new_callable=StringIO),
+            ):
+                ConstraintValidator(packages, [local_path]).validate_and_adjust()
+
+        # django at proposed version
+        self.assertTrue(any('django==5.0.0' in line for line in written_lines))
+        # base.txt contents inlined (no -r reference in temp file)
+        self.assertTrue(any('celery' in line for line in written_lines))
+        self.assertTrue(any('redis' in line for line in written_lines))
+        # no -r include lines left in temp file
+        self.assertFalse(any(line.strip().startswith('-r ') for line in written_lines))
+
 
 @patch('pip_upgrader.packages_interactive_selector.questionary.checkbox', side_effect=mock_checkbox_select_all)
 class TestRespectConstraintsIntegration(TestCase):

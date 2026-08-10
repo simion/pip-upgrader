@@ -1,3 +1,9 @@
+2.4.12 (2026-08-10)
+---------------------
+* fix ``--respect-constraints`` with multi-file requirements using ``-r`` includes (#83)
+* relative ``-r`` paths (e.g. ``-r base.txt``) could not be resolved when the temp file was written to an isolated temp directory, causing pip to error with "Could not open requirements file" and fall back to reverting all packages
+* ``-r`` includes are now recursively inlined into the temp file; ``-c`` constraint paths are rewritten to absolute so they also resolve correctly
+
 2.4.11 (2026-08-10)
 ---------------------
 * fix ``--respect-constraints`` surgical hard-conflict handling: when pip names specific packages in the conflict error, only those packages are reverted to their current pin — unrelated upgrades in the same run now proceed normally (#83)

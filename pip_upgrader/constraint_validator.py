@@ -88,6 +88,55 @@ def _extract_package_name(line):
     return None
 
 
+def _iter_requirements_lines(filenames, skip_packages, _visited=None):
+    """Yield non-package lines from requirements files, recursively resolving -r includes.
+
+    Lines defining a package in ``skip_packages`` (canonical names) are dropped so
+    the caller can prepend its own proposed versions without creating duplicate pins.
+    ``-r`` includes are inlined rather than forwarded as-is so the temp file has no
+    relative-path references that would break when it lives in a different directory.
+    ``-c`` constraint file paths are rewritten to absolute so they resolve correctly.
+    """
+    if _visited is None:
+        _visited = set()
+
+    for filename in filenames:
+        abs_path = os.path.abspath(filename)
+        if abs_path in _visited:
+            continue
+        _visited.add(abs_path)
+        source_dir = os.path.dirname(abs_path)
+
+        try:
+            with open(abs_path) as fh:
+                for line in fh:
+                    stripped = line.strip()
+
+                    # Recursively inline -r / --requirement includes.
+                    for flag in ('-r ', '--requirement '):
+                        if stripped.startswith(flag):
+                            inc = stripped[len(flag) :].strip()
+                            if not os.path.isabs(inc):
+                                inc = os.path.join(source_dir, inc)
+                            yield from _iter_requirements_lines([inc], skip_packages, _visited)
+                            break
+                    else:
+                        # Rewrite -c / --constraint paths to absolute.
+                        for flag in ('-c ', '--constraint '):
+                            if stripped.startswith(flag):
+                                inc = stripped[len(flag) :].strip()
+                                if not os.path.isabs(inc):
+                                    line = flag + os.path.join(source_dir, inc) + '\n'
+                                break
+
+                        pkg_name = _extract_package_name(line)
+                        if pkg_name and canonicalize_name(pkg_name) in skip_packages:
+                            continue  # caller will write this at the proposed new version
+                        yield line
+        except (IOError, OSError):
+            pass
+
+
 def _find_conflicting_in_output(stdout, selected_packages):
     """Return canonical names of our proposed upgrades mentioned in pip's conflict output."""
     if not stdout:
@@ -141,20 +190,13 @@ class ConstraintValidator(object):
                 for package in self.selected_packages:
                     fh.write('{}=={}\n'.format(package['name'], package['latest_version']))
 
-                # Append non-upgraded lines from original requirements files so
-                # pip's resolver sees the full dependency graph, not just the
-                # packages being bumped (fixes false-pass when an already-pinned
-                # package constrains one of the upgraded packages).
-                for filename in self.requirements_filenames:
-                    try:
-                        with open(filename) as rf:
-                            for line in rf:
-                                pkg_name = _extract_package_name(line)
-                                if pkg_name and canonicalize_name(pkg_name) in upgraded_names:
-                                    continue  # already included with new version above
-                                fh.write(line)
-                    except (IOError, OSError):
-                        pass
+                # Inline all requirements (recursively resolving -r includes,
+                # rewriting -c constraint paths to absolute) so the temp file
+                # has no relative-path references that break when placed in a
+                # different directory. Upgraded packages are filtered out here
+                # since they were already written above with their new version.
+                for line in _iter_requirements_lines(self.requirements_filenames, upgraded_names):
+                    fh.write(line)
 
             try:
                 result = _run_pip_dry_run(tmp_reqs, report_path)

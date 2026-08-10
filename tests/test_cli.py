@@ -1709,9 +1709,20 @@ class TestConstraintValidator(TestCase):
             call_count[0] += 1
             result = MagicMock()
             if call_count[0] == 1:
-                # First call: conflict mentioning django (not redis)
+                # First call: pip's real conflict format — names only django via
+                # "The user requested" so redis (which appears in "Collecting redis"
+                # lines) must NOT be wrongly blamed.
                 result.returncode = 1
-                result.stdout = b'ERROR: Cannot install django==6.1 due to ResolutionImpossible'
+                result.stdout = (
+                    b'Collecting django==6.1\n'
+                    b'Collecting redis==8.1.0\n'
+                    b'ERROR: Cannot install django==6.1 because these package versions '
+                    b'have conflicting dependencies.\n\n'
+                    b'The conflict is caused by:\n'
+                    b'    The user requested django==6.1\n'
+                    b'    django-celery-beat 2.9.0 depends on Django<6.1\n\n'
+                    b'ERROR: ResolutionImpossible\n'
+                )
             else:
                 # Second call (redis alone + context): passes
                 result.returncode = 0
@@ -1732,6 +1743,59 @@ class TestConstraintValidator(TestCase):
         # redis was unrelated — should still be upgraded
         self.assertEqual(by_name['redis']['latest_version'], '8.1.0')
         self.assertIn('django', output)
+        self.assertEqual(call_count[0], 2)
+
+    def test_user_requested_parsing_prevents_over_revert(self):
+        """'Collecting X' lines must not cause unrelated packages to be wrongly reverted.
+
+        pip lists every package it downloads (including innocent ones) in 'Collecting X'
+        lines before the error block. A broad name search would match them all and revert
+        every pending upgrade. The fix: parse 'The user requested X==Y' lines to identify
+        only the packages pip is explicitly blaming.
+        """
+        from packaging import version
+
+        from pip_upgrader.constraint_validator import ConstraintValidator
+
+        packages = [
+            {'name': 'urllib3', 'current_version': version.parse('1.26.0'), 'latest_version': '2.0.0'},
+            {'name': 'redis', 'current_version': version.parse('4.0.0'), 'latest_version': '5.0.0'},
+        ]
+        call_count = [0]
+
+        def fake_run(cmd, **kwargs):
+            call_count[0] += 1
+            result = MagicMock()
+            if call_count[0] == 1:
+                # Real pip output: both packages appear in "Collecting" but only urllib3
+                # is in the "The user requested" conflict block.
+                result.returncode = 1
+                result.stdout = (
+                    b'Collecting urllib3==2.0.0\n'
+                    b'Collecting redis==5.0.0\n'
+                    b'ERROR: Cannot install urllib3==2.0.0 because of conflicting dependencies.\n\n'
+                    b'The conflict is caused by:\n'
+                    b'    The user requested urllib3==2.0.0\n'
+                    b'    requests 2.20.0 depends on urllib3<1.25\n\n'
+                    b'ERROR: ResolutionImpossible\n'
+                )
+            else:
+                result.returncode = 0
+                result.stdout = b''
+            return result
+
+        with (
+            patch('pip_upgrader.constraint_validator._get_pip_version', return_value=version.parse('24.0')),
+            patch('pip_upgrader.constraint_validator.subprocess.run', side_effect=fake_run),
+            patch('sys.stdout', new_callable=StringIO),
+        ):
+            result = ConstraintValidator(packages).validate_and_adjust()
+
+        by_name = {p['name']: p for p in result}
+        # urllib3 caused the conflict — reverted
+        self.assertEqual(by_name['urllib3']['latest_version'], version.parse('1.26.0'))
+        # redis appeared in "Collecting" but was NOT named in the conflict — must be upgraded
+        self.assertEqual(by_name['redis']['latest_version'], '5.0.0')
         self.assertEqual(call_count[0], 2)
 
     def test_non_upgraded_package_context_included_in_temp_file(self):

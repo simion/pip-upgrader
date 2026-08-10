@@ -138,12 +138,36 @@ def _iter_requirements_lines(filenames, skip_packages, _visited=None):
 
 
 def _find_conflicting_in_output(stdout, selected_packages):
-    """Return canonical names of our proposed upgrades mentioned in pip's conflict output."""
+    """Return canonical names of our proposed upgrades that pip identifies as the conflict root.
+
+    pip>=22 emits "The user requested X==Y" in the conflict block for each package we pinned
+    that is part of the conflict. We parse those lines first so innocent packages that merely
+    appear in "Collecting X" download lines are not wrongly blamed.
+
+    Falls back to a broad name search only when pip's output has no "The user requested" lines
+    (older pip format or a very different error message).
+    """
     if not stdout:
         return set()
     text = stdout.decode('utf-8', errors='replace') if isinstance(stdout, bytes) else stdout
-    text_lower = text.lower()
     upgraded_names = {canonicalize_name(p['name']) for p in selected_packages}
+
+    user_requested = set()
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped.lower().startswith('the user requested '):
+            rest = stripped[len('the user requested ') :]
+            m = re.match(r'([A-Za-z0-9._-]+)', rest)
+            if m:
+                canonical = canonicalize_name(m.group(1))
+                if canonical in upgraded_names:
+                    user_requested.add(canonical)
+
+    if user_requested:
+        return user_requested
+
+    # Fallback: broad search. May over-match ("Collecting X" lines name innocent packages).
+    text_lower = text.lower()
     return {name for name in upgraded_names if name in text_lower}
 
 

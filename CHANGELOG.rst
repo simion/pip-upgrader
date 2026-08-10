@@ -1,3 +1,9 @@
+2.4.13 (2026-08-10)
+---------------------
+* fix ``--respect-constraints`` surgical revert over-blaming unrelated packages (#83)
+* pip lists every package it downloads in ``Collecting X`` lines before the error block; the previous broad name search matched those lines and reverted every pending upgrade, not just the offending one
+* the fix parses pip's explicit ``The user requested X==Y`` conflict attribution lines, which only appear for the packages we pinned that pip cannot satisfy; falls back to the broad search only for pips that don't emit those lines
+
 2.4.12 (2026-08-10)
 ---------------------
 * fix ``--respect-constraints`` with multi-file requirements using ``-r`` includes (#83)

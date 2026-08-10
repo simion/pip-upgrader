@@ -1716,11 +1716,11 @@ class TestConstraintValidator(TestCase):
             ConstraintValidator(packages, [tmp_reqs_path]).validate_and_adjust()
 
         # django should appear at the proposed new version (6.1), not old (6.0.8)
-        self.assertTrue(any('django==6.1' in l for l in written_lines))
+        self.assertTrue(any('django==6.1' in line for line in written_lines))
         # django-celery-beat (non-upgraded) must be included so its constraint is visible
-        self.assertTrue(any('django-celery-beat' in l for l in written_lines))
+        self.assertTrue(any('django-celery-beat' in line for line in written_lines))
         # old django version must NOT appear (replaced by the new one)
-        self.assertFalse(any('django==6.0.8' in l for l in written_lines))
+        self.assertFalse(any('django==6.0.8' in line for line in written_lines))
 
 
 @patch('pip_upgrader.packages_interactive_selector.questionary.checkbox', side_effect=mock_checkbox_select_all)

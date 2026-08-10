@@ -152,10 +152,14 @@ class ConstraintValidator(object):
 
         # Conflict: try to adopt the versions pip resolved to instead.
         if not os.path.exists(report_path):
+            # Hard conflict: pip found no resolvable set and produced no report.
+            # Revert all packages to their current versions so nothing broken is written.
             print(
-                'Warning: pip reported a dependency conflict but produced no report. '
-                'Proceeding with latest versions (result may be unsatisfiable):\n{}'.format(_tail(result.stdout))
+                'Warning: pip resolver found a conflict with no compatible set. '
+                'Keeping existing pins for all packages:\n{}'.format(_tail(result.stdout))
             )
+            for package in self.selected_packages:
+                package['latest_version'] = package['current_version']
             return self.selected_packages
 
         try:

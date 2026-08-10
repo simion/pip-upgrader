@@ -1,3 +1,7 @@
+2.4.10 (2026-08-10)
+---------------------
+* fix ``--respect-constraints`` hard-conflict case: when pip can find no compatible set and produces no report, packages are now reverted to their current pins instead of writing the unsatisfiable upgrade (#83)
+
 2.4.9 (2026-08-10)
 ---------------------
 * fix ``--respect-constraints`` false-pass when a non-upgraded package constrains one of the bumped packages (#83)

@@ -237,7 +237,18 @@ class TestCommand(TestCase):
     @patch('pip_upgrader.packages_status_detector.PackagesStatusDetector.pip_config_locations', new=[])
     def test_command_non_interactive_with_skip(self, options_mock, checkbox_mock):
         """--non-interactive with --skip should upgrade all packages except the skipped ones."""
-        with patch('sys.stdout', new_callable=StringIO) as stdout_mock:
+        from packaging import version
+
+        def fake_run(cmd, **kwargs):
+            result = MagicMock()
+            result.returncode = 0
+            return result
+
+        with (
+            patch('pip_upgrader.constraint_validator._get_pip_version', return_value=version.parse('24.0')),
+            patch('pip_upgrader.constraint_validator.subprocess.run', side_effect=fake_run),
+            patch('sys.stdout', new_callable=StringIO) as stdout_mock,
+        ):
             cli.main()
             output = stdout_mock.getvalue()
 
@@ -1656,13 +1667,13 @@ class TestConstraintValidator(TestCase):
         self.assertEqual(by_name['django-celery-beat']['latest_version'], '2.8.1')
         self.assertIn('Constraint conflict: django', output)
 
-    def test_conflict_without_report_keeps_latest(self):
-        """If pip conflicts but writes no report, latest versions are kept with a warning."""
+    def test_conflict_without_report_reverts_to_current(self):
+        """Hard conflict with no report: packages are reverted to current_version, not written at latest."""
         from packaging import version
 
         from pip_upgrader.constraint_validator import ConstraintValidator
 
-        packages = [{'name': 'django', 'latest_version': '6.1'}]
+        packages = [{'name': 'django', 'current_version': version.parse('6.0.8'), 'latest_version': '6.1'}]
 
         def fake_run(cmd, **kwargs):
             result = MagicMock()
@@ -1678,8 +1689,8 @@ class TestConstraintValidator(TestCase):
             result = ConstraintValidator(packages).validate_and_adjust()
             output = stdout_mock.getvalue()
 
-        self.assertEqual(result[0]['latest_version'], '6.1')
-        self.assertIn('no report', output)
+        self.assertEqual(result[0]['latest_version'], version.parse('6.0.8'))
+        self.assertIn('no compatible set', output)
 
     def test_non_upgraded_package_context_included_in_temp_file(self):
         """Temp requirements file must include non-upgraded pins so cross-package caps are caught."""
